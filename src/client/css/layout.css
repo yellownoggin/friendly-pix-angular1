@@ -1,0 +1,32 @@
+
+
+html, body {min-height: 100% !important;}
+
+body {
+    color: rgba(0,0,0,0.7);
+    -webkit-font-smoothing: antialiased;
+    font: 300 16px / 1.5 "Roboto", arial, sans-serif;
+    font-family: Roboto, sans-serif;
+    background: #fafafa;
+    margin: 0;
+    padding: 0;
+}
+
+.site-width {
+    max-width: 1240px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    display: block;
+    width: 100%;
+    /*border: solid 1px #333 development alignment border*/
+}
+.site-width-960 {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    display: block;
+    width: 100%;
+    /*border: solid 1px #333 development alignment border*/
+}

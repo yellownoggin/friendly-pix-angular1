@@ -1,0 +1,30 @@
+/*header*/
+
+.background-sky-blue-green {
+    /*background-color: #0143A3;
+    background: -webkit-linear-gradient(#0143A3,#0273D4);
+    background: linear-gradient(#0143A3,#0273D4);
+    color: #fff;*/
+    /*background-color: #607D8B;*/
+        background-color: #0D47A1;
+        /*background-color: rgb(1, 87, 155);
+
+     /*background: -webkit-linear-gradient(#607D8B, #78909C);
+    background: linear-gradient(#607D8B, #78909C);*/
+    color: #fff;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
+}
+
+.light {
+        background-color: #0D47A1 !important;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
+
+}
+
+.hero {
+    height: 100px;
+        padding-top: 16px;
+        text-align: center;
+        position: relative;
+    padding: 80px 48px 56px;
+}

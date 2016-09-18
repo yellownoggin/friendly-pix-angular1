@@ -1,0 +1,24 @@
+{
+  "name": "friendly-pix angular1",
+  "description": "friendly-pix firebase demo converting to angular1",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.5",
+    "angular-messages": "^1.5.5",
+    "angular-ui-router": "^0.3.1",
+    "angular-animate": "^1.5.5",
+    "angular-aria": "^1.5.5",
+    "angular-material": "^1.1.1",
+    "angular-animate-change": "^1.0.2",
+    "angular-sanitize": "1.5.5",
+    "angularfire": "^2.0.2"
+  }
+}
