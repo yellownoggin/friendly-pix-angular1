@@ -6,7 +6,8 @@ namespace friendlyPix {
         .module('app.core')
         .config(initDebug)
         .config(initRouter)
-        .config(initTheme);
+        .config(initTheme)
+        .run(initDatabase);
 
 
     /**
@@ -69,5 +70,21 @@ namespace friendlyPix {
             .accentPalette('orange');
     }
 
+    /**
+     * initDatabase - initialize current real-time database with firebase
+     * TODO:  separate database into a service best practice?    
+     */
+    //@ngInject
+    function initDatabase(firebase) {
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD9ItMOV_b4PlU0P68uerXoUDG_oqi74cg",
+            authDomain: "friendlypix-angular1.firebaseapp.com",
+            databaseURL: "https://friendlypix-angular1.firebaseio.com",
+            storageBucket: "friendlypix-angular1.appspot.com",
+            messagingSenderId: "428223190133"
+        };
+        firebase.initializeApp(config);
+    }
 
 }
