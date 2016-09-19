@@ -6,7 +6,7 @@
         "sourceMap": false,
         "experimentalDecorators": true,
         "moduleResolution": "node",
-        "outDir": "js",
+        "outDir": "./app/compiledJS",
         "listFiles": true
     },
     "exclude": [
@@ -21,7 +21,9 @@
     "compileOnSave": true,
     "files": [
         "typings/index.d.ts",
-        "app/app.ts"
+        "app/app.module.ts",
+        "app/core/core.config.ts",
+        "app/core/core.module.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

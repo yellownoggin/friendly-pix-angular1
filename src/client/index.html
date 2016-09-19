@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="friendlyPix" lang="en">
 
 <head>
     <title>Angular Material - Starter App</title>
@@ -54,12 +54,13 @@
 
 </head>
 
-<body ng-app="myApp" ng-controller="MainController as vm" layout="column" ng-cloak>
+<body ng-controller="ShellController as sc" layout="column" ng-cloak>
 
 
     <div layout="row" layout-align="center center">
         <div layout="column">
-            <h1>{{vm.test}}</h1>
+            <h1>{{sc.test}}</h1>
+            <ui-view></ui-view>
         </div>
     </div>
 
@@ -85,7 +86,9 @@
 
     <!-- build:js js/app.js -->
     <!-- inject:js -->
-    <script src="/src/client/app/app.js"></script>
+    <script src="/src/client/app/compiledJs/app.module.js"></script>
+    <script src="/src/client/app/compiledJs/core/core.module.js"></script>
+    <script src="/src/client/app/compiledJs/core/core.config.js"></script>
     <!-- endinject -->
 
     <!-- inject:templates:js -->

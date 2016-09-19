@@ -2,6 +2,7 @@ module.exports = function() {
   'use strict';
   var client = './src/client/';
   var clientApp = client + 'app/';
+  var compiledJS = client + 'app/compiledJs/';
   var root = './';
   var report = './report/';
   var server = './src/server/';
@@ -40,13 +41,12 @@ module.exports = function() {
         client + 'images/**/*.*'
       ],
       js: [
-        '!' + clientApp + 'other/**',
-        clientApp + '*.module.js',
-        '!' + clientApp + '*.spec.js',
-        clientApp + '**/*.module.js',
-        '!' + clientApp + '**/*.spec.js',
-        '!' + clientApp + '**/*.spec-*.js',
-        clientApp + '**/*.js'
+        compiledJS + '*.module.js',
+        // '!' + clientApp + '*.spec.js',
+        compiledJS + '**/*.module.js',
+        // '!' + clientApp + '**/*.spec.js',
+        // '!' + clientApp + '**/*.spec-*.js',
+        compiledJS + '**/*.js'
       ],
 
       /**
