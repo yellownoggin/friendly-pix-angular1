@@ -4,6 +4,7 @@ namespace friendlyPix {
     angular
     .module('friendlyPix', [
         'app.core',
-        'app.shell'
+        'app.shell',
+        'app.spaPages'
     ]);
 }

@@ -5,6 +5,7 @@ var friendlyPix;
         .module('app.core', [
         'ngMaterial',
         'ui.router',
-        'ngAnimate'
+        'ngAnimate',
+        'firebase'
     ]);
 })(friendlyPix || (friendlyPix = {}));

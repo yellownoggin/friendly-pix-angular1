@@ -38,25 +38,7 @@ namespace friendlyPix {
                         controllerAs: 'sc'
                     }
                 }
-            })
-
-            /**
-             * TODO:  see below
-             * adding this here temporarily to test will put in home component
-             * Show home.feed state on '/' (nested state)
-             * Solution came from faq's ui-router:
-             * https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-set-up-a-defaultindex-child-state
-             */
-            .state('home.feed', {
-                url: '',
-                views: {
-                    content: {
-                        template: 'testing content view'
-                    }
-                    // ignore test
-                }
-            })
-
+            });
     }
 
     /**
@@ -72,7 +54,7 @@ namespace friendlyPix {
 
     /**
      * initDatabase - initialize current real-time database with firebase
-     * TODO:  separate database into a service best practice?    
+     * TODO:  separate database into a service best practice?
      */
     //@ngInject
     function initDatabase(firebase) {

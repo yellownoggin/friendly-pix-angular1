@@ -23,14 +23,6 @@ var friendlyPix;
                     controllerAs: 'sc'
                 }
             }
-        })
-            .state('home.feed', {
-            url: '',
-            views: {
-                content: {
-                    template: 'testing content view'
-                }
-            }
         });
     }
     function initTheme($mdThemingProvider) {
