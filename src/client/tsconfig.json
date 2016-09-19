@@ -23,7 +23,9 @@
         "typings/index.d.ts",
         "app/app.module.ts",
         "app/core/core.config.ts",
-        "app/core/core.module.ts"
+        "app/core/core.module.ts",
+        "app/shell/shell.controller.ts",
+        "app/shell/shell.module.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

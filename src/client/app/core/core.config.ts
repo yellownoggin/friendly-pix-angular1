@@ -30,18 +30,41 @@ namespace friendlyPix {
             .state('home', {
                 abstract: true,
                 url: '/',
-                template: 'ui-view for the home page'
-            });
+                views: {
+                    shell: {
+                        templateUrl: 'app/shell/shell.html',
+                        controller: 'ShellController',
+                        controllerAs: 'sc'
+                    }
+                }
+            })
+
+            /**
+             * TODO:  see below
+             * adding this here temporarily to test will put in home component
+             * Show home.feed state on '/' (nested state)
+             * Solution came from faq's ui-router:
+             * https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-set-up-a-defaultindex-child-state
+             */
+            .state('home.feed', {
+                url: '',
+                views: {
+                    content: {
+                        template: 'testing content view'
+                    }
+                }
+            })
+
     }
 
     /**
      * initTheme - sets up theme using angular material provider
      *
      */
-    //   @ngInject
+    //@ngInject
     function initTheme($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('gray')
+            .primaryPalette('grey')
             .accentPalette('orange');
     }
 

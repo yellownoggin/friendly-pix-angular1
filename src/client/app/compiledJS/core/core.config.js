@@ -15,12 +15,26 @@ var friendlyPix;
             .state('home', {
             abstract: true,
             url: '/',
-            template: 'ui-view for the home page'
+            views: {
+                shell: {
+                    templateUrl: 'app/shell/shell.html',
+                    controller: 'ShellController',
+                    controllerAs: 'sc'
+                }
+            }
+        })
+            .state('home.feed', {
+            url: '',
+            views: {
+                content: {
+                    template: 'testing content view'
+                }
+            }
         });
     }
     function initTheme($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('gray')
+            .primaryPalette('grey')
             .accentPalette('orange');
     }
 })(friendlyPix || (friendlyPix = {}));

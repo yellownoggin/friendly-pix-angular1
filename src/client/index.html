@@ -57,12 +57,7 @@
 <body ng-controller="ShellController as sc" layout="column" ng-cloak>
 
 
-    <div layout="row" layout-align="center center">
-        <div layout="column">
-            <h1>{{sc.test}}</h1>
-            <ui-view></ui-view>
-        </div>
-    </div>
+    <div class="" ui-view="shell"></div>
 
 
 
@@ -88,7 +83,9 @@
     <!-- inject:js -->
     <script src="/src/client/app/compiledJs/app.module.js"></script>
     <script src="/src/client/app/compiledJs/core/core.module.js"></script>
+    <script src="/src/client/app/compiledJs/shell/shell.module.js"></script>
     <script src="/src/client/app/compiledJs/core/core.config.js"></script>
+    <script src="/src/client/app/compiledJs/shell/shell.controller.js"></script>
     <!-- endinject -->
 
     <!-- inject:templates:js -->
