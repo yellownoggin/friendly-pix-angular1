@@ -5,7 +5,8 @@ namespace friendlyPix {
     angular
         .module('app.core')
         .config(initDebug)
-        .config(initRouter);
+        .config(initRouter)
+        .config(initTheme);
 
 
     /**
@@ -38,7 +39,11 @@ namespace friendlyPix {
 
     }
 
-
+    function initTheme($mdThemingProvider) {
+        $mdThemingProvider.theme('default')
+            .primaryPalette('gray')
+            .accentPalette('orange');
+    }
 
 
 }

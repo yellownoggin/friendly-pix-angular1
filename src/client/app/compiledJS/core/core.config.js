@@ -4,7 +4,8 @@ var friendlyPix;
     angular
         .module('app.core')
         .config(initDebug)
-        .config(initRouter);
+        .config(initRouter)
+        .config(initTheme);
     function initDebug($compileProvider) {
         $compileProvider.debugInfoEnabled(true);
     }
@@ -15,5 +16,10 @@ var friendlyPix;
             url: '/',
             template: 'ui-view for the home page'
         });
+    }
+    function initTheme($mdThemingProvider) {
+        $mdThemingProvider.theme('default')
+            .primaryPalette('gray')
+            .accentPalette('orange');
     }
 })(friendlyPix || (friendlyPix = {}));
