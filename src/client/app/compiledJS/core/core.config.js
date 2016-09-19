@@ -13,6 +13,7 @@ var friendlyPix;
         $urlRouterProvider.otherwise('/');
         $stateProvider
             .state('home', {
+            abstract: true,
             url: '/',
             template: 'ui-view for the home page'
         });

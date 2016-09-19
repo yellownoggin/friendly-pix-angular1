@@ -22,23 +22,23 @@ namespace friendlyPix {
     /**
      * initRouter - Initialize the router's default behaviors
      */
-     // @ngInject
+    // @ngInject
     function initRouter($locationProvider, $urlRouterProvider, $stateProvider) {
         $urlRouterProvider.otherwise('/');
-
+        // TODO: $location provider
         $stateProvider
             .state('home', {
-                // abstract: true,
+                abstract: true,
                 url: '/',
                 template: 'ui-view for the home page'
             });
-            // .state('home', {
-            //     url: '/',
-            //     templateUrl
-            // })
-
     }
 
+    /**
+     * initTheme - sets up theme using angular material provider
+     *
+     */
+    //   @ngInject
     function initTheme($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('gray')
