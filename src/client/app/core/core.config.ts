@@ -52,6 +52,7 @@ namespace friendlyPix {
                     content: {
                         template: 'testing content view'
                     }
+                    // ignore test
                 }
             })
 
