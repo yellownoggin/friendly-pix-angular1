@@ -2,9 +2,10 @@ namespace friendlyPix {
     'use strict';
 
     angular
-        .module('app.spaPages', ['ui.router'])
+        .module('app.spaPages', ['ui.router', 'firebase'])
         .config(initRouter)
-    .controller('HomeController', HomeController);
+        .controller('HomeController', HomeController);
+
 
 
     /**
@@ -29,9 +30,20 @@ namespace friendlyPix {
             })
     }
 
-    function HomeController() {
-
+    function HomeController($firebaseAuth, firebaseUi, firebaseMe) {
         console.log('home controller initialized')
+
+        console.log($firebaseAuth().$getAuth(), '$firebaseAuth');
+        console.log(firebaseUi, 'firebaseUi');
+
+        var firebaseUiFred = firebaseUi($firebaseAuth().$getAuth());
+        // console.log(firebaseMe.auth, 'firebaseMe.auth');
+        console.log(firebaseUiFred, 'firebaseUiFred');
+
+
     }
+
+
+
 
 }

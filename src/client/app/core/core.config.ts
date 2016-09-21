@@ -7,6 +7,8 @@ namespace friendlyPix {
         .config(initDebug)
         .config(initRouter)
         .config(initTheme)
+        .constant('firebaseUi', firebaseui.auth.AuthUI)
+        .constant('firebaseMe', firebase)
         .run(initDatabase);
 
 
@@ -68,5 +70,6 @@ namespace friendlyPix {
         };
         firebase.initializeApp(config);
     }
+
 
 }
