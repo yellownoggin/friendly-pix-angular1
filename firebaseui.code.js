@@ -1,6 +1,15 @@
 // https://github.com/firebase/firebaseui-web
 // q's
 // see below
+// one last attempt  in controller
+
+        // console.log($firebaseAuth().$getAuth(), '$firebaseAuth');
+        // console.log(firebaseUi, 'firebaseUi');
+
+        // var firebaseUiFred = firebaseUi($firebaseAuth().$getAuth());
+        // console.log(firebaseMe.auth, 'firebaseMe.auth');
+        // console.log(firebaseUiFred, 'firebaseUiFred');
+
 
 
 // start was not recognized

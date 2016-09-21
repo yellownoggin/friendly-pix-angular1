@@ -1,1 +1,46 @@
-<firebaseui-auth-container></firebaseui-auth-container>
+<!-- splash page -->
+<!-- <div id="splash-page" class="dissolve-animation" ng-show="sc.showSplash"> -->
+<div id="splash-page" class="dissolve-animation" ng-show="hc.showLogin">
+    <div class="site-width">
+        <div class="page-splash" layout="row" layout-align="center center">
+            <div class="splash-section" layout="column" flex="50">
+                <h1>Friendly Pix</h1>
+                <p>
+                    The friendliest way to share your pics.
+                </p>
+
+                <div class="signed-out-only" layout="column">
+                    <div class="firebaseui-auth-container" ng-show="hc.showLogin">
+                        <!-- <div class="" ng-show="!sc.isUser">
+                            <md-button class="md-raised" ng-click="sc.signInWithGoogle()">Sign In with Google</md-button>
+                        </div> -->
+                        <div class="">
+                            <md-button class="md-raised">Sign In with Google</md-button>
+                        </div>
+                    </div>
+                    <p>
+                        <!-- <a class="fp-skip" ui-sref="profile({uid: sc.uid})">profile</a> -->
+                        <a class="fp-skip" ui-sref="profile({uid: sc.uid})">profile</a>
+                    </p>
+                    <p>
+                        <a class="fp-skip" ui-sref="feed">skip sign in</a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end splash -->
+
+<!-- home feed(feet of the user & people user is following) -->
+
+<section id="home-feed" ng-show="!hc.showLogin">
+    <div class="site-width">
+        <div class="" md-whiteframe="1">
+            <span>You currently have no pix posts.</span>
+        </div>
+    </div>
+
+</section>
+<!-- /home feed -->

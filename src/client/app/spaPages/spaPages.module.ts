@@ -24,25 +24,60 @@ namespace friendlyPix {
                     content: {
                         templateUrl: 'app/spaPages/home.html',
                         controller: 'HomeController',
-                        controllerAs: 'ca'
+                        controllerAs: 'hc',
+                        resolve: {
+                            "currentAuth": ['AuthService', (AuthService) => {
+                                return AuthService.Auth().$waitForSignIn();
+                            }]
+                        }
                     }
                 }
             })
     }
 
-    function HomeController($firebaseAuth, firebaseUi, firebaseMe) {
+    function HomeController(currentAuth) {
+
         console.log('home controller initialized')
-
-        console.log($firebaseAuth().$getAuth(), '$firebaseAuth');
-        console.log(firebaseUi, 'firebaseUi');
-
-        var firebaseUiFred = firebaseUi($firebaseAuth().$getAuth());
-        // console.log(firebaseMe.auth, 'firebaseMe.auth');
-        console.log(firebaseUiFred, 'firebaseUiFred');
+        var vm = this;
 
 
+
+        showLogin(currentAuth);
+        // Controller methods
+
+
+        /**
+         * showLogin - description
+         * TODO:  fill out
+         */
+        function showLogin(auth) {
+            console.log(auth, 'auth');
+            if (auth  === null) {
+                vm.showLogin = true;
+            } else {
+                vm.showLogin = false;
+            }
+        }
     }
 
+
+    // spaPages Services (maybe site on re-factor)
+    // @ngInject
+    // TODO: ngInject in the right place?
+    angular
+        .module('app.spaPages')
+        .service('AuthService', AuthService)
+
+    function AuthService($firebaseAuth) {
+
+        this.Auth = Auth;
+
+
+        // Service methods
+        function Auth() {
+            return $firebaseAuth();
+        }
+    }
 
 
 
