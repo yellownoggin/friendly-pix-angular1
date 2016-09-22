@@ -7,8 +7,8 @@ namespace friendlyPix {
         .config(initDebug)
         .config(initRouter)
         .config(initTheme)
-        .constant('firebaseUi', firebaseui.auth.AuthUI)
-        .constant('firebaseMe', firebase)
+        // .constant('firebaseUi', firebaseui.auth.AuthUI)
+        // .constant('firebaseMe', firebase)
         .run(initDatabase);
 
 
@@ -27,6 +27,7 @@ namespace friendlyPix {
      */
     // @ngInject
     function initRouter($locationProvider, $urlRouterProvider, $stateProvider) {
+        console.log('hello');
         $urlRouterProvider.otherwise('/');
         // TODO: $location provider
         $stateProvider
@@ -37,7 +38,13 @@ namespace friendlyPix {
                     shell: {
                         templateUrl: 'app/shell/shell.html',
                         controller: 'ShellController',
-                        controllerAs: 'sc'
+                        controllerAs: 'sc',
+                        resolve: {
+                            "currentAuth": ['AuthService', (AuthService) => {
+                                console.log(AuthService.Auth().$waitForSignIn());
+                                return AuthService.Auth().$waitForSignIn();
+                            }]
+                        }
                     }
                 }
             });

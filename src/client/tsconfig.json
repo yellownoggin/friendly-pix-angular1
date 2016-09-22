@@ -6,7 +6,7 @@
         "sourceMap": false,
         "experimentalDecorators": true,
         "moduleResolution": "node",
-        "outDir": "./app/compiledJS",
+        "outDir": "./app/compiledJs",
         "listFiles": true
     },
     "exclude": [
@@ -24,6 +24,8 @@
         "app/app.module.ts",
         "app/core/core.config.ts",
         "app/core/core.module.ts",
+        "app/shared/auth.service.ts",
+        "app/shared/shared.module.ts",
         "app/shell/shell.controller.ts",
         "app/shell/shell.module.ts",
         "app/spaPages/spaPages.module.ts",

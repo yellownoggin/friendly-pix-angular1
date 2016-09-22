@@ -24,59 +24,23 @@ namespace friendlyPix {
                     content: {
                         templateUrl: 'app/spaPages/home.html',
                         controller: 'HomeController',
-                        controllerAs: 'hc',
-                        resolve: {
-                            "currentAuth": ['AuthService', (AuthService) => {
-                                return AuthService.Auth().$waitForSignIn();
-                            }]
-                        }
+                        controllerAs: 'hc'
                     }
                 }
-            })
+            });
     }
 
-    function HomeController(currentAuth) {
+    function HomeController() {
 
         console.log('home controller initialized')
         var vm = this;
 
 
 
-        showLogin(currentAuth);
+
         // Controller methods
 
 
-        /**
-         * showLogin - description
-         * TODO:  fill out
-         */
-        function showLogin(auth) {
-            console.log(auth, 'auth');
-            if (auth  === null) {
-                vm.showLogin = true;
-            } else {
-                vm.showLogin = false;
-            }
-        }
-    }
-
-
-    // spaPages Services (maybe site on re-factor)
-    // @ngInject
-    // TODO: ngInject in the right place?
-    angular
-        .module('app.spaPages')
-        .service('AuthService', AuthService)
-
-    function AuthService($firebaseAuth) {
-
-        this.Auth = Auth;
-
-
-        // Service methods
-        function Auth() {
-            return $firebaseAuth();
-        }
     }
 
 

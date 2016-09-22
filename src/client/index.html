@@ -56,7 +56,7 @@
 
 </head>
 
-<body ng-controller="ShellController as sc" layout="column" ng-cloak>
+<body layout="column" ng-cloak>
 
 
     <div class="" ui-view="shell"></div>
@@ -82,18 +82,19 @@
     <script src="/bower_components/angularfire/dist/angularfire.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-    <!-- firebaseUi -->
-    <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
 
     <!-- build:js js/app.js -->
     <!-- inject:js -->
     <script src="/src/client/app/compiledJs/app.module.js"></script>
     <script src="/src/client/app/compiledJs/core/core.module.js"></script>
+    <script src="/src/client/app/compiledJs/shared/shared.module.js"></script>
     <script src="/src/client/app/compiledJs/shell/shell.module.js"></script>
     <script src="/src/client/app/compiledJs/spaPages/spaPages.module.js"></script>
     <script src="/src/client/app/compiledJs/core/core.config.js"></script>
+    <script src="/src/client/app/compiledJs/shared/auth.service.js"></script>
     <script src="/src/client/app/compiledJs/shell/shell.controller.js"></script>
     <!-- endinject -->
+
 
     <!-- inject:templates:js -->
     <!-- endinject -->

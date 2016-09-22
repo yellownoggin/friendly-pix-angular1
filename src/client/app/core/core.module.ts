@@ -7,6 +7,10 @@ namespace  friendlyPix {
             'ngMaterial',
             'ui.router',
             'ngAnimate',
-            'firebase'
+            'firebase',
+            'app.spaPages',
+            'app.shell',
+            'app.shared'
         ]);
+
 }
