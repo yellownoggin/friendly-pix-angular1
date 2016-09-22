@@ -5,7 +5,7 @@ namespace friendlyPix {
         .module('app.shell')
         .controller('ShellController', ShellController);
 
-    function ShellController(currentAuth, AuthService, friendlyFire) {
+    function ShellController(currentAuth, AuthService, friendlyFire, $timeout) {
         console.log('Shell Controller World!');
 
         var vm = this;
@@ -63,7 +63,10 @@ namespace friendlyPix {
          * hideSplash
          */
         function hideSplash() {
-            vm.showSplash = false;
+            $timeout(() => {
+                vm.showSplash = false;
+            }, 1000);
+
         }
 
         /**

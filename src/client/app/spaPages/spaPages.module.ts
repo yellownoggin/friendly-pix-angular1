@@ -27,6 +27,14 @@ namespace friendlyPix {
                         controllerAs: 'hc'
                     }
                 }
+            })
+            .state('home.user', {
+                url: 'user',
+                views: {
+                    content: {
+                        template: 'app/spaPages/user'
+                    }
+                }
             });
     }
 
