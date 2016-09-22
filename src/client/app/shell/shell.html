@@ -1,5 +1,4 @@
 <!-- splash page -->
-<!-- <div id="splash-page" class="dissolve-animation" ng-show="sc.showSplash"> -->
 <div id="splash-page" class="dissolve-animation" ng-show="sc.showSplash">
     <div class="site-width">
         <div class="page-splash" layout="row" layout-align="center center">
@@ -11,11 +10,8 @@
 
                 <div class="signed-out-only" layout="column">
                     <div class="firebaseui-auth-container" ng-show="sc.showLogin">
-                        <!-- <div class="" ng-show="!sc.isUser">
+                        <div class="" ng-show="sc.showLogin">
                             <md-button class="md-raised" ng-click="sc.signInWithGoogle()">Sign In with Google</md-button>
-                        </div> -->
-                        <div class="">
-                            <md-button class="md-raised">Sign In with Google</md-button>
                         </div>
                     </div>
                     <p>
@@ -31,7 +27,7 @@
 
 
 <!-- base shell -->
-<div layout="column" ng-show="!sc.showSplash" layout-fill>
+<div layout="column" layout-fill>
 
     <md-toolbar class="md-primary" md-whiteframe="3">
         <div class="site-width">
@@ -50,8 +46,8 @@
                     <span flex></span>
 
                     <div layout="row">
-                        <md-button class="tools-background" href="">
-                            <span class="md-title-light color-106CC8">Nav Links/Other Tools</span>
+                        <md-button class="tools-background" ng-click="sc.signOut()">
+                            <span>Sign Out</span>
 
                         </md-button>
                     </div>

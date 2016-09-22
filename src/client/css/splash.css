@@ -1,0 +1,48 @@
+/**
+ * splash page*
+ */
+
+#splash-page {
+    z-index: 99999 !important;
+}
+.page-splash {
+    z-index: 99999 !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*using theme colors for now*/
+    background-color: #9E9E9E;
+    /*background-color: #0288D1;
+    background: radial-gradient(circle, #039BE5, #01579b);*/
+    pointer-events: auto;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transition: opacity 0.3s linear;
+    -moz-transition: opacity 0.3s linear;
+    -o-transition: opacity 0.3s linear;
+    transition: opacity 0.3s linear;
+}
+
+.splash-section {
+    text-align: center;
+}
+
+.dissolve-animation.ng-hide-remove, .dissolve-animation.ng-hide-add {
+    position: fixed !important;
+    display: inline !important;
+    -webkit-transition: 0.5s linear all;
+    -moz-transition: 0.5s linear all;
+    -o-transition: 0.5s linear all;
+    transition: 0.5s linear all;
+}
+.dissolve-animation.ng-hide-remove.ng-hide-remove-active, .dissolve-animation.ng-hide-add {
+    opacity: 1;
+}
+.dissolve-animation.ng-hide-add.ng-hide-add-active, .dissolve-animation.ng-hide-remove {
+    opacity: 0;
+}

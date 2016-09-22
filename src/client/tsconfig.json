@@ -25,6 +25,7 @@
         "app/core/core.config.ts",
         "app/core/core.module.ts",
         "app/shared/auth.service.ts",
+        "app/shared/friendly-firebase.ts",
         "app/shared/shared.module.ts",
         "app/shell/shell.controller.ts",
         "app/shell/shell.module.ts",
