@@ -14,6 +14,8 @@ namespace friendlyPix {
         vm.showLogin = true;
         vm.hideSplash = hideSplash;
         vm.signOut = signOut;
+        console.log(currentAuth.uid, 'uid');
+        vm.currentUid = currentAuth.uid;
 
 
         showHideSplash(currentAuth);

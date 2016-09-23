@@ -29,36 +29,60 @@
 <!-- base shell -->
 <div layout="column" layout-fill>
 
-    <md-toolbar class="md-primary" md-whiteframe="3">
-        <div class="site-width">
-            <div layout="row" class="md-toolbar-tools">
-                <md-button class="md-icon-button" href="" ng-disabled="false" aria-label="Menu" md-ripple-size="auto" hide-gt-sm>
-                    <md-icon>menu</md-icon>
-                </md-button>
-                <div layout="row" flex>
-                    <!-- TODO:  change this to h1 -->
-                    <md-button href="" class="tools-background" aria-label="Page Title">
-                        <span class="md-title-light color-106CC8">
+    <header>
+        <md-toolbar class="md-primary" md-whiteframe="3">
+            <div class="site-width">
+                <div layout="row" class="md-toolbar-tools">
+                    <md-button class="md-icon-button" href="" ng-disabled="false" aria-label="Menu" md-ripple-size="auto" hide-gt-sm>
+                        <md-icon>menu</md-icon>
+                    </md-button>
+                    <div layout="row" flex>
+                        <!-- TODO:  change this to h1 -->
+                        <md-button href="" class="tools-background" aria-label="Page Title">
+                            <span class="md-title-light color-106CC8">
                             FriendlyPix
                     </span>
-                    </md-button>
-
-                    <span flex></span>
-
-                    <div layout="row">
-                        <md-button class="tools-background" ng-click="sc.signOut()">
-                            <span>Sign Out</span>
-
                         </md-button>
+
+                        <span flex></span>
+
+                        <div layout="row">
+                            <a class="md-button" href="" ui-sref="home.user({uid: sc.currentUid})">User</a>
+                            <md-button class="tools-background" ng-click="sc.signOut()">
+                                <span>Sign Out</span>
+
+                            </md-button>
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
-        </div>
-    </md-toolbar>
+        </md-toolbar>
+        <div class="header-bottom">
+            <div class="site-width">
+                <div layout="row">
+                    <nav flex>
 
-    <md-content layout-padding layout-wrap>
+                    </nav>
+                    <span flex>
+                    <choose-file>
+                        <input id="fileInput" type="file" class="ng-hide">
+                        <md-button id="uploadButton" class="md-fab md-mini md-accent">
+                            <md-icon class="material-icons">attach_file</md-icon>
+                        </md-button>
+                    </choose-file>
+                </span>
+                    <div class="upload-pics-container">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main" layout-padding layout-wrap>
         <div class="" ui-view="content"></div>
-    </md-content>
+    </div>
 </div>

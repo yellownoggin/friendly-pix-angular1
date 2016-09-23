@@ -4,7 +4,9 @@ namespace friendlyPix {
     angular
         .module('app.spaPages', ['ui.router', 'firebase'])
         .config(initRouter)
-        .controller('HomeController', HomeController);
+        .controller('HomeController', HomeController)
+        .controller('UserController', UserController)
+        .controller('AddPicController', AddPicController);
 
 
 
@@ -29,10 +31,22 @@ namespace friendlyPix {
                 }
             })
             .state('home.user', {
-                url: 'user',
+                url: 'user/:uid',
                 views: {
                     content: {
-                        template: 'app/spaPages/user'
+                        templateUrl: 'app/spaPages/user.html',
+                        controller: 'UserController',
+                        controllerAs: 'uc'
+                    }
+                }
+            })
+            .state('home.addPicture', {
+                url: 'add-picture',
+                views: {
+                    content: {
+                        templateUrl: 'app/spaPages/add-picture.html',
+                        controller: 'AddPicController',
+                        controllerAs: 'ac'
                     }
                 }
             });
@@ -40,15 +54,21 @@ namespace friendlyPix {
 
     function HomeController() {
 
-        console.log('home controller initialized')
+        console.log('Home Controller initialized')
         var vm = this;
-
-
-
-
         // Controller methods
 
+    }
 
+    function UserController($stateParams) {
+        console.log('User Controller Instantiated');
+        var vm = this;
+        vm.uid = $stateParams.uid;
+    }
+
+    function AddPicController(addPicture) {
+        var vm = this;
+        vm.imageUrl = addPicture.getImageUrl();
     }
 
 

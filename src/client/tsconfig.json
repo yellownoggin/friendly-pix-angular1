@@ -24,12 +24,17 @@
         "app/app.module.ts",
         "app/core/core.config.ts",
         "app/core/core.module.ts",
+        "app/shared/add-picture.factory.ts",
+        "app/shared/add-picture.service.ts",
         "app/shared/auth.service.ts",
         "app/shared/friendly-firebase.ts",
         "app/shared/shared.module.ts",
+        "app/shared/upload.service.ts",
+        "app/shell/choose-file.directive.ts",
         "app/shell/shell.controller.ts",
         "app/shell/shell.module.ts",
         "app/spaPages/spaPages.module.ts",
+        "app/user/user.controller.ts",
         "typings/modules/firebase/index.d.ts"
     ],
     "atom": {

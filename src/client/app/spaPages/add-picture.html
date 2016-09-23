@@ -1,0 +1,34 @@
+<!-- add picture feature shows pic chosen* via url from addpic service-->
+<!-- allows to make notes  -->
+<!-- handles the uplaod (CREATE) -->
+
+<section id="page-add" class="mdl-grid fp-content">
+    <div layout="row" class="mdl-cell" layout-align="center start">
+        <div layout="column" class="fp-addcontainer">
+            <div>
+                <div class="">
+                    <!-- material icon goes here -->
+                </div>
+            </div>
+            <img id="newPictureContainer" ng-src="{{ac.imageUrl}}" />
+            <!-- <p>image url</p>
+            <p>{{ap.imageValue}}</p> -->
+            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                <!-- supporting text elements go here -->
+                <!-- <form id="uploadPicForm" ng-submit="ap.uploadPic($event, ap.imageCaption)"> -->
+                <form id="uploadPicForm">
+                    <div>
+                        <md-input-container>
+                            <label>Image caption</label>
+                            <input type="text" ng-model="ac.imageCaption" autofocus>
+                        </md-input-container>
+                        <!-- <input type="text">
+                        <label for=""></label> -->
+                    </div>
+                    <br>
+                    <md-button type="submit" class="md-raised fp-upload">Upload</md-button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
