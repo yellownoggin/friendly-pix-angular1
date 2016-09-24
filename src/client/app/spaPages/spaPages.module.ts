@@ -66,9 +66,10 @@ namespace friendlyPix {
         vm.uid = $stateParams.uid;
     }
 
-    function AddPicController(addPicture) {
+    function AddPicController(uploadHelper) {
         var vm = this;
-        vm.imageUrl = addPicture.getImageUrl();
+        vm.imageUrl = uploadHelper.getImageUrl();
+        console.log(vm.imageUrl, 'imageUrl');
     }
 
 

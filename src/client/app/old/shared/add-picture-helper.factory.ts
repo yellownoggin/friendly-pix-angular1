@@ -3,15 +3,19 @@ namespace friendlyPix {
 
     /**
      * Helper factory allows for data from choosefile to be accessed during
-     *  add picture(preview) & upload phase
+     *  add picture(preview) & upload phase. For example, chooseFile(directive & controller)
+     *
      *  TODO: QQ : 1. explore another way or shell controller plays apart and
      *  maybe can  simplify the process
      *  2. readpic can also be abstracted(I think would be best practice)
      */
 
+
+
+
     angular
         .module('app.shared')
-        .factory('addPicture', addPictureFactory);
+        .factory('addPictureHelper', addPictureFactory);
 
     function addPictureFactory() {
         return {
@@ -27,7 +31,7 @@ namespace friendlyPix {
         }
         function setImageUrl(url) {
             this.imageUrl = url;
-            console.log(this.imageUrl, 'this.imageUrl');
+
         }
 
         function getCurrenFile() {

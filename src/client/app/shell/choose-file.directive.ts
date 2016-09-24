@@ -1,15 +1,16 @@
 namespace friendlyPix {
-    'use strict';
+
+
+ 'use strict';
 
     angular
         .module('app.shell')
-        .directive('chooseFile', chooseFileDirective)
-        .controller('ChooseFileController', ChooseFileController);
+        .directive('chooseFile', chooseFileDirective);
 
 
-    function chooseFileDirective($state) {
+
+    function chooseFileDirective($state, uploadHelper) {
         return {
-            controller: ChooseFileController,
             link: (scope, element, attributes, controller) => {
                 var ac = controller;
                 /**
@@ -29,55 +30,13 @@ namespace friendlyPix {
 
                 input.bind('change', (e) => {
                     console.log('before read picture in directive');
-                    ac.readPicture(e);
+                    uploadHelper.readPicture(e);
                     $state.go('home.addPicture')
 
                 })
             }
         }
     } // chooseFileDirective
-
-
-    // @ngInject
-    function ChooseFileController($state, addPicture) {
-
-        //  TODO:  add onInit
-        this.currentFile = '';
-        this.readPicture = readPicture;
-        this.state = $state;
-        this.addPicture = addPicture;
-
-        //  Controller methods
-        function readPicture(e) {
-            // TODO:  qq is this that needed
-            var that = this;
-            // clear stuff TODO: code needed
-
-            var file = e.target.files[0];
-            console.log(file, 'file');
-            that.currentFile = file;
-
-            // Ssend/store file in service to be used by uploadPic & generateImagesdon't
-            this.addPicture.setCurrenFile(file);
-
-            // TODO: Clear the selection in the filepicker
-            // code here
-            // resource: http://stackoverflow.com/questions/21708689/clear-text-input-on-click-with-angularjs
-
-            // Only process image files
-            if (file.type.match('image.*')) {
-                var reader = new FileReader();
-                //Send (store) image url so can be used by app-pic view/feature (previews & user adds comments then uploads)
-                reader.onload = e => {
-                    console.log(e.target.result, 'dataurl');
-                    that.addPicture.setImageUrl(e.target.result);
-                }
-                // Read in the image file is the data url
-                reader.readAsDataURL(file);
-                // that.disableUploadUi(false);
-            }
-        }
-    }
 
 
 }
