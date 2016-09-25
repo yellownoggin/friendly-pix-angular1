@@ -1,0 +1,30 @@
+/**
+ * page-add
+ */
+
+
+/*the row container*/
+
+#page-add .mdl-cell {
+    width: auto;
+    min-width: 300px;
+}
+
+/*.mdl-grid.mdl-grid--no-spacing {
+    padding: 0;
+}*/
+
+.fp-content .mdl-cell .fp-addcontainer {
+    /*margin: auto;*/
+    max-width: 800px;
+    /*display: block;*/
+    text-align: center;
+}
+
+/*don't forget overlay*/
+
+#newPictureContainer {
+    margin: 0;
+    max-width: 100%;
+    max-height: 400px;
+}

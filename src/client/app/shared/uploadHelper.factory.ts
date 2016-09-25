@@ -11,9 +11,10 @@ namespace friendlyPix {
         .module('app.shared')
         .factory('uploadHelper', uploadHelper);
 
-    function uploadHelper($q) {
+    function uploadHelper(friendlyFire, $q, $state) {
         var vm = this;
         // TODO:  declare current file figure out if it's an object/string
+        // UPDATE: it's an object(think of declaring for reveal type pattern )
         var THUMB_IMAGE_SPECS = {
             maxDimension: 640,
             quality: 0.7
@@ -23,6 +24,8 @@ namespace friendlyPix {
             maxDimension: 1280,
             quality: 0.9
         }
+
+        vm.generateImages = generateImages;
 
         return {
             getImageUrl: getImageUrl,
@@ -65,10 +68,11 @@ namespace friendlyPix {
         //  Controller methods
         function readPicture(e) {
 
-            // clear stuff TODO: code needed
-
+            // TODO: code needed clear stuff
+            // https://github.com/firebase/friendlypix/blob/master/web/scripts/uploader.js#L24
+            console.log(e.target.files, 'e.target.files');
             var file = e.target.files[0];
-            console.log(file, 'file');
+
             vm.currentFile = file;
 
             // Ssend/store file in service to be used by uploadPic & generateImagesdon't
@@ -83,7 +87,7 @@ namespace friendlyPix {
                 var reader = new FileReader();
                 //Send (store) image url so can be used by app-pic view/feature (previews & user adds comments then uploads)
                 reader.onload = e => {
-                    console.log(e.target.result, 'dataurl');
+
                     setImageUrl(e.target.result);
                 }
                 // Read in the image file is the data url
@@ -93,12 +97,42 @@ namespace friendlyPix {
         }
 
 
-        function uploadPic(e) {
+        function uploadPic(e, imageCaption) {
+         console.log('uploadPic called');
             e.preventDefault();
             // TODO: disable upload button method
+            // disable upload button
+            // image caption upload
+            // addbutton, overlay.toggle, addbuttonFloatinf ??
+            var imageCaption = imageCaption;
 
-            generateImages().then(pics => {
+            vm.generateImages().then(pics => {
+            console.log(pics, 'pics');
+                // Upload the file upload to firebase storage  & create new post
+                friendlyFire.uploadNewPic(pics.full, pics.thumb, vm.currentFile.name, imageCaption).then(postId => {
+                    $state.go('home.user');
+                    console.log('New pic has been posted!', postId);
+                    // this uses material design light snackbar
+                    // TODO:
+                    // https://material.angularjs.org/1.1.1/demo/dialog
 
+                    // var data = {
+                    //     message: 'New pic has been posted!',
+                    //     actionHandler: () => $state.go('home.post', {'postId': postId}),
+                    //     actionText: 'View',
+                    //     timeout: 10000
+                    // };
+                    //  this.toast[0].MaterialSnackbar.showSnackbar(data);
+                    // this.disableUploadUi(
+                }, error => {
+                    console.error(error);
+                    // var data = {
+                    //     message: `There was an error while posting your pic. Sorry!`,
+                    //     timeout: 5000
+                    // }
+                    // this.toast[0].MaterialSnackbar.showSnackbar(data);
+                    // this.disableUploadUi(false);
+                });
             }
 
             )
@@ -107,12 +141,13 @@ namespace friendlyPix {
         }
 
         function generateImages() {
+            console.log('generateImagesCalled')
             // set up promises
             var fullDeferred = $q.defer();
             var thumbDeferred = $q.defer();
 
             var resolveFullBlob = blob => fullDeferred.resolve(blob);
-            var resolveThumbBlob = blob => fullDeferred.resolve(blob);
+            var resolveThumbBlob = blob => thumbDeferred.resolve(blob);
 
             var displayPicture = (url) => {
                 var image = new Image();
@@ -123,7 +158,7 @@ namespace friendlyPix {
                 var thumbCanvas = _getScaledCanvas(image, maxThumbDimension);
                 thumbCanvas.toBlob(resolveThumbBlob, 'image/jpeg', THUMB_IMAGE_SPECS.quality);
 
-                // Generate thumb
+                // Generate full
                 var maxFullDimension = FULL_IMAGE_SPECS.maxDimension;
                 var fullCanvas = _getScaledCanvas(image, maxFullDimension);
                 fullCanvas.toBlob(resolveFullBlob, 'image/jpeg', FULL_IMAGE_SPECS.quality);
@@ -135,17 +170,21 @@ namespace friendlyPix {
             }
             reader.readAsDataURL(vm.currentFile);
 
+
             return $q.all([fullDeferred.promise, thumbDeferred.promise]).then(results => {
+                console.log(results);
                 return {
                     full: results[0],
                     thumb: results[1]
                 }
-            })
+            });
 
         } // generateImages
 
 
+
         function _getScaledCanvas(image, maxDimension) {
+            console.log('_getScaledCanvas called')
             var thumbCanvas = document.createElement('canvas');
             if (image.width > maxDimension ||
                 image.height > maxDimension) {

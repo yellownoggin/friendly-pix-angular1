@@ -1,7 +1,7 @@
 namespace friendlyPix {
 
 
- 'use strict';
+    'use strict';
 
     angular
         .module('app.shell')
@@ -12,7 +12,7 @@ namespace friendlyPix {
     function chooseFileDirective($state, uploadHelper) {
         return {
             link: (scope, element, attributes, controller) => {
-                var ac = controller;
+
                 /**
                  * 1. bind button click to listener that triggers input file click
                  * 2. send  whole file tp be processes on upload (addPicService)
@@ -29,11 +29,14 @@ namespace friendlyPix {
                 });
 
                 input.bind('change', (e) => {
-                    console.log('before read picture in directive');
-                    uploadHelper.readPicture(e);
-                    $state.go('home.addPicture')
-
+                    scope.$apply(() => {
+                        console.log('before read picture in directive');
+                        uploadHelper.readPicture(e);
+                        input.value = null;
+                        $state.go('home.addPicture')
+                    });
                 })
+
             }
         }
     } // chooseFileDirective

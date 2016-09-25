@@ -49,6 +49,16 @@ namespace friendlyPix {
                         controllerAs: 'ac'
                     }
                 }
+            })
+            .state('home.post', {
+                url: 'post/:postId',
+                views: {
+                    content: {
+                        controller: 'PostController',
+                        controllerAs: 'pc',
+                        templateUrl: 'app/spaPages/post.html'
+                    }
+                }
             });
     }
 
@@ -67,9 +77,15 @@ namespace friendlyPix {
     }
 
     function AddPicController(uploadHelper) {
+        console.log('Add Pic Controller Instantiated');
         var vm = this;
         vm.imageUrl = uploadHelper.getImageUrl();
-        console.log(vm.imageUrl, 'imageUrl');
+        vm.uploadPic = uploadHelper.uploadPic;
+
+    }
+    function PostController(uploadHelper) {
+        console.log('Post Controller Instantiated');
+        var vm = this;
     }
 
 
