@@ -26,6 +26,7 @@ namespace friendlyPix {
         }
 
         vm.generateImages = generateImages;
+        vm.clearCurrentFileAndImage = clearCurrentFileAndImage;
 
         return {
             getImageUrl: getImageUrl,
@@ -58,10 +59,16 @@ namespace friendlyPix {
 
         function getCurrenFile() {
             return vm.currentFile;
+
         }
         function setCurrenFile(file) {
             vm.currentFile = file;
         }
+
+         function clearCurrentFileAndImage() {
+             vm.currentFile = null;
+             vm.imageUrl = null;
+         }
 
 
         // TODO: this is abstracted in the upload service in the demo
@@ -70,7 +77,7 @@ namespace friendlyPix {
 
             // TODO: code needed clear stuff
             // https://github.com/firebase/friendlypix/blob/master/web/scripts/uploader.js#L24
-            console.log(e.target.files, 'e.target.files');
+            console.log(e.target.files, 'e.target.files' );
             var file = e.target.files[0];
 
             vm.currentFile = file;
@@ -110,11 +117,15 @@ namespace friendlyPix {
             console.log(pics, 'pics');
                 // Upload the file upload to firebase storage  & create new post
                 friendlyFire.uploadNewPic(pics.full, pics.thumb, vm.currentFile.name, imageCaption).then(postId => {
+                    // clear the current image & file 
+                    vm.clearCurrentFileAndImage();
                     $state.go('home.user');
                     console.log('New pic has been posted!', postId);
                     // this uses material design light snackbar
                     // TODO:
                     // https://material.angularjs.org/1.1.1/demo/dialog
+                    // https://material.angularjs.org/latest/demo/toast
+                    // https://material.angularjs.org/latest/api/service/$mdToast
 
                     // var data = {
                     //     message: 'New pic has been posted!',
