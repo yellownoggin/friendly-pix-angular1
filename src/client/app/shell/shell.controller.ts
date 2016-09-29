@@ -14,8 +14,8 @@ namespace friendlyPix {
         vm.showLogin = true;
         vm.hideSplash = hideSplash;
         vm.signOut = signOut;
-        console.log(currentAuth.uid, 'uid');
-        vm.currentUid = currentAuth.uid;
+        // console.log(currentAuth.uid, 'uid');
+        vm.currentAuth = currentAuth
 
 
         showHideSplash(currentAuth);
@@ -49,14 +49,16 @@ namespace friendlyPix {
         }
 
         /**
-         * showSplash - description
-         * TODO:  fill out
+         * showSplash - controls
+         * 1) the splash visibility
+         * 2) currentUid binding
          */
         function showHideSplash(auth) {
             if (auth === null) {
                 vm.showSplash = true;
             } else {
                 hideSplash();
+                vm.currentUid = auth.uid
             }
         }
 

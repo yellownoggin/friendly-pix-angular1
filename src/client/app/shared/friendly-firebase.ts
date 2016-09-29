@@ -10,7 +10,7 @@ namespace friendlyPix {
 
 
     // @ngInject
-    function friendlyFirebaseFactory(latinize, $firebaseAuth, firebase, $q) {
+    function friendlyFirebaseFactory(latinize, $firebaseAuth, firebase, $q, FbOarService) {
 
         // setup
         var vm = this;
@@ -23,7 +23,9 @@ namespace friendlyPix {
 
         return {
             saveUserData: saveUserData,
-            uploadNewPic: uploadNewPic
+            uploadNewPic: uploadNewPic,
+            updateHomeFeeds: updateHomeFeeds,
+            toggleFollowUser: toggleFollowUser
         };
 
 
@@ -74,6 +76,7 @@ namespace friendlyPix {
                 return url;
             }).catch(error => {
                 console.error('Error while uploading new pic', error);
+
             });
             var thumbRef = vm.storage.ref(`${vm.user.uid}/thumb/${Date.now()}/${fileName}`);
             var thumbUploadTask = thumbRef.put(thumb, metadata).then(snapshot => {
@@ -86,7 +89,9 @@ namespace friendlyPix {
             });
 
             return $q.all([picUploadTask, thumbUploadTask]).then(urls => {
-                // Once both pics and thumbnails has been uploaded add a new post in the firebase database and to expand outpost lists(users posts & home post).
+                // Once both pics and thumbnails has been uploaded add a
+                //  new post in the firebase database and to expand outpost
+                //  lists(users posts & home post).
                 var newPostKey = vm.database.ref('/posts').push().key;
                 var update = {};
                 update[`/posts/${newPostKey}`] = {
@@ -105,9 +110,69 @@ namespace friendlyPix {
                 update[`/people/${vm.user.uid}/posts/${newPostKey}`] = true;
                 update[`/feed/${vm.user.uid}/${newPostKey}`] = true;
                 return vm.database.ref().update(update).then(() => newPostKey);
-            })
+            });
 
         } // uploadNewPic
-    }
+
+
+        function updateHomeFeeds() {
+            // function logic here
+            if (vm.user) {
+
+                var following = FbOarService.followingArray;
+                following.$loaded().then((data) => {
+                    console.log(data === following);
+                    console.log(data);
+                })
+                    .catch((error) => {
+                        console.log('Error this is the: ', error);
+                    });
+            }
+        }
+
+
+        /**
+         * toggleFollowUser - TODO:
+         * followedUserid - userId  from user page( not current authorized user)
+         * follow is a boolean(from checked)
+         * returns {promise}
+         */
+        function toggleFollowUser(followedUserId, follow) {
+            // add or removed posts from users homepage
+            // TODO: How do you inject firebase rough with followed uid
+            // Can establish it in the controller
+            console.log(vm.user.uid, 'vm.user.uid inside toggle follow');
+            console.log(followedUserId, 'followedUserId');
+            return vm.database.ref(`/people/${followedUserId}/posts`).once('value')
+                .then(
+                data => {
+
+                    // TODO: why  constant
+                    const updateData = {};
+                    // TODO: why let
+                    let lastPostId = true;
+                    console.log(follow, 'follow');
+                    // add followed users post to home feed
+                    data.forEach(post => {
+                        updateData[`/feed/${vm.user.uid}/${post.key}`] =
+                            follow ? !!follow : null;
+                        lastPostId = post.key;
+                    });
+                    console.log(updateData, 'sport' );
+
+                    // Add followed user to the 'following' list.
+                    updateData[`/people/${vm.user.uid}/following/${followedUserId}`] =
+                        follow ? lastPostId : null;
+
+                    // And the to the was the followers
+                    updateData[`/followers/${followedUserId}/${vm.user.uid}`] =
+                        follow ? !!follow : null;
+                    return vm.database.ref().update(updateData);
+                });
+
+        }
+
+
+    } // factory
 
 }

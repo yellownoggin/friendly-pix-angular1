@@ -2,13 +2,27 @@ namespace friendlyPix {
     'use strict';
 
 
+    // Initialize Firebase outside of the angular app* per the firebase angular youtube conventions
+
+    var config = {
+        apiKey: 'AIzaSyD9ItMOV_b4PlU0P68uerXoUDG_oqi74cg',
+        authDomain: 'friendlypix-angular1.firebaseapp.com',
+        databaseURL: 'https://friendlypix-angular1.firebaseio.com',
+        storageBucket: 'friendlypix-angular1.appspot.com',
+        messagingSenderId: '428223190133'
+    };
+
+    //  TODO: how to get this recoginized
+    firebase.initializeApp(config);
+
     angular
         .module('app.core')
         .config(initDebug)
         .config(initRouter)
         .config(initTheme)
+        .config(initfirebaseRef)
         .constant('latinize', latinize)
-        .run(initDatabase);
+        // .run(initDatabase);
         // .constant('firebaseUi', firebaseui.auth.AuthUI)
         // .constant('firebaseMe', firebase)
 
@@ -29,7 +43,7 @@ namespace friendlyPix {
      */
     // @ngInject
     function initRouter($locationProvider, $urlRouterProvider, $stateProvider) {
-        console.log('hello');
+
         $urlRouterProvider.otherwise('/');
         // TODO: $location provider
         $stateProvider
@@ -68,16 +82,13 @@ namespace friendlyPix {
      * TODO:  separate database into a service best practice?
      */
     //@ngInject
-    function initDatabase(firebase) {
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyD9ItMOV_b4PlU0P68uerXoUDG_oqi74cg",
-            authDomain: "friendlypix-angular1.firebaseapp.com",
-            databaseURL: "https://friendlypix-angular1.firebaseio.com",
-            storageBucket: "friendlypix-angular1.appspot.com",
-            messagingSenderId: "428223190133"
-        };
-        firebase.initializeApp(config);
+    function initfirebaseRef($firebaseRefProvider) {
+        $firebaseRefProvider.registerUrl({
+            default: config.databaseURL,
+            people: `${config.databaseURL}/people`,
+            feedArray: `${config.databaseURL}/feed`,
+            postsArray: `${config.databaseURL}/posts`
+        })
     }
 
 

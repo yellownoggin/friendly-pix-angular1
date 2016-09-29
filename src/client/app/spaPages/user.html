@@ -2,5 +2,36 @@
     user partial
 </p>
 <p>
-    {{uc.uid}}
+    Follow user:
 </p>
+<div class="">
+    <!-- TODO: ng-disabled="vm.isActive"
+    out for now does not make sense??
+ -->
+    <div class="" ng-hide="uc.authedUserId === uc.uid">
+        <md-switch ng-model="uc.isActive" ng-change="uc.onFollowChange(uc.isActive)" aria-label="Follow">
+            Follow
+        </md-switch>
+    </div>
+    <p>
+        isActive
+    </p>
+    <p>
+        {{uc.isActive}}
+    </p>
+    <p>
+        Current user id
+    </p>
+    <p>
+        {{uc.authedUserId}}
+    </p>
+    <p>
+        user profile uid
+    </p>
+    <p>
+        <p>
+            {{uc.uid}}
+        </p>
+
+    </p>
+</div>

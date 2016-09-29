@@ -27,6 +27,8 @@
         "app/core/core.config.ts",
         "app/core/core.module.ts",
         "app/shared/auth.service.ts",
+        "app/shared/feed.service.ts",
+        "app/shared/firebaseRef.service.ts",
         "app/shared/friendly-firebase.ts",
         "app/shared/shared.module.ts",
         "app/shared/uploadHelper.factory.ts",

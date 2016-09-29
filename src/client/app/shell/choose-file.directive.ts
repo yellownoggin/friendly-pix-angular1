@@ -29,16 +29,17 @@ namespace friendlyPix {
                 });
 
                 input.bind('change', (e) => {
-                    scope.$apply(() => {
+                    // TODO:  got error duplicate $apply
+                    // scope.$apply(() => {
                         console.log('before read picture in directive');
                         uploadHelper.readPicture(e);
                         input.value = null;
-                        $state.go('home.addPicture')
-                    });
-                })
+                        $state.go('home.addPicture');
+                    // });
+                });
 
             }
-        }
+        };
     } // chooseFileDirective
 
 

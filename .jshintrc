@@ -57,7 +57,7 @@
         "$": true,
         "jQuery": true,
         "swal": true,
-        "latinize": true,
+        "latinize": false,
         "componentHandler": true,
         "friendlyPix": true,
         "page": true,
