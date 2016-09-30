@@ -116,23 +116,46 @@ namespace friendlyPix {
 
 
         function updateHomeFeeds() {
-            // Gets current authorized user reference*
-            var following = FbOarService.followingArray;
-            // Returned a promise when the initial rate data array has been downloaded from the database
-            following.$loaded().then(() => {
-                // using following as the target data versus (data) is a $loaded convention see docs
-                // If no followers return
-                if (!following.length) {
+            // Gets current authorized user/following reference*
+            var followingRef = vm.database.ref(`/people/${vm.user.uid}/following`);
+
+            // return an empty promise
+            return followingRef.once('value', followingData => {
+                // Start listening to the followed users post to populate home feed
+                var following = followingData.val();
+                if (!following) {
                     return;
                 }
-                var updateOperations = following.map(followedUid => {
-                    console.log(followedUid, 'followedUid with following');
+                var updateOperations = Object.keys(following).map(followedUid => {
+                    // Get followed users posts set up
+                    var followedUserPostsRef = vm.database.ref(`/people/${followedUid}/posts`);
+                    // lastSyncedPostId is stored with the following/followedUsersUid  under the current user
+                    var lastSyncedPostId = following[followedUid];
+                    // Only add posts not previously synced - using startat
+                    if (lastSyncedPostId instanceof String) {
+                        followedUserPostsRef =  followedUserPostsRef.orderByKey().startAt(lastSyncedPostId);
+                    }
+                    // Listen for data(postSnap)
+                    return followedUserPostsRef.once('value', postData => {
+                        var updates = {};
+                        if (!postData.val()) {
+                            return;
+                        }
+                        // iterate through the posts  add 2 current users feed
+                        //  update last post id to for next update
+                        // store in the updates object
+                        Object.keys(postData.val()).forEach(postId => {
+                            if (postId !== lastSyncedPostId) {
+                                updates[`/feed/${vm.user.uid}/${postId}`] = true;
+                                updates[`/people/${vm.user.uid}/following/${followedUid}`] = postId;
+                            }
+                        });
+                        // update database with update object(filled with the information above)
+                        return vm.database.ref().update(updates);
+                    });
                 });
-            })
-                .catch((error) => {
-                    console.log('Error this is the: ', error);
-                });
-
+                return $q.all(updateOperations);
+            });
         }
 
 
