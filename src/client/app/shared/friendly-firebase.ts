@@ -116,18 +116,23 @@ namespace friendlyPix {
 
 
         function updateHomeFeeds() {
-            // function logic here
-            if (vm.user) {
+            // Gets current authorized user reference*
+            var following = FbOarService.followingArray;
+            // Returned a promise when the initial rate data array has been downloaded from the database
+            following.$loaded().then(() => {
+                // using following as the target data versus (data) is a $loaded convention see docs
+                // If no followers return
+                if (!following.length) {
+                    return;
+                }
+                var updateOperations = following.map(followedUid => {
+                    console.log(followedUid, 'followedUid with following');
+                });
+            })
+                .catch((error) => {
+                    console.log('Error this is the: ', error);
+                });
 
-                var following = FbOarService.followingArray;
-                following.$loaded().then((data) => {
-                    console.log(data === following);
-                    console.log(data);
-                })
-                    .catch((error) => {
-                        console.log('Error this is the: ', error);
-                    });
-            }
         }
 
 
@@ -158,7 +163,7 @@ namespace friendlyPix {
                             follow ? !!follow : null;
                         lastPostId = post.key;
                     });
-                    console.log(updateData, 'sport' );
+                    console.log(updateData, 'sport');
 
                     // Add followed user to the 'following' list.
                     updateData[`/people/${vm.user.uid}/following/${followedUserId}`] =

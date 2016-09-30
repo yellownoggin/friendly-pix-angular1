@@ -22,7 +22,7 @@ namespace friendlyPix {
             if (vm.user) {
                 // Make sure the home feed is updated with followed users new posts
                 // friendlyFire.updateHomeFeeds().then()
-
+                
 
 
             }

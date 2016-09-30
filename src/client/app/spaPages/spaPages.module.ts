@@ -66,7 +66,7 @@ namespace friendlyPix {
 
         console.log('Home Controller initialized')
         var vm = this;
-
+        
         // Controller methods
     }
 
@@ -76,7 +76,7 @@ namespace friendlyPix {
         vm.uid = $stateParams.uid;
         vm.onFollowChange = onFollowChange;
         vm.authedUser = $firebaseAuth().$getAuth();
-        
+
 
         vm.$onInit = () => {
             if (vm.authedUser) {
@@ -114,7 +114,7 @@ namespace friendlyPix {
         vm.uploadPic = uploadHelper.uploadPic;
 
     }
-    function PostController(uploadHelper, ) {
+    function PostController(uploadHelper ) {
         console.log('Post Controller Instantiated');
         var vm = this;
 
