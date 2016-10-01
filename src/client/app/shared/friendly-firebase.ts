@@ -18,14 +18,24 @@ namespace friendlyPix {
         vm.user = $firebaseAuth().$getAuth();
         vm.database = firebase.database();
         vm.storage = firebase.storage();
+        vm.deleteFromFeed = deleteFromFeed;
+        vm._getPaginatedFeed = vm._getPaginatedFeed;
+        vm.updateHomeFeeds = updateHomeFeeds;
+        vm.getPostData = getPostData;
+        vm.$q = $q;
 
+
+        // private values
+        var POSTS_PAGE_SIZE = 5,
+            USER_PAGE_POSTS_PAGE_SIZE = 6;
 
 
         return {
             saveUserData: saveUserData,
             uploadNewPic: uploadNewPic,
             updateHomeFeeds: updateHomeFeeds,
-            toggleFollowUser: toggleFollowUser
+            toggleFollowUser: toggleFollowUser,
+            getHomeFeedPosts: getHomeFeedPosts,
         };
 
 
@@ -133,7 +143,7 @@ namespace friendlyPix {
                     var lastSyncedPostId = following[followedUid];
                     // Only add posts not previously synced - using startat
                     if (lastSyncedPostId instanceof String) {
-                        followedUserPostsRef =  followedUserPostsRef.orderByKey().startAt(lastSyncedPostId);
+                        followedUserPostsRef = followedUserPostsRef.orderByKey().startAt(lastSyncedPostId);
                     }
                     // Listen for data(postSnap)
                     return followedUserPostsRef.once('value', postData => {
@@ -200,7 +210,85 @@ namespace friendlyPix {
 
         }
 
+        function getHomeFeedPosts() {
+            return _getPaginatedFeed(`/feed/${vm.user.uid}/`,
+                POSTS_PAGE_SIZE, null, true);
+        }
+
+
+
+        function _getPaginatedFeed(uri, pageSize, earliestEntryId = null, fetchPostDetails = false) {
+
+            let ref = vm.database.ref(uri);
+
+            // ??
+            if (earliestEntryId) {
+                ref = ref.orderByKey().endAt(earliestEntryId);
+            }
+
+            // Were fetching an additional item as a cheap way to test if there is a next page.
+            return ref.limitToLast(pageSize + 1).once('value').then(data => {
+                const entries = data.val() || {};
+
+                // Figure out if there is a next page.
+                let nextPage = null;
+                const entryIds = Object.keys(entries);
+                if (entryIds.length > pageSize) {
+                    delete entries[entryIds[0]];
+                    const nextPageStartingId = entryIds.shift();
+                    nextPage = () => vm._getPaginatedFeed(
+                        uri, pageSize, nextPageStartingId, fetchPostDetails
+                    );
+                }
+
+                if (fetchPostDetails) {
+                    // Fetch details of all posts
+                    // TODO:
+                    // firebase-fp.service.ts#L537
+                    const queries = entryIds.map(postId => vm.getPostData(postId));
+                    // Since all the requests are being done on the same feed it's unlikely that a single 1
+                    // would fail and not the others so using promise.all(q.all)  is not so risky
+                    return vm.$q.all(queries).then(results => {
+                        const deleteOps = [];
+                        results.forEach(result => {
+                            if (result.val()) {
+                                entries[result.key] = result.val();
+                            } else {
+                                //
+                                delete entries[result.key];
+                                // needs a method
+                                deleteOps.push(vm.deleteFromFeed(uri, result.key));
+                            }
+                        });
+                        if (deleteOps.length > 0) {
+                            // todo;
+                            return vm._getPaginatedFeed(uri, pageSize, earliestEntryId, fetchPostDetails);
+                        }
+                        return { entries: entries, nextPage: nextPage };
+                    });
+                }
+                return { entries: entries, nextPage: nextPage };
+            });
+        }
+
+        /**
+          * Deletes the given postId entry from the user's home feed.
+          */
+        function deleteFromFeed(uri, postId) {
+            return this.database.ref(`${uri}/${postId}`).remove();
+        }
+
+
+        /**
+        * Fetches a single post data.
+        */
+        function getPostData(postId) {
+            return this.database.ref(`/posts/${postId}`).once('value');
+        }
 
     } // factory
+
+
+
 
 }

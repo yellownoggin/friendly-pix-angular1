@@ -62,12 +62,28 @@ namespace friendlyPix {
             });
     }
 
-    function HomeController(FbOarService, feeds) {
+    function HomeController(FbOarService, feeds, $firebaseAuth) {
 
-        console.log('Home Controller initialized')
+        console.log('Home Controller initialized');
         var vm = this;
-        
-        // Controller methods
+
+
+        // Controller activation methods
+        getHomeFeed();
+
+        // Controller methods declarations
+
+        if ($firebaseAuth().$getAuth()) {
+            console.log($firebaseAuth().$getAuth().uid, 'current user');
+        }
+
+        // Get home feed posts
+
+        function getHomeFeed() {
+            feeds.showHomeFeed().then((data) => {
+                console.log(data);
+            });
+        }
     }
 
     function UserController($stateParams, friendlyFire, $firebaseAuth) {
