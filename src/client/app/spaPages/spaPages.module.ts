@@ -66,6 +66,9 @@ namespace friendlyPix {
 
         console.log('Home Controller initialized');
         var vm = this;
+        vm.pixData = {};
+        vm.showNoPostsMessageContainer = true;
+
 
 
         // Controller activation methods
@@ -80,10 +83,18 @@ namespace friendlyPix {
         // Get home feed posts
 
         function getHomeFeed() {
-            feeds.showHomeFeed().then((data) => {
-                console.log(data);
+            feeds.showHomeFeed().then((pixData) => {
+                if (pixData) {
+                    hideNoPostsContainer()
+                    vm.pixData = pixData;
+                }
             });
         }
+
+        function hideNoPostsContainer() {
+            vm.showNoPostsMessageContainer = false;
+        }
+
     }
 
     function UserController($stateParams, friendlyFire, $firebaseAuth) {

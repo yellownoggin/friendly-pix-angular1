@@ -31,6 +31,7 @@
         "app/shared/firebaseRef.service.ts",
         "app/shared/friendly-firebase.ts",
         "app/shared/shared.module.ts",
+        "app/shared/sharedDev.service.ts",
         "app/shared/uploadHelper.factory.ts",
         "app/shell/choose-file.directive.ts",
         "app/shell/shell.controller.ts",

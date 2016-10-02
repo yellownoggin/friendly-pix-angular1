@@ -37,8 +37,13 @@
 
 <section id="home-feed" ng-show="!hc.showLogin">
     <div class="site-width">
-        <div class="" md-whiteframe="1">
+        <div class="showNoPostsMessageContainer" md-whiteframe="1" ng-show="hc.showNoPostsMessageContainer">
             <span>You currently have no pix posts.</span>
+        </div>
+        <div class="" ng-repeat="p in hc.pixData track by $index">
+            <p>
+                {{p}}
+            </p>
         </div>
     </div>
 
