@@ -85,7 +85,7 @@ namespace friendlyPix {
         function getHomeFeed() {
             feeds.showHomeFeed().then((pixData) => {
                 if (pixData) {
-                    hideNoPostsContainer()
+                    hideNoPostsContainer();
                     vm.pixData = pixData;
                 }
             });
