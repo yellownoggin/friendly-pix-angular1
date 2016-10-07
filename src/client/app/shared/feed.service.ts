@@ -65,7 +65,7 @@ namespace friendlyPix {
                     });
 
                     // TODO:  Add new posts from followers live
-                    // friendlyPix.firebase.startHomeFeedLiveUpdaters(
+                    // friendlyPix.firebase.startHomeFeedLiveUpdaters();
                     // Listen for post deletions
                     //    friendlyPix.firebase.registerForPostsDeletion(postId => this.onPostDeleted(postId));
                 });
