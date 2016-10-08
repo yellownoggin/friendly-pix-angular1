@@ -5,18 +5,21 @@ namespace friendlyPix {
         .module('app.shared')
         .service('feeds', feedsService);
 
-    function feedsService($firebaseAuth, friendlyFire, $q) {
+    function feedsService($firebaseAuth, friendlyFire, $q, sharedDev) {
         var vm = this;
         this.user  = $firebaseAuth().$getAuth();
         vm.showHomeFeed = showHomeFeed;
-
+        vm.subscribeToHomeFeed = subscribeToHomeFeed;
+        // vm.newPosts = {};
+        // vm.addNewPost = addNewPost;
+        // vm.watchHomeFeedNewPosts = watchHomeFeedNewPosts;
 
 
         /**
         * Shows the feed showing all followed users.
         */
 
-        function showHomeFeed() {
+        function showHomeFeed(newPostsLiveUpdaterObj) {
             // Clear previously displayed posts if any
             // this.clear()
 
@@ -31,7 +34,16 @@ namespace friendlyPix {
                 //  demo: uses addPost(so does not need to return data)
 
                 return friendlyFire.updateHomeFeeds().then(() => {
-                    var deferred = $q.defer();
+                    var deferredPixData = $q.defer();
+
+                    // TODO: qq what is the angular way to update dom when listener is set
+
+                    // returning this with pixdata to set the subscribeToHomeFeed
+                    // in the controller scope
+                    // the demo uses a callback in this method that uses
+                    //  jquery which can add to the dom withing the feed service
+                    // angularway work around
+                    var deferredLatestPostId = $q.defer();
 
                     return friendlyFire.getHomeFeedPosts().then((data) => {
                         const postIds = Object.keys(data.entries);
@@ -60,8 +72,9 @@ namespace friendlyPix {
                         //  return deferred.promise so to be used in the controller
                         //  and ngrepeat
                         entries = data.entries;
-                        deferred.resolve(entries);
-                        return deferred.promise;
+                        deferredPixData.resolve(entries);
+                        deferredLatestPostId.resolve(latestPostId);
+                        return $q.all([deferredPixData.promise, deferredLatestPostId.promise]);
                     });
 
                     // TODO:  Add new posts from followers live
@@ -71,6 +84,33 @@ namespace friendlyPix {
                 });
 
             }
+        } // showHomeFeed
+
+
+        function subscribeToHomeFeed (newPostsVar, latestPostId) {
+            console.log('sto home feed was this called');
+             sharedDev.subscribeToHomeFeed(
+                 (postId, postValue) => {
+                     console.log(newPostsVar, 'newPostsVar');
+                     newPostsVar[postId] = postValue;
+                 }, latestPostId);
         }
+
+
+        // function addNewPost(postId, postValue) {
+        //     console.log('add new post called');
+        //     vm.newPosts[postId] = postValue;
+        //
+        // }
+
+        // function watchHomeFeedNewPosts(bindValue) {
+        //
+        //     $scope.$watch('vm.newPosts', (newValue, oldValue) => {
+        //         console.log('watch home feed new post called');
+        //         bindValue = newValue;
+        //     });
+        // }
+
+
     }
 }

@@ -117,9 +117,9 @@ namespace friendlyPix {
             console.log(pics, 'pics');
                 // Upload the file upload to firebase storage  & create new post
                 friendlyFire.uploadNewPic(pics.full, pics.thumb, vm.currentFile.name, imageCaption).then(postId => {
-                    // clear the current image & file 
+                    // clear the current image & file
                     vm.clearCurrentFileAndImage();
-                    $state.go('home.user');
+                    $state.go('home.feed');
                     console.log('New pic has been posted!', postId);
                     // this uses material design light snackbar
                     // TODO:

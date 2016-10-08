@@ -3,7 +3,7 @@
         "module": "system",
         "target": "es5",
         "noImplicitAny": false,
-        "sourceMap": false,
+        "sourceMap": true,
         "experimentalDecorators": true,
         "moduleResolution": "node",
         "outDir": "./app/compiledJs",

@@ -56,7 +56,7 @@ namespace friendlyPix {
                         controller: 'ShellController',
                         controllerAs: 'sc',
                         resolve: {
-                            "currentAuth": ['AuthService', (AuthService) => {
+                            'currentAuth': ['AuthService', (AuthService) => {
                                 console.log(AuthService.Auth().$waitForSignIn());
                                 return AuthService.Auth().$waitForSignIn();
                             }]
@@ -88,7 +88,7 @@ namespace friendlyPix {
             people: `${config.databaseURL}/people`,
             feedArray: `${config.databaseURL}/feed`,
             postsArray: `${config.databaseURL}/posts`
-        })
+        });
     }
 
 
