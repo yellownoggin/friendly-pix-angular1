@@ -30,9 +30,16 @@ namespace friendlyPix {
                         resolve: {
                             'currentAuth': ['$firebaseAuth', ($firebaseAuth) => {
                                 return $firebaseAuth().$waitForSignIn();
+                            }],
+                            '_pixData': ['feeds', (feeds) => {
+                                return feeds.showHomeFeed().then((results) => {
+                                    if (results) {
+                                        console.log('called from router resolve');
+                                        return results[0];
+                                    }
+                                });
                             }]
                         }
-
                     }
                 }
             })
@@ -68,7 +75,7 @@ namespace friendlyPix {
             });
     }
 
-    function HomeController(FbOarService, feeds, $firebaseAuth, $scope, currentAuth) {
+    function HomeController(FbOarService, feeds, $firebaseAuth, $scope, currentAuth, _pixData) {
         // TODO: Issues: initial controller loads promise fine
         // - but route change ( navigating away and back) does not
         // - need to get a definitive pattern for this
@@ -77,22 +84,22 @@ namespace friendlyPix {
 
         console.log('Home Controller initialized');
         var vm = this;
-        vm.pixData = {};
+        vm.pixData = _pixData;
         // vm.showNoPostsMessageContainer = undefined;
-        vm.newPosts = {fred: 'fred'};
+        vm.newPosts = { fred: 'fred' };
 
 
 
         // Controller activation methods
-        activate();
+        // activate();
 
-        function activate() {
-            if (currentAuth) {
-                console.log($firebaseAuth().$getAuth().uid, 'current user');
-                getHomeFeed();
-                watchNewPosts();
-            }
-        }
+        // function activate() {
+        //     if (currentAuth) {
+        //         console.log($firebaseAuth().$getAuth().uid, 'current user');
+        //         getHomeFeed();
+        //         watchNewPosts();
+        //     }
+        // }
 
         // this.$onInit = function () {
         // return getHomeFeed();
@@ -111,17 +118,17 @@ namespace friendlyPix {
 
         // Get home feed posts
 
-        function getHomeFeed() {
-            feeds.showHomeFeed().then((results) => {
-                console.log(results, 'results');
-                if (results) {
-                    hideNoPostsContainer();
-                    vm.pixData = results[0];
-                }
-                feeds.subscribeToHomeFeed(vm.newPosts, results[1]);
-
-            });
-        }
+        // function getHomeFeed() {
+        //     return feeds.showHomeFeed().then((results) => {
+        //         console.log(results, 'results');
+        //         if (results) {
+        //             hideNoPostsContainer();
+        //             return vm.pixData = results[0];
+        //         }
+        //         feeds.subscribeToHomeFeed(vm.newPosts, results[1]);
+        //
+        //     });
+        // }
 
         function hideNoPostsContainer() {
             console.log('hideNoPostsContainer called');

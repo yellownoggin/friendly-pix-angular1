@@ -30,7 +30,7 @@ namespace friendlyPix.app.shared {
 
         // get and store the location/query filtered & sorted by lastPostId
         // this is firebase.js method
-        _subscribeToFeed(uri, cb, latestEntryId = null, fetchPostDetails = false ) {
+        _subscribeToFeed(uri, cb, latestEntryId = null, fetchPostDetails = false) {
             console.log('shared development _sto home feed was this called');
             let feedRef = this.database.ref(uri);
             if (latestEntryId) {
@@ -57,30 +57,37 @@ namespace friendlyPix.app.shared {
 
 
 
-        /**
-         * Keep feed populated with latest followed posts live
-         */
-        // startHomeFeedLiveUpdaters() {
-        //     // Make sure we listen on each followed people's posts
-        //     const followingRef = this.database.ref(`/people/${this.user.uid}/following`);
-        //     this.firebaseRefs.push(followingRef);
-        //     followingRef.on('child_added', followingData => {
-        //         // Start listening through the fall post populate the home feed.
-        //         const followedUid = followingData.key;
-        //         let followedUserPostsRef = this.database.ref(`/people/${followedUid}/posts`);
-        //         if (followingData.val() instanceof String) {
-        //             followedUserPostsRef = followedUserPostsRef.orderByKey().startAt(followingData.val());
-        //         }
-        //         this.firebaseRefs.push(followedUserPostsRef);
-        //         followerdUserPostsRef.on(
-        //     })
-        // }
-        //
-        //
+        .controller('HomeController', HomeController)
 
-    } //  /class
 
-    angular
-        .module('app.shared')
-        .service('sharedDev', SharedDevService);
+
+
+
+
+    /**
+     * Keep feed populated with latest followed posts live
+     */
+    // startHomeFeedLiveUpdaters() {
+    //     // Make sure we listen on each followed people's posts
+    //     const followingRef = this.database.ref(`/people/${this.user.uid}/following`);
+    //     this.firebaseRefs.push(followingRef);
+    //     followingRef.on('child_added', followingData => {
+    //         // Start listening through the fall post populate the home feed.
+    //         const followedUid = followingData.key;
+    //         let followedUserPostsRef = this.database.ref(`/people/${followedUid}/posts`);
+    //         if (followingData.val() instanceof String) {
+    //             followedUserPostsRef = followedUserPostsRef.orderByKey().startAt(followingData.val());
+    //         }
+    //         this.firebaseRefs.push(followedUserPostsRef);
+    //         followerdUserPostsRef.on(
+    //     })
+    // }
+    //
+    //
+
+} //  /class
+
+angular
+    .module('app.shared')
+    .service('sharedDev', SharedDevService);
 }

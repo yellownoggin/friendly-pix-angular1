@@ -11,9 +11,13 @@
         <p>
         <span>newPosts</span>{{hc.newPosts}}
         </p>
+        <hr>
         <div class="" ng-repeat="p in hc.pixData track by $index">
             <p>
                 {{p}}
+            </p>
+            <p>
+                {{p.text}}
             </p>
         </div>
     </div>
