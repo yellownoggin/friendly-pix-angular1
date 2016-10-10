@@ -76,38 +76,20 @@ namespace friendlyPix {
     }
 
     function HomeController(FbOarService, feeds, $firebaseAuth, $scope, currentAuth, _pixData) {
-        // TODO: Issues: initial controller loads promise fine
-        // - but route change ( navigating away and back) does not
-        // - need to get a definitive pattern for this
-        // https://johnpapa.net/route-resolve-and-controller-
-        // activate-in-angularjs/
 
         console.log('Home Controller initialized');
         var vm = this;
-        vm.pixData = _pixData;
+        vm.pixData =  _pixData;
         // vm.showNoPostsMessageContainer = undefined;
         vm.newPosts = { fred: 'fred' };
 
 
 
         // Controller activation methods
-        // activate();
+        activate();
 
-        // function activate() {
-        //     if (currentAuth) {
-        //         console.log($firebaseAuth().$getAuth().uid, 'current user');
-        //         getHomeFeed();
-        //         watchNewPosts();
-        //     }
-        // }
-
-        // this.$onInit = function () {
-        // return getHomeFeed();
-        // $scope.$watch('vm.newPosts', (n, o) => {
-        //     console.log(vm.newPosts, 'vm.newPosts');
-        //     console.log(Object.keys(vm.newPosts).length, 'vm.newPosts length');
-        // });
-        // };
+        function activate() {
+        }
 
 
         // Controller methods declarations
@@ -116,19 +98,6 @@ namespace friendlyPix {
             console.log($firebaseAuth().$getAuth().uid, 'current user');
         }
 
-        // Get home feed posts
-
-        // function getHomeFeed() {
-        //     return feeds.showHomeFeed().then((results) => {
-        //         console.log(results, 'results');
-        //         if (results) {
-        //             hideNoPostsContainer();
-        //             return vm.pixData = results[0];
-        //         }
-        //         feeds.subscribeToHomeFeed(vm.newPosts, results[1]);
-        //
-        //     });
-        // }
 
         function hideNoPostsContainer() {
             console.log('hideNoPostsContainer called');

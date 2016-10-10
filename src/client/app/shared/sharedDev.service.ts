@@ -57,7 +57,7 @@ namespace friendlyPix.app.shared {
 
 
 
-        .controller('HomeController', HomeController)
+
 
 
 
