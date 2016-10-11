@@ -24,6 +24,8 @@ namespace friendlyPix {
             // this.clear()
 
             var entries = undefined;  // (1) promise return convention or pattern
+            var deferredPixData = $q.defer();
+            var deferredLatestPostId = $q.defer();
             // this needs to be verified or cleaned up) seems to be out in space
             if (vm.user) {
                 // Make sure the home feed is updated with followed users new posts
@@ -34,7 +36,7 @@ namespace friendlyPix {
                 //  demo: uses addPost(so does not need to return data)
 
                 return friendlyFire.updateHomeFeeds().then(() => {
-                    var deferredPixData = $q.defer();
+
 
                     // TODO: qq what is the angular way to update dom when listener is set
 
@@ -43,9 +45,8 @@ namespace friendlyPix {
                     // the demo uses a callback in this method that uses
                     //  jquery which can add to the dom withing the feed service
                     // angularway work around
-                    var deferredLatestPostId = $q.defer();
 
-                    return friendlyFire.getHomeFeedPosts().then((data) => {
+                     friendlyFire.getHomeFeedPosts().then((data) => {
                         const postIds = Object.keys(data.entries);
                         if (postIds.length === 0) {
                             // the fade in will be in the html with angular.
@@ -57,7 +58,9 @@ namespace friendlyPix {
                         }
                         // Listen to New Posts
                         // TODO:  NEXT METHOD TO DO don't know if this is a jquery thingy
+
                         const latestPostId = postIds[postIds.length - 1];
+                        console.log(latestPostId, 'latestPostId');
                         // TODO:  NEXT METHOD TO DO
                         //  friendlyFire.subscribeToHomeFeed(
                         //      (postId, postValue) => {
@@ -74,11 +77,12 @@ namespace friendlyPix {
                         entries = data.entries;
                         deferredPixData.resolve(entries);
                         deferredLatestPostId.resolve(latestPostId);
-                        return $q.all([deferredPixData.promise, deferredLatestPostId.promise]);
+
                     });
 
                     // TODO:  Add new posts from followers live
-                    // friendlyPix.firebase.startHomeFeedLiveUpdaters();
+                    sharedDev.startHomeFeedLiveUpdaters();
+                    return $q.all([deferredPixData.promise, deferredLatestPostId.promise]);
                     // Listen for post deletions
                     //    friendlyPix.firebase.registerForPostsDeletion(postId => this.onPostDeleted(postId));
                 });

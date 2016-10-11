@@ -31,11 +31,14 @@ namespace friendlyPix {
                             'currentAuth': ['$firebaseAuth', ($firebaseAuth) => {
                                 return $firebaseAuth().$waitForSignIn();
                             }],
-                            '_pixData': ['feeds', (feeds) => {
+                            '_pixData': ['feeds', (feeds, sharedDev) => {
                                 return feeds.showHomeFeed().then((results) => {
                                     if (results) {
                                         console.log('called from router resolve');
-                                        return results[0];
+
+                                        return results;
+                                    } else {
+                                        console.log('Error showHomeFeed');
                                     }
                                 });
                             }]
@@ -75,13 +78,22 @@ namespace friendlyPix {
             });
     }
 
-    function HomeController(FbOarService, feeds, $firebaseAuth, $scope, currentAuth, _pixData) {
+    function HomeController(FbOarService, feeds, $firebaseAuth, $scope, currentAuth, _pixData, sharedDev) {
 
         console.log('Home Controller initialized');
         var vm = this;
-        vm.pixData =  _pixData;
+        vm.pixData =  _pixData[0];
+        vm.latestEntryId =  _pixData[1];
+        vm.newPosts = [];
+        sharedDev.subscribeToHomeFeed(vm.latestEntryId).then((postData) => {
+            console.log(postData.key, 'post key');
+            console.log(postData.val(), 'post value');
+            var a = postData.key;
+            var b = postData.val();
+            vm.newPosts.push({'a':a, 'b': b});
+        });
         // vm.showNoPostsMessageContainer = undefined;
-        vm.newPosts = { fred: 'fred' };
+
 
 
 
