@@ -21,7 +21,8 @@ namespace friendlyPix {
         .config(initRouter)
         .config(initTheme)
         .config(initfirebaseRef)
-        .constant('latinize', latinize)
+        .constant('latinize', window.latinize)
+        .constant('_', window._);
         // .run(initDatabase);
         // .constant('firebaseUi', firebaseui.auth.AuthUI)
         // .constant('firebaseMe', firebase)

@@ -34,7 +34,7 @@ namespace friendlyPix {
                         console.log('before read picture in directive');
                         uploadHelper.readPicture(e);
                         input.value = null;
-                        $state.go('home.addPicture');
+                        
                     // });
                 });
 

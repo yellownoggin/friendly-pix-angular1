@@ -11,22 +11,23 @@ namespace friendlyPix {
         .module('app.shared')
         .factory('uploadHelper', uploadHelper);
 
-    function uploadHelper(friendlyFire, $q, $state) {
+    function uploadHelper(friendlyFire, $q, $state, _) {
         var vm = this;
         // TODO:  declare current file figure out if it's an object/string
         // UPDATE: it's an object(think of declaring for reveal type pattern )
         var THUMB_IMAGE_SPECS = {
             maxDimension: 640,
             quality: 0.7
-        }
+        };
 
         var FULL_IMAGE_SPECS = {
             maxDimension: 1280,
             quality: 0.9
-        }
+        };
 
         vm.generateImages = generateImages;
         vm.clearCurrentFileAndImage = clearCurrentFileAndImage;
+        vm.shortUrl = '';
 
         return {
             getImageUrl: getImageUrl,
@@ -39,6 +40,21 @@ namespace friendlyPix {
         };
 
 
+        // Debugging method
+        // TODO:  save this as a method for debugging(tools)
+        // take out of code
+        function storeShortUrl(blob) {
+            var blobArray = _.split(blob, '');
+            var e = blobArray.length;
+            var s = blobArray.length - 20;
+            var sd = _.slice(blobArray, s, e);
+            var shortUrl = _.join(sd, '');
+            //    console.log(shortUrl, 'shortUrl inside');
+            vm.shortUrl = shortUrl;
+        }
+
+
+
         // Factory methods
 
         // Following 4 methods help store file & imgurl when choosing file
@@ -49,12 +65,20 @@ namespace friendlyPix {
          *  TODO: notes possibly don't need vm maybe just a private variable
          * @returns {string}
          */
+
+
         function getImageUrl() {
+
+            // console.log(vm.shortUrl, 'get imageUrl called');
             return vm.imageUrl;
         }
         function setImageUrl(url) {
+            var deferred = $q.defer();
             vm.imageUrl = url;
-
+            storeShortUrl(url);
+            // console.log(vm.shortUrl, 'set imageUrl called');
+            deferred.resolve('set image resolved');
+            return deferred.promise;
         }
 
         function getCurrenFile() {
@@ -65,10 +89,10 @@ namespace friendlyPix {
             vm.currentFile = file;
         }
 
-         function clearCurrentFileAndImage() {
-             vm.currentFile = null;
-             vm.imageUrl = null;
-         }
+        function clearCurrentFileAndImage() {
+            vm.currentFile = null;
+            vm.imageUrl = null;
+        }
 
 
         // TODO: this is abstracted in the upload service in the demo
@@ -77,7 +101,7 @@ namespace friendlyPix {
 
             // TODO: code needed clear stuff
             // https://github.com/firebase/friendlypix/blob/master/web/scripts/uploader.js#L24
-            console.log(e.target.files, 'e.target.files' );
+            console.log(e.target.files, 'e.target.files');
             var file = e.target.files[0];
 
             vm.currentFile = file;
@@ -92,10 +116,15 @@ namespace friendlyPix {
             // Only process image files
             if (file.type.match('image.*')) {
                 var reader = new FileReader();
-                //Send (store) image url so can be used by app-pic view/feature (previews & user adds comments then uploads)
+                //Send (store) image url so can be used by app-pic
+                // view/feature (previews & user adds comments then uploads)
                 reader.onload = e => {
 
-                    setImageUrl(e.target.result);
+                    setImageUrl(e.target.result).then(r => {
+                        console.log(r, 'r');
+                        $state.go('home.addPicture');
+                    });
+
                 }
                 // Read in the image file is the data url
                 reader.readAsDataURL(file);
@@ -105,7 +134,7 @@ namespace friendlyPix {
 
 
         function uploadPic(e, imageCaption) {
-         console.log('uploadPic called');
+            console.log('uploadPic called');
             e.preventDefault();
             // TODO: disable upload button method
             // disable upload button
@@ -114,7 +143,7 @@ namespace friendlyPix {
             var imageCaption = imageCaption;
 
             vm.generateImages().then(pics => {
-            console.log(pics, 'pics');
+                console.log(pics, 'pics');
                 // Upload the file upload to firebase storage  & create new post
                 friendlyFire.uploadNewPic(pics.full, pics.thumb, vm.currentFile.name, imageCaption).then(postId => {
                     // clear the current image & file
