@@ -49,7 +49,7 @@ namespace friendlyPix.app.shared {
 
                     // Get the postDetails using the feedData.key
                     this.database.ref(`/posts/${feedData.key}`).once('value').then((r) => {
-                        console.log(r, 'r inside subscribe to homefeed');
+                        // console.log(r, 'r inside subscribe to homefeed');
                         deferred.resolve(r);
                     });
                 }
@@ -88,7 +88,7 @@ namespace friendlyPix.app.shared {
                 }
                 this.firebaseRefs.push(followedUserPostsRef);
                 followedUserPostsRef.on('child_added', postData => {
-                    console.log(postData.key , 'post child added from following user');
+                    // console.log(postData.key , 'post child added from following user');
                     if (postData.key !== followingData.val()) {
                     const updates = {};
                     updates[`/feed/${this.user.uid}/${postData.key}`] = true;

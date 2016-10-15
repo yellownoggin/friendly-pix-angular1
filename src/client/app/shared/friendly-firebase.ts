@@ -179,8 +179,8 @@ namespace friendlyPix {
             // add or removed posts from users homepage
             // TODO: How do you inject firebase rough with followed uid
             // Can establish it in the controller
-            console.log(vm.user.uid, 'vm.user.uid inside toggle follow');
-            console.log(followedUserId, 'followedUserId');
+            // console.log(vm.user.uid, 'vm.user.uid inside toggle follow');
+            // console.log(followedUserId, 'followedUserId');
             return vm.database.ref(`/people/${followedUserId}/posts`).once('value')
                 .then(
                 data => {
@@ -196,7 +196,7 @@ namespace friendlyPix {
                             follow ? !!follow : null;
                         lastPostId = post.key;
                     });
-                    console.log(updateData, 'sport');
+                    // console.log(updateData, 'sport');
 
                     // Add followed user to the 'following' list.
                     updateData[`/people/${vm.user.uid}/following/${followedUserId}`] =

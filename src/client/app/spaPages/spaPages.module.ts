@@ -4,7 +4,6 @@ namespace friendlyPix {
     angular
         .module('app.spaPages', ['ui.router', 'firebase'])
         .config(initRouter)
-        .controller('HomeController', HomeController)
         .controller('UserController', UserController)
         .controller('AddPicController', AddPicController);
 
@@ -20,32 +19,6 @@ namespace friendlyPix {
     // @ngInject
     function initRouter($stateProvider) {
         $stateProvider
-            .state('home.feed', {
-                url: '',
-                views: {
-                    content: {
-                        templateUrl: 'app/spaPages/home.html',
-                        controller: 'HomeController',
-                        controllerAs: 'hc',
-                        resolve: {
-                            'currentAuth': ['$firebaseAuth', ($firebaseAuth) => {
-                                return $firebaseAuth().$waitForSignIn();
-                            }],
-                            '_pixData': ['feeds', (feeds, sharedDev) => {
-                                return feeds.showHomeFeed().then((results) => {
-                                    if (results) {
-                                        console.log('called from router resolve');
-
-                                        return results;
-                                    } else {
-                                        console.log('Error showHomeFeed');
-                                    }
-                                });
-                            }]
-                        }
-                    }
-                }
-            })
             .state('home.user', {
                 url: 'user/:uid',
                 views: {
@@ -78,52 +51,7 @@ namespace friendlyPix {
             });
     }
 
-    function HomeController(FbOarService, feeds, $firebaseAuth, $scope, currentAuth, _pixData, sharedDev) {
 
-        console.log('Home Controller initialized');
-        var vm = this;
-        vm.pixData =  _pixData[0];
-        vm.latestEntryId =  _pixData[1];
-        vm.newPosts = [];
-        sharedDev.subscribeToHomeFeed(vm.latestEntryId).then((postData) => {
-            console.log(postData.key, 'post key');
-            console.log(postData.val(), 'post value');
-            var a = postData.key;
-            var b = postData.val();
-            vm.newPosts.push({'a':a, 'b': b});
-        });
-        // vm.showNoPostsMessageContainer = undefined;
-
-
-
-
-        // Controller activation methods
-        activate();
-
-        function activate() {
-        }
-
-
-        // Controller methods declarations
-
-        if ($firebaseAuth().$getAuth()) {
-            console.log($firebaseAuth().$getAuth().uid, 'current user');
-        }
-
-
-        function hideNoPostsContainer() {
-            console.log('hideNoPostsContainer called');
-            vm.showNoPostsMessageContainer = false;
-        }
-
-        function watchNewPosts() {
-            $scope.$watch('vm.newPosts', (n, o) => {
-                console.log(vm.newPosts, 'vm.newPosts');
-                console.log(Object.keys(vm.newPosts).length, 'vm.newPosts length');
-            });
-        }
-
-    }
 
     function UserController($stateParams, friendlyFire, $firebaseAuth) {
         console.log('User Controller Instantiated');

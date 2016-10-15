@@ -12,8 +12,7 @@ namespace friendlyPix {
         vm.subscribeToHomeFeed = subscribeToHomeFeed;
         // vm.newPosts = {};
         // vm.addNewPost = addNewPost;
-        // vm.watchHomeFeedNewPosts = watchHomeFeedNewPosts;
-
+        // vm.watchHomeFeedNewPosts = watchHomeFeedNewPosts;like
 
         /**
         * Shows the feed showing all followed users.
@@ -95,7 +94,7 @@ namespace friendlyPix {
             console.log('sto home feed was this called');
              sharedDev.subscribeToHomeFeed(
                  (postId, postValue) => {
-                     console.log(newPostsVar, 'newPostsVar');
+                    //  console.log(newPostsVar, 'newPostsVar');
                      newPostsVar[postId] = postValue;
                  }, latestPostId);
         }
