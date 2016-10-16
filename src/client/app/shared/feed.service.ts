@@ -6,10 +6,10 @@ namespace friendlyPix {
         .service('feeds', feedsService);
 
     function feedsService($firebaseAuth, friendlyFire, $q, sharedDev) {
-        var vm = this;
+        var _self = this;
         this.user  = $firebaseAuth().$getAuth();
-        vm.showHomeFeed = showHomeFeed;
-        vm.subscribeToHomeFeed = subscribeToHomeFeed;
+        _self.getHomeFeed = getHomeFeed;
+        _self.subscribeToHomeFeed = subscribeToHomeFeed;
         // vm.newPosts = {};
         // vm.addNewPost = addNewPost;
         // vm.watchHomeFeedNewPosts = watchHomeFeedNewPosts;like
@@ -18,7 +18,7 @@ namespace friendlyPix {
         * Shows the feed showing all followed users.
         */
 
-        function showHomeFeed(newPostsLiveUpdaterObj) {
+        function getHomeFeed(newPostsLiveUpdaterObj) {
             // Clear previously displayed posts if any
             // this.clear()
 
@@ -29,6 +29,7 @@ namespace friendlyPix {
             if (vm.user) {
                 // Make sure the home feed is updated with followed users new posts
                 // friendlyFire.updateHomeFeeds().then()
+
 
 
                 // angular note: returns added 4 promise

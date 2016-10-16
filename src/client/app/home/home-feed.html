@@ -1,0 +1,26 @@
+<!-- home feed(feet of the user & people user is following) -->
+
+<section id="home-feed" ng-show="!hc.showLogin">
+    <div class="site-width">
+        <div class="showNoPostsMessageContainer" md-whiteframe="1" ng-show="hc.showNoPostsMessageContainer">
+            <span>You currently have no pix posts.</span>
+            <p>
+                {{hc.showNoPostsMessageContainer}}
+            </p>
+        </div>
+        <p>
+        <span>newPosts</span>{{hc.newPostDataLength}}
+        </p>
+        <hr>
+        <div class="" ng-repeat="p in hc.pixData track by $index">
+            <p>
+                {{p}}
+            </p>
+            <p>
+                {{p.text}}
+            </p>
+        </div>
+    </div>
+
+</section>
+<!-- /home feed -->
