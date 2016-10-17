@@ -44,7 +44,7 @@ namespace friendlyPix {
      */
     // @ngInject
     function initRouter($locationProvider, $urlRouterProvider, $stateProvider) {
-
+console.log('router init');
         $urlRouterProvider.otherwise('/');
         // TODO: $location provider
         $stateProvider

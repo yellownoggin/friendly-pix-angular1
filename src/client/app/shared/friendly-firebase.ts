@@ -19,7 +19,7 @@ namespace friendlyPix {
         vm.database = firebase.database();
         vm.storage = firebase.storage();
         vm.deleteFromFeed = deleteFromFeed;
-        vm._getPaginatedFeed = vm._getPaginatedFeed;
+        vm._getPaginatedFeed = _getPaginatedFeed;
         vm.updateHomeFeeds = updateHomeFeeds;
         vm.getPostData = getPostData;
         vm.$q = $q;
@@ -218,7 +218,7 @@ namespace friendlyPix {
 
 
         function _getPaginatedFeed(uri, pageSize, earliestEntryId = null, fetchPostDetails = false) {
-
+            console.log('_getPaginatedFeed is called');
             let ref = vm.database.ref(uri);
 
             // ??
@@ -252,10 +252,11 @@ namespace friendlyPix {
                         const deleteOps = [];
                         results.forEach(result => {
                             if (result.val()) {
+                                console.log(result.key, 'result.key');
                                 entries[result.key] = result.val();
                             } else {
                                 //
-                                delete entries[result.key];
+                                delete entries[result.key]; // TODO: why is this here?
                                 // needs a method
                                 deleteOps.push(vm.deleteFromFeed(uri, result.key));
                             }

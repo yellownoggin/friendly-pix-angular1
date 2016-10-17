@@ -5,12 +5,14 @@ namespace friendlyPix {
         .module('app.spaPages')
         .controller('HomeController', HomeController);
 
-    function HomeController(FbOarService, feeds, $firebaseAuth, currentAuth,
-         _pixData, sharedDev, firebase) {
+    function HomeController(currentAuth, feeds, $firebaseAuth, firebase, _pixData, $scope) {
 
         console.log('Home Controller initialized');
 
         var vm = this;
+        vm.next = next;
+
+        // vm.showNoPostsMessage = true;
 
         // Data binding from router resolve
         // vm.pixData = _pixData[0];
@@ -37,6 +39,11 @@ namespace friendlyPix {
 
         function init() {
             showHomeFeed();
+            $scope.$watch('vm.pixData', (n, o) => {
+                console.log(n, 'n');
+                console.log(o, 'o');
+            });
+            // console.log('home controller');
         }
 
 
@@ -44,10 +51,53 @@ namespace friendlyPix {
         // TODO: notes
         function showHomeFeed() {
             // Clear existing posts TODO: is that all?
-            vm.pixData = _pixData[0];
+
+            if (Object.keys(_pixData[0]).length > 0) {
+
+                var entries = Object.keys(_pixData[0]);
+
+                var pixDataArray = [];
+                pixDataArray = convertToArray(_pixData[0]);
+
+                vm.showNoPostsMessage = false;
+                vm.pixData = pixDataArray;
+                vm.nextPage = _pixData[1];
+                console.log(vm.nextPage, 'vm.nextPage');
+                vm.lastSyncedPostId = _pixData[2];
+            } else {
+                vm.showNoPostsMessage = true;
+            }
+
         }
 
 
+    function next() {
+        // TODO:
+        // https://material.angularjs.org/latest/demo/virtualRepeat
+        // also for ref:
+        // https://github.com/firebase/friendlypix/blob/master/web/scripts/feed.js#L91
+        vm.nextPage().then((data) => {
+            console.log(data.entries);
+            var arr = convertToArray(data.entries);
+            $scope.$apply(() => {
+                // update the nextPage to call with proper nextPageStartingId
+                vm.nextPage = data.nextPage;
+                vm.pixData = vm.pixData.concat(arr);
+                console.log(vm.pixData, 'pixdata after next');
+            });
+
+        });
+    }
+
+
+function convertToArray(obj) {
+    var entries = Object.keys(obj);
+    var arr = [];
+    for (let i = 0; i < entries.length; i++) {
+        arr.push(obj[entries[i]]);
+    }
+    return arr;
+}
 
 
 

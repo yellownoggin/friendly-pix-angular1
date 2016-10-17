@@ -6,16 +6,16 @@ namespace friendlyPix {
         .controller('ShellController', ShellController);
 
     function ShellController(currentAuth, AuthService, friendlyFire, $timeout) {
-        console.log('Shell Controller World!');
+        console.log('ShellController World!');
 
         var vm = this;
         vm.showSplash = true;
         vm.signInWithGoogle = signInWithGoogle;
-        vm.showLogin = true;
+        // vm.showLogin = true;
         vm.hideSplash = hideSplash;
-        vm.signOut = signOut;
+        // vm.signOut = signOut;
         // console.log(currentAuth.uid, 'uid');
-        vm.currentAuth = currentAuth
+        vm.currentAuth = currentAuth;
 
 
         showHideSplash(currentAuth);

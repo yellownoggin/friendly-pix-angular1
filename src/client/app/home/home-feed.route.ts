@@ -14,6 +14,7 @@ namespace friendlyPix {
                 views: {
                     content: {
                         templateUrl: 'app/home/home-feed.html',
+                        // template: 'app/home/home-feed.html',
                         controller: 'HomeController',
                         controllerAs: 'hc',
                         resolve: {
@@ -21,10 +22,9 @@ namespace friendlyPix {
                                 return $firebaseAuth().$waitForSignIn();
                             }],
                             '_pixData': ['feeds', (feeds, sharedDev) => {
-                                return feeds.showHomeFeed().then((results) => {
+                                return feeds.getHomeFeed().then((results) => {
                                     if (results) {
-                                        console.log('called from router resolve');
-
+                                        console.log(results, 'called from router resolve');
                                         return results;
                                     } else {
                                         console.log('Error showHomeFeed');
