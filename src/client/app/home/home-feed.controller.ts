@@ -5,12 +5,15 @@ namespace friendlyPix {
         .module('app.spaPages')
         .controller('HomeController', HomeController);
 
-    function HomeController(currentAuth, feeds, $firebaseAuth, firebase, _pixData, $scope) {
+    function HomeController(currentAuth, feeds, $firebaseAuth, firebase, _pixData, $scope, $q, sharedDev) {
 
         console.log('Home Controller initialized');
 
         var vm = this;
+        vm.$q = $q;
         vm.next = next;
+        vm.currentAuth = currentAuth;
+        vm.updateNewPosts = updateNewPosts;
 
         // vm.showNoPostsMessage = true;
 
@@ -53,17 +56,30 @@ namespace friendlyPix {
             // Clear existing posts TODO: is that all?
 
             if (Object.keys(_pixData[0]).length > 0) {
-
-                var entries = Object.keys(_pixData[0]);
-
-                var pixDataArray = [];
-                pixDataArray = convertToArray(_pixData[0]);
-
                 vm.showNoPostsMessage = false;
+                var pixDataArray = [];
+                vm.pixDataArray1 = [];
+
+                // Converting to an array in order to concat with next page data
+                pixDataArray = convertToArrayAndReverse(_pixData[0]);
                 vm.pixData = pixDataArray;
                 vm.nextPage = _pixData[1];
+                vm.newData = {};
                 console.log(vm.nextPage, 'vm.nextPage');
                 vm.lastSyncedPostId = _pixData[2];
+
+                subscribeToHomeFeed(vm.lastSyncedPostId, (postData) => {
+                    vm.newData = postData.val();
+                    $scope.$apply(() => {
+                        // update the nextPage to call with proper nextPageStartingId
+                        vm.pixDataArray1.unshift(vm.newData);
+                        console.log(vm.pixDataArray1, 'vm.pixDataArray1');
+                    });
+
+                });
+
+                sharedDev.startHomeFeedLiveUpdaters();
+
             } else {
                 vm.showNoPostsMessage = true;
             }
@@ -71,34 +87,44 @@ namespace friendlyPix {
         }
 
 
-    function next() {
-        // TODO:
-        // https://material.angularjs.org/latest/demo/virtualRepeat
-        // also for ref:
-        // https://github.com/firebase/friendlypix/blob/master/web/scripts/feed.js#L91
-        vm.nextPage().then((data) => {
-            console.log(data.entries);
-            var arr = convertToArray(data.entries);
-            $scope.$apply(() => {
-                // update the nextPage to call with proper nextPageStartingId
-                vm.nextPage = data.nextPage;
-                vm.pixData = vm.pixData.concat(arr);
-                console.log(vm.pixData, 'pixdata after next');
+        function next() {
+            // TODO:
+            // https://material.angularjs.org/latest/demo/virtualRepeat
+            // also for ref:
+            // https://github.com/firebase/friendlypix/blob/master/web/scripts/feed.js#L91
+            vm.nextPage().then((data) => {
+                console.log(data.entries);
+                var arr = convertToArray(data.entries);
+                $scope.$apply(() => {
+                    // update the nextPage to call with proper nextPageStartingId
+                    vm.nextPage = data.nextPage;
+                    vm.pixData = vm.pixData.concat(arr);
+                    console.log(vm.pixData, 'pixdata after next');
+                });
+
             });
-
-        });
-    }
+        }
 
 
-function convertToArray(obj) {
-    var entries = Object.keys(obj);
-    var arr = [];
-    for (let i = 0; i < entries.length; i++) {
-        arr.push(obj[entries[i]]);
-    }
-    return arr;
-}
+        function convertToArray(obj) {
+            var entries = Object.keys(obj);
+            var arr = [];
+            for (let i = 0; i < entries.length; i++) {
+                arr.push(obj[entries[i]]);
+            }
+            return arr;
+        }
 
+
+        function convertToArrayAndReverse(obj) {
+            var entries = Object.keys(obj);
+            var arr = [];
+            for (let i = 0; i < entries.length; i++) {
+                arr.push(obj[entries[i]]);
+            }
+            arr.reverse();
+            return arr;
+        }
 
 
 
@@ -107,21 +133,21 @@ function convertToArray(obj) {
         // watchNewPosts();
 
         // scope.$watchCollection('np', function(newValue, oldValue) {
-                // console.log(scope.newPosts, 'watch scope.newPosts');
-                // console.log('watch called');
-                // console.log(newValue, 'n');
-                // console.log(oldValue, 'o');
+        // console.log(scope.newPosts, 'watch scope.newPosts');
+        // console.log('watch called');
+        // console.log(newValue, 'n');
+        // console.log(oldValue, 'o');
         //         vm.newPostDataLength = newValue.length;
         // });
 
         // subscribeToHomeFeed(vm.latestEntryId, (postId, postVal) => {
-            // console.log(postVal, 'post value');
-            // var a = postId;
-            // var b = postVal;
-            // scope.np.push(a);
+        // console.log(postVal, 'post value');
+        // var a = postId;
+        // var b = postVal;
+        // scope.np.push(a);
 
 
-            // console.log(scope.np, 'scope.np');
+        // console.log(scope.np, 'scope.np');
 
         // });
 
@@ -155,8 +181,13 @@ function convertToArray(obj) {
             vm.showNoPostsMessageContainer = false;
         }
 
-        function watchNewPosts() {
-
+        function updateNewPosts() {
+            console.log(vm.pixData, 'vm.pixData in updateNewPosts');
+            vm.pixData = vm.pixDataArray1.concat(vm.pixData);
+            vm.pixDataArray1 = [];
+            // $scope.$apply(() => {
+            //     vm.pixData = vm.pixDataArray1.concat(vm.pixData);
+            // });
         }
 
 
@@ -166,19 +197,21 @@ function convertToArray(obj) {
         // this is firebase.js method
         function subscribeToHomeFeed(latestEntryId, cb) {
             console.log('shared development sto home feed was this called');
-            return _subscribeToFeed(`/feed/${vm.currentAuth.uid}`, cb, latestEntryId, true);
+            return _subscribeToFeed(`/feed/${vm.currentAuth.uid}`, latestEntryId, true, cb);
         }
 
 
 
         // get and store the location/query filtered & sorted by lastPostId
         // this is firebase.js method
-        function _subscribeToFeed(uri, cb, latestEntryId = null, fetchPostDetails = false) {
+        function _subscribeToFeed(uri, latestEntryId = null, fetchPostDetails = false, cb) {
             console.log('shared development _sto home feed was this called');
+            // var deferred = vm.$q.defer();
             let feedRef = vm.database.ref(uri);
             if (latestEntryId) {
                 feedRef = feedRef.orderByKey().startAt(latestEntryId);
             }
+            // vm.firebaseRefs.push(feedRef);
 
             feedRef.on('child_added', feedData => {
                 // weed out the latestEntryId
@@ -191,13 +224,14 @@ function convertToArray(obj) {
 
                     // Get the postDetails using the feedData.key
                     vm.database.ref(`/posts/${feedData.key}`).once('value').then((postData) => {
-                        // console.log(postData, 'r inside subscribe to homefeed');
-                        cb(postData.key, postData.val());
+                        console.log(postData.key, 'r inside subscribe to homefeed');
+
+                        cb(postData);
                     });
                 }
             });
 
-            vm.firebaseRefs.push(feedRef);
+
         }
 
     }
