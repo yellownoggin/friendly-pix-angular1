@@ -13,7 +13,7 @@ namespace friendlyPix {
         // vm.newPosts = {};
         // vm.addNewPost = addNewPost;
         // vm.watchHomeFeedNewPosts = watchHomeFeedNewPosts;like
-
+        console.log(_self.user, 'current user');
         /**
         * Shows the feed showing all followed users.
         */
@@ -58,6 +58,10 @@ namespace friendlyPix {
                     //    friendlyPix.firebase.registerForPostsDeletion(postId => this.onPostDeleted(postId));
                 });
 
+            } else {
+                const deferred = $q.defer();
+                deferred.resolve('remote call to result');
+                return deferred.promise;
             }
         } // showHomeFeed
 
@@ -74,7 +78,7 @@ namespace friendlyPix {
 
         // function toggleNextPageButton(nextPage) {
         //     // unbind listenr nextPageButton click event
-        // 
+        //
         //     if (nextPage) {
         //         const loadMorePosts = () => {
         //

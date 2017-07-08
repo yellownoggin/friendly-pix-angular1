@@ -22,14 +22,21 @@ namespace friendlyPix {
                                 return $firebaseAuth().$waitForSignIn();
                             }],
                             '_pixData': ['feeds', (feeds, sharedDev) => {
-                                return feeds.getHomeFeed().then((results) => {
-                                    if (results) {
-                                        console.log(results, 'called from router resolve');
-                                        return results;
-                                    } else {
-                                        console.log('Error showHomeFeed');
-                                    }
-                                });
+                                // TODO: this holds up the app on initialization.
+                                // without the try catch
+                                try  {
+                                    return feeds.getHomeFeed().then((results) => {
+                                        if (results) {
+                                            console.log(results, 'called from router resolve');
+                                            return results;
+                                        } else {
+                                            console.log('Error showHomeFeed');
+                                        }
+                                    });
+                                } catch (e) {
+                                    console.error(e, 'error');
+                                }
+
                             }]
                         }
                     }

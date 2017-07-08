@@ -2,6 +2,7 @@ namespace friendlyPix {
     'use strict';
 
 
+
     // Initialize Firebase outside of the angular app* per the firebase angular youtube conventions
 
     var config = {
@@ -58,7 +59,6 @@ console.log('router init');
                         controllerAs: 'sc',
                         resolve: {
                             'currentAuth': ['AuthService', (AuthService) => {
-                                console.log(AuthService.Auth().$waitForSignIn());
                                 return AuthService.Auth().$waitForSignIn();
                             }]
                         }
@@ -66,6 +66,7 @@ console.log('router init');
                 }
             });
     }
+
 
     /**
      * initTheme - sets up theme using angular material provider

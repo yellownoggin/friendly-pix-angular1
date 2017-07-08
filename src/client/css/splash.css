@@ -22,10 +22,12 @@
     -ms-backface-visibility: hidden;
     -o-backface-visibility: hidden;
     backface-visibility: hidden;
-    -webkit-transition: opacity 0.3s linear;
-    -moz-transition: opacity 0.3s linear;
-    -o-transition: opacity 0.3s linear;
-    transition: opacity 0.3s linear;
+    -webkit-transition: opacity 2s linear;
+    -moz-transition: opacity 2s linear;
+    -o-transition: opacity 2s linear;
+    transition: opacity 2s linear;
+
+
 }
 
 .splash-section {
@@ -35,10 +37,10 @@
 .dissolve-animation.ng-hide-remove, .dissolve-animation.ng-hide-add {
     position: fixed !important;
     display: inline !important;
-    -webkit-transition: 0.5s linear all;
-    -moz-transition: 0.5s linear all;
-    -o-transition: 0.5s linear all;
-    transition: 0.5s linear all;
+    -webkit-transition: .5s linear all;
+    -moz-transition: .5s linear all;
+    -o-transition: .5s linear all;
+    transition: .5s linear all;
 }
 .dissolve-animation.ng-hide-remove.ng-hide-remove-active, .dissolve-animation.ng-hide-add {
     opacity: 1;

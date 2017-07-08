@@ -1,7 +1,7 @@
 {
-  "name": "friendly-pix angular1",
+  "name": "friendly-pix-angular1",
   "description": "friendly-pix firebase demo converting to angular1",
-  "main": "",
+  "main": "helel",
   "license": "MIT",
   "ignore": [
     "**/.*",

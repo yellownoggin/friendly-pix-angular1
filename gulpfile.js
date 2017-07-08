@@ -169,6 +169,20 @@ gulp.task('clean-code', function () {
   del(deleteConfig).then(log('Done'));
 });
 
+/**
+ * deletes compiledJS when in the dev folders
+ * @return {[type]} [description]
+ */
+gulp.task('deletejs', function () {
+        var deleteConfig = [].concat(
+            '!./src/client/app/compiledJS/*.js',
+            './src/client/app/*.js',
+            './src/client/app/**/*.js',
+            './src/client/app/**/*.js.map'
+        );
+        log('cleaning out all of the js files from dev folders');
+        del(deleteConfig).then(log('Done'));
+});
 
 gulp.task('clean-images', function () {
   var files = [].concat(
