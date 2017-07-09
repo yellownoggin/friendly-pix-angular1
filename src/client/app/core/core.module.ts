@@ -10,7 +10,9 @@ namespace  friendlyPix {
             'firebase',
             'app.spaPages',
             'app.shell',
-            'app.shared'
+            'app.shared',
+            'app.addPicture',
+            'app.user'
         ]);
 
 }

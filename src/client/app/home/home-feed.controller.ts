@@ -5,7 +5,8 @@ namespace friendlyPix {
         .module('app.spaPages')
         .controller('HomeController', HomeController);
 
-    function HomeController(currentAuth, feeds, $firebaseAuth, firebase, _pixData, $scope, $q, sharedDev) {
+    function HomeController(currentAuth, feeds, $firebaseAuth,
+        firebase, _pixData, $scope, $q, sharedDev) {
 
         console.log('Home Controller initialized');
 
@@ -14,18 +15,17 @@ namespace friendlyPix {
         vm.next = next;
         vm.currentAuth = currentAuth;
         vm.updateNewPosts = updateNewPosts;
-
+        vm.database = firebase.database();
         // vm.showNoPostsMessage = true;
 
         // Data binding from router resolve
-        // vm.pixData = _pixData[0];
-        // vm.latestEntryId = _pixData[1];
-
+        vm.pixData = _pixData[0];
+        vm.latestEntryId = _pixData[1];
+        console.log(vm.pixData , 'vm.pixData');
+        console.log(vm.latestEntryId , 'vm.latestEntryId');
 
         vm.firebaseRefs = [];
 
-        // firebase sdk
-        vm.database = firebase.database();
 
 
         // var scope = $scope;

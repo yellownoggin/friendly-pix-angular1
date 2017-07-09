@@ -60,7 +60,7 @@ namespace friendlyPix {
 
             } else {
                 const deferred = $q.defer();
-                deferred.resolve('remote call to result');
+                deferred.resolve('No user is signed in');
                 return deferred.promise;
             }
         } // showHomeFeed
