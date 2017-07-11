@@ -27,22 +27,30 @@
 
             </div>
 
-            <!-- <div class="">
-                <span>{{key}}</span>::::<span>{{value}}</span>
-            </div> -->
+            <div class="">
+                <!-- <span>{{key}}</span>::::<span>{{value}}</span> -->
+            </div>
             <div>
                      <!-- <div>{{g}}</div> -->
                      <div>{{key}}</div>
-                     <div class="">
+                     <!-- <div class="">
                         <span>comments: </span> {{value.comments.text}}
-                     </div>
+                     </div> -->
                      <div>{{value.timestamp | date : 'medium'}}</div>
                      <div>{{value.author.uid}}</div>
-                     <!-- <div>{{value.timestamp | date : 'medium'}}</div> -->
+                     <div>{{value.timestamp | date : 'medium'}}</div>
                      <div class="">
                         <span>{{value.author.full_name}}</span>: <span>{{value.text}}</span>
                      </div>
                      <!-- https://docs.angularjs.org/api/ng/directive/ngSubmit -->
+
+
+                     <div class="comments-section">
+                         <div class="comment" ng-repeat="c in value.comments track by $index">
+                             <span>{{c.author.full_name}}</span>: 
+                             <span>{{c.text}}</span>
+                         </div>
+                     </div>
                      <form class="" ng-submit="gc.submitComment(key, gc.picComment )">
                          <input type="text" ng-model="gc.picComment[key]" name="picComment" placeholder="Comment...">
                          <input type="submit" id="submit" value="Submit">

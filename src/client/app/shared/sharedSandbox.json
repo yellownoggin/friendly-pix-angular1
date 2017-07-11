@@ -1,0 +1,51 @@
+{
+	"author": {
+		"full_name": "Jamie Hennelly",
+		"profile_picture": "https://lh5.googleusercontent.com/-uRMMQGTtbWU/AAAAAAAAAAI/AAAAAAAABfE/JM94SOwyiu4/photo.jpg",
+		"uid": "6m1TUlYQFDUVMq4UtGxBYA1TwF32"
+	},
+	"full_storage_uri": "gs://friendlypix-angular1.appspot.com/6m1TUlYQFDUVMq4UtGxBYA1TwF32/full/1499576727946/stulbcropped.jpeg",
+	"full_url": "https://firebasestorage.googleapis.com/v0/b/friendlypix-angular1.appspot.com/o/6m1TUlYQFDUVMq4UtGxBYA1TwF32%2Ffull%2F1499576727946%2Fstulbcropped.jpeg?alt=media&token=0d7859f0-2649-4917-bcc0-fd26b2e08d49",
+	"text": "testing",
+	"thumb_storage_uri": "gs://friendlypix-angular1.appspot.com/6m1TUlYQFDUVMq4UtGxBYA1TwF32/thumb/1499576727946/stulbcropped.jpeg",
+	"thumb_url": "https://firebasestorage.googleapis.com/v0/b/friendlypix-angular1.appspot.com/o/6m1TUlYQFDUVMq4UtGxBYA1TwF32%2Fthumb%2F1499576727946%2Fstulbcropped.jpeg?alt=media&token=3760006e-2b80-4c27-b111-2666d623a849",
+	"timestamp": 1499576728694,
+	"comments": {
+		"-Koj8LSUpXBWMNrGqfQc": {
+			"author": {
+				"full_name": "Jamie Hennelly",
+				"profile_picture": "https://lh5.googleusercontent.com/-uRMMQGTtbWU/AAAAAAAAAAI/AAAAAAAABfE/JM94SOwyiu4/photo.jpg",
+				"uid": "6m1TUlYQFDUVMq4UtGxBYA1TwF32"
+			},
+			"text": "1 comment",
+			"timestamp": 1499734566772
+		},
+		"-KonlDNZCHWryCXbbH7t": {
+			"author": {
+				"full_name": "Jamie Hennelly",
+				"profile_picture": "https://lh5.googleusercontent.com/-uRMMQGTtbWU/AAAAAAAAAAI/AAAAAAAABfE/JM94SOwyiu4/photo.jpg",
+				"uid": "6m1TUlYQFDUVMq4UtGxBYA1TwF32"
+			},
+			"text": "test 2",
+			"timestamp": 1499812128309
+		},
+		"-KonlLoaG9fBdavV8A-E": {
+			"author": {
+				"full_name": "Jamie Hennelly",
+				"profile_picture": "https://lh5.googleusercontent.com/-uRMMQGTtbWU/AAAAAAAAAAI/AAAAAAAABfE/JM94SOwyiu4/photo.jpg",
+				"uid": "6m1TUlYQFDUVMq4UtGxBYA1TwF32"
+			},
+			"text": "one c",
+			"timestamp": 1499812162868
+		},
+		"-KonlPVsphfMTQViXSW_": {
+			"author": {
+				"full_name": "Jamie Hennelly",
+				"profile_picture": "https://lh5.googleusercontent.com/-uRMMQGTtbWU/AAAAAAAAAAI/AAAAAAAABfE/JM94SOwyiu4/photo.jpg",
+				"uid": "6m1TUlYQFDUVMq4UtGxBYA1TwF32"
+			},
+			"text": "c 3",
+			"timestamp": 1499812177992
+		}
+	}
+}
