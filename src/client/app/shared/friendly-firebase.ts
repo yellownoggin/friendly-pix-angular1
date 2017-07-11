@@ -10,7 +10,8 @@ namespace friendlyPix {
 
 
     // @ngInject
-    function friendlyFirebaseFactory(latinize, $firebaseAuth, firebase, $q, FbOarService) {
+    function friendlyFirebaseFactory(latinize, $firebaseAuth, firebase,
+        $q, FbOarService, $firebaseArray, $firebaseObject) {
 
         // setup
         var vm = this;
@@ -18,6 +19,8 @@ namespace friendlyPix {
         vm.user = $firebaseAuth().$getAuth();
         vm.database = firebase.database();
         vm.storage = firebase.storage();
+        vm.firebaseArray = $firebaseArray;
+        vm.getPosts = getPosts;
         vm.deleteFromFeed = deleteFromFeed;
         vm._getPaginatedFeed = _getPaginatedFeed;
         vm.updateHomeFeeds = updateHomeFeeds;
@@ -25,8 +28,10 @@ namespace friendlyPix {
         vm.$q = $q;
 
 
-        // private values
-        var POSTS_PAGE_SIZE = 5,
+
+
+        // private values*?  think that is wrong to think it should be private
+        var POSTS_PAGE_SIZE = 10,
             USER_PAGE_POSTS_PAGE_SIZE = 6;
 
 
@@ -36,11 +41,39 @@ namespace friendlyPix {
             updateHomeFeeds: updateHomeFeeds,
             toggleFollowUser: toggleFollowUser,
             getHomeFeedPosts: getHomeFeedPosts,
+            getProfileFeed: getProfileFeed,
+            getPosts: getPosts,
+            getComments: getComments
         };
 
 
 
-        // Factor methods
+        // Factory methods
+
+        ////////// STAGING
+
+        // TODO: comment size parameter needs a static value
+        function getComments(postId) {
+            return vm._getPaginatedFeed(`/comments/${postId}`, 5, null, false);
+        }
+
+        function getProfileFeed() {
+
+            return vm._getPaginatedFeed(`people/${vm.user.uid}/posts`, 100, null, true);
+
+
+        }
+
+        function getPosts() {
+            return vm._getPaginatedFeed('/posts/', 100);
+        }
+
+        // function getGeneralFeed(parameter) {
+        //     throw new Error("Not implemented yet");
+        // }
+
+        ////////// END OF STAGING
+
 
         /**
          * saveUserData

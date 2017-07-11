@@ -9,7 +9,7 @@ namespace friendlyPix {
      * initRouter - configure routes for spa pages
       * Show home.feed state on '/' (nested state)
       * Solution came from faq's ui-router:
-      * https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-set-up-a-defaultindex-child-state
+      *  https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-set-up-a-defaultindex-child-state
       */
 
       // TODO: clean up home.post route

@@ -1,3 +1,62 @@
-<p>
-    {{gc.something}}
-</p>
+<!-- ng-show="!gc.showLogin" -->
+<section id="home-feed" class="site-width">
+    <div class="fp-content">
+        <!-- ng-show="gc.showNoPostsMessage" -->
+        <div class="showNoPostsMessageContainer" md-whiteframe="1">
+            <span>You currently have no pix posts.</span>
+            <p>
+                <!-- {{gc.showNoPostsMessageContainer}} -->
+            </p>
+        </div>
+        <div>
+
+            <!-- TODO:  fix this or mimix the friendlyPix -->
+            <!-- <md-button class="md-raised" ng-click="gc.updateNewPosts()">New Post:  {{gc.pixDataArray1.length}}</md-button> -->
+
+
+        </div>
+
+        <hr>
+        <div class="">
+            <!-- {{ gc.generalDataDescending|| json}} -->
+        </div>
+
+        <div class="" ng-repeat="(key, value) in gc.generalDataDescending track by $index">
+
+             <div class="" ng-style="{'background-image': 'url({{value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
+
+            </div>
+
+            <!-- <div class="">
+                <span>{{key}}</span>::::<span>{{value}}</span>
+            </div> -->
+            <div>
+                     <!-- <div>{{g}}</div> -->
+                     <div>{{key}}</div>
+                     <div class="">
+                        <span>comments: </span> {{value.comments.text}}
+                     </div>
+                     <div>{{value.timestamp | date : 'medium'}}</div>
+                     <div>{{value.author.uid}}</div>
+                     <!-- <div>{{value.timestamp | date : 'medium'}}</div> -->
+                     <div class="">
+                        <span>{{value.author.full_name}}</span>: <span>{{value.text}}</span>
+                     </div>
+                     <!-- https://docs.angularjs.org/api/ng/directive/ngSubmit -->
+                     <form class="" ng-submit="gc.submitComment(key, gc.picComment )">
+                         <input type="text" ng-model="gc.picComment[key]" name="picComment" placeholder="Comment...">
+                         <input type="submit" id="submit" value="Submit">
+                     </form>
+            </div>
+
+            <hr>
+        </div>
+
+        <div class="">
+            <!-- <md-button class="md-raised" ng-click="gc.next()">content</md-button> -->
+        </div>
+
+    </div>
+
+</section>
+<!-- /home feed -->

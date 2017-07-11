@@ -1,0 +1,35 @@
+<!-- TODO: Old user html in test.html -->
+
+<section id="user-app-meta" class="site-width">
+    <!-- TODO: should this be a md-card? and have a surround div-->
+    <div class="fp-user-container md-whiteframe-1dp" layout="row">
+
+        <div class="fp-user-avatar" ng-style="{'background-image': 'url({{uc.profilePicture}})'}">
+        </div>
+        <div class="fp-name-follow-container" layout="column">
+
+            <div class="fp-user-username">{{uc.displayName}}</div>
+
+
+        </div>
+
+
+
+    </div>
+    <div layout="row" layout-wrap="">
+        <!-- <div class="">
+            {{uc._userFeedData | json}}
+        </div> -->
+
+        <!-- TODO:  flex 50 not working to what I expect
+        flex-gt-xs="50"
+        Also: the pics are coming out oldest to newest... 1. reverse it from controller or service - but real solution is the code from - app firebase.js
+        -->
+
+        <div class="fp-user-feed" ng-style="{'background-image': 'url({{d.full_url}})'}" ng-repeat="d in uc._userFeedData" layout-margin layout-wrap flex="100" flex-gt-sm="30">
+            <div >
+
+            </div>
+        </div>
+    </div>
+</section>

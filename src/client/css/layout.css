@@ -13,7 +13,7 @@ body {
 }
 
 .site-width {
-    max-width: 1240px;
+    max-width: 1024px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
@@ -29,4 +29,10 @@ body {
     display: block;
     width: 100%;
     /*border: solid 1px #333 development alignment border*/
+}
+
+/* desktop min 840px */
+.fp-content {
+    width: calc(66.6666666667% - 16px);
+    margin: 0 auto;
 }

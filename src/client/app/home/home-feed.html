@@ -1,6 +1,6 @@
 <!-- home feed(feet of the user & people user is following) -->
-<section id="home-feed" ng-show="!hc.showLogin">
-    <div class="site-width">
+<section id="home-feed" class="site-width" ng-show="!hc.showLogin">
+    <div class="fp-content">
         <div class="showNoPostsMessageContainer" md-whiteframe="1" ng-show="hc.showNoPostsMessage">
             <span>You currently have no pix posts.</span>
             <p>
@@ -9,20 +9,22 @@
         </div>
         <div>
 
-            <md-button class="md-raised" ng-click="hc.updateNewPosts()">New Post:  {{hc.pixDataArray1.length}}</md-button>
+            <!-- TODO:  fix this or mimix the friendlyPix -->
+            <md-button class="md-raised" ng-click="hc.updateNewPosts()">New Post:  {{hc.pixData.length}}</md-button>
 
 
         </div>
 
         <hr>
         <div class="" ng-repeat="p in hc.pixData track by $index">
-            <div>
 
-                    {{p.text}}
-
+            <div class="" ng-style="{'background-image': 'url({{p.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
 
             </div>
-            <div class="" ng-style="{'background-image': 'url({{p.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
+            <div>
+
+                    <span>{{p.author.full_name}}</span>: <span>{{p.text}}</span>
+
 
             </div>
 

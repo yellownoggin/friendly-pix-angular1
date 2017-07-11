@@ -14,8 +14,11 @@ namespace friendlyPix {
         // vm.addNewPost = addNewPost;
         // vm.watchHomeFeedNewPosts = watchHomeFeedNewPosts;like
         console.log(_self.user, 'current user');
+
+
+
         /**
-        * Shows the feed showing all followed users.
+        * Shows the user's feed and all followed users posts.
         */
 
         function getHomeFeed(newPostsLiveUpdaterObj) {

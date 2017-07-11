@@ -3,20 +3,29 @@ namespace friendlyPix {
 
     angular
         .module('app.user')
-        .controller(UserController);
+        .controller('UserController', UserController);
 
-    function UserController($stateParams, friendlyFire, $firebaseAuth) {
+    function UserController($stateParams, friendlyFire, $firebaseAuth, currentUser, _userFeedData) {
         console.log('User Controller Instantiated');
         var vm = this;
+
         vm.uid = $stateParams.uid;
         vm.onFollowChange = onFollowChange;
         vm.authedUser = $firebaseAuth().$getAuth();
+
+        // TODO: nm refers to object for new code controller needs re-factor
+        // (currentUser info may come from resolve versus state parameters)
 
 
         vm.$onInit = () => {
             if (vm.authedUser) {
                 vm.authedUserId = vm.authedUser.uid;
             }
+            const nm = this;
+            nm.displayName = currentUser.displayName;
+            nm.profilePicture = currentUser.photoURL;
+            console.log(_userFeedData, 'message');
+            nm._userFeedData = _userFeedData;
         };
         // Controller methods
 
