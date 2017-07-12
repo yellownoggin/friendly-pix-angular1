@@ -11,7 +11,7 @@ namespace friendlyPix {
 
     // @ngInject
     function friendlyFirebaseFactory(latinize, $firebaseAuth, firebase,
-        $q, FbOarService, $firebaseArray, $firebaseObject) {
+        $q, FbOarService, $firebaseArray, $firebaseObject, $rootScope) {
 
         // setup
         var vm = this;
@@ -26,6 +26,10 @@ namespace friendlyPix {
         vm.updateHomeFeeds = updateHomeFeeds;
         vm.getPostData = getPostData;
         vm.$q = $q;
+        vm.rootScope = $rootScope;
+
+        // Firebase references that are listend to
+        vm.firebaseRefs = [];
 
 
 
@@ -43,7 +47,11 @@ namespace friendlyPix {
             getHomeFeedPosts: getHomeFeedPosts,
             getProfileFeed: getProfileFeed,
             getPosts: getPosts,
-            getComments: getComments
+            getComments: getComments,
+            subscribeToComments: subscribeToComments,
+            getPostDataNew: getPostDataNew,
+            getPostsNew: getPostsNew,
+            getCommentsNew: getCommentsNew
         };
 
 
@@ -51,6 +59,92 @@ namespace friendlyPix {
         // Factory methods
 
         ////////// STAGING
+
+
+        function _getPaginatedFeedNew(uri, pageSize, earliestEntryId = null, fetchPostDetails = false) {
+            // console.log('_getPaginatedFeed is called');
+            let ref = vm.database.ref(uri);
+
+            // ??
+            // if (earliestEntryId) {
+            //     ref = ref.orderByKey().endAt(earliestEntryId);
+            // }
+
+
+
+            // Were fetching an additional item as a cheap way to test if there is a next page.
+
+            let ps = ref.limitToLast(pageSize + 1);
+            return $firebaseArray(ps).$loaded().then(data => {
+
+                // console.log('data in new paginate feed', data);
+                return data;
+
+                // const entries = data.val() || {};
+
+                // Figure out if there is a next page.
+                // let nextPage = null;
+                // const entryIds = Object.keys(entries);
+                // if (entryIds.length > pageSize) {
+                //     delete entries[entryIds[0]];
+                //     const nextPageStartingId = entryIds.shift();
+                //     nextPage = () => vm._getPaginatedFeed(
+                //         uri, pageSize, nextPageStartingId, fetchPostDetails
+                //     );
+                // }
+
+                // if (fetchPostDetails) {
+                //     // Fetch details of all posts
+                //     // TODO:
+                //     // firebase-fp.service.ts#L537
+                //     const queries = entryIds.map(postId => vm.getPostDataNew(postId));
+                //     // Since all the requests are being done on the same feed it's unlikely that a single 1
+                //     // would fail and not the others so using promise.all(q.all)  is not so risky
+                //     return vm.$q.all(queries).then(results => {
+                //         console.log('postData with $firebaseObject', results);
+                //
+                //         const deleteOps = [];
+                //         results.forEach(result => {
+                //             if (result.val()) {
+                //                 console.log(result.key, 'result.key');
+                //                 entries[result.key] = result.val();
+                //             } else {
+                //                 //
+                //                 delete entries[result.key]; // TODO: why is this here?
+                //                 // needs a method
+                //                 deleteOps.push(vm.deleteFromFeed(uri, result.key));
+                //             }
+                //         });
+                //         if (deleteOps.length > 0) {
+                //             // todo;
+                //             return vm._getPaginatedFeed(uri, pageSize, earliestEntryId, fetchPostDetails);
+                //         }
+                //         return { entries: entries, nextPage: nextPage };
+                    });
+                // }
+                // return { entries: entries, nextPage: nextPage };
+
+        }
+
+
+
+        function getPostDataNew(postId) {
+            let ref = this.database.ref(`/posts/${postId}`);
+            return $firebaseArray(ref);
+        }
+
+        function getPostsNew() {
+            return _getPaginatedFeedNew('/posts/', 5);
+        }
+
+        function getCommentsNew(postId) {
+            return _getPaginatedFeedNew(`/comments/${postId}`, 5, null, false);
+        }
+
+
+///////////////////// new stuff end
+
+
 
         // TODO: comment size parameter needs a static value
         function getComments(postId) {
@@ -66,6 +160,31 @@ namespace friendlyPix {
 
         function getPosts() {
             return vm._getPaginatedFeed('/posts/', 100);
+        }
+
+        function subscribeToComments(postId, latestCommentId) {
+            _subscribeToFeed(`/comments/${postId}`, latestCommentId, false);
+        }
+
+        function _subscribeToFeed(uri, latestEntryId = null, fetchPostDetails = false) {
+            // load all posts information.
+            let feedRef = vm.database.ref(uri);
+            if (latestEntryId) {
+                feedRef = feedRef.orderByKey().startAt(latestEntryId);
+            }
+            feedRef.on('child_added', (feedData) => {
+                console.log('feedData.key', feedData.key);
+                console.log('feedData.val()', feedData.val());
+
+                if (feedData.key !== latestEntryId) {
+                    // TODO: add the else for the post(not comment) subscriptions
+                    if (!fetchPostDetails) {
+                        // vm.rootScope.$apply();
+                    }
+                }
+
+            });
+            vm.firebaseRefs.push(feedRef);
         }
 
         // function getGeneralFeed(parameter) {
@@ -316,8 +435,10 @@ namespace friendlyPix {
         /**
         * Fetches a single post data.
         */
+
+
         function getPostData(postId) {
-            return this.database.ref(`/posts/${postId}`).once('value');
+            let ref = this.database.ref(`/posts/${postId}`).once('value');
         }
 
     } // factory

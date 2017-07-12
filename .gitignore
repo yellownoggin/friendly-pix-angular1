@@ -9,5 +9,9 @@ other
 report
 src/client/typings
 src/client/app/compiledJS
+src/client/app/test
+src/client/app/general/general-feed-comments.html
+src/client/app/shared/sharedSandbox.json
+src/client/app/shared/sharedSandbox.ts
 test
 development-old

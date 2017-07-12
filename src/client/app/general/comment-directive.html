@@ -1,0 +1,23 @@
+<div class="" ng-repeat="b in a">
+<!-- {{b | json}} -->
+<div class="">
+    <span>{{b.author.full_name}}: </span>
+    <span>{{b.text}}</span>
+</div>
+<div><span>date added: </span>{{b.timestamp | date : 'medium'}}</div>
+<!-- <div class="">
+    <span>comment id: </span><span>{{b.$id}}</span>
+</div> -->
+
+</div>
+<div class="comments-section-submit">
+<span><b>this is the postId</b></span> <span>{{postId}}</span>
+<form class="" ng-submit="submitComment(postId, picComment)">
+    <input type="text" ng-model="picComment" name="picComment" placeholder="Comment...">
+    <input type="submit" id="submit" value="Submit">
+</form>
+
+</div>
+<!-- <div class="">
+{{b}}
+</div> -->

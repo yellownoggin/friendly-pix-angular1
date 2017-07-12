@@ -21,7 +21,7 @@
             <!-- {{ gc.generalDataDescending|| json}} -->
         </div>
 
-        <div class="" ng-repeat="(key, value) in gc.generalDataDescending track by $index">
+        <div class="" ng-repeat="g in gc.generalDataDescending track by $index">
 
              <div class="" ng-style="{'background-image': 'url({{value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
 
@@ -31,30 +31,21 @@
                 <!-- <span>{{key}}</span>::::<span>{{value}}</span> -->
             </div>
             <div>
-                     <!-- <div>{{g}}</div> -->
-                     <div>{{key}}</div>
+                     <div>{{g.$id}}</div>
+                     <!-- <div>{{key}}</div> -->
                      <!-- <div class="">
                         <span>comments: </span> {{value.comments.text}}
                      </div> -->
-                     <div>{{value.timestamp | date : 'medium'}}</div>
+                     <!-- <div>{{value.timestamp | date : 'medium'}}</div>
                      <div>{{value.author.uid}}</div>
                      <div>{{value.timestamp | date : 'medium'}}</div>
                      <div class="">
                         <span>{{value.author.full_name}}</span>: <span>{{value.text}}</span>
                      </div>
-                     <!-- https://docs.angularjs.org/api/ng/directive/ngSubmit -->
+                     https://docs.angularjs.org/api/ng/directive/ngSubmit -->
 
+                     <comment-directive name="g.$id"></comment-directive>
 
-                     <div class="comments-section">
-                         <div class="comment" ng-repeat="c in value.comments track by $index">
-                             <span>{{c.author.full_name}}</span>: 
-                             <span>{{c.text}}</span>
-                         </div>
-                     </div>
-                     <form class="" ng-submit="gc.submitComment(key, gc.picComment )">
-                         <input type="text" ng-model="gc.picComment[key]" name="picComment" placeholder="Comment...">
-                         <input type="submit" id="submit" value="Submit">
-                     </form>
             </div>
 
             <hr>

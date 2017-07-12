@@ -18,52 +18,37 @@ namespace friendlyPix {
                             generalDataDescending: (friendlyFire, $q) => {
 
                                 // TODO: should this go in the method as property ie. data.reversedEntries
-                                return friendlyFire.getPosts().then((data) => {
+                                return friendlyFire.getPostsNew().then((data) => {
+                                    // console.log('data in the r', data);
+                                    return data;
                                     // Reverse data entries so descending by date
-                                    var fillPostData = {};
-                                    var reversedPostData = {};
+                                    // var fillPostData = {};
+                                    // var reversedPostData = {};
                                     // var commentData = {};
-                                    let p = Object.keys(data.entries);
+                                    // let p = Object.keys(data.entries);
                                     // Used for the comments set up
                                     // const pReversed = p.reverse();
 
-                                    for (let i = p.length - 1; i >= 0; i--) {
-
-                                        // TODO: abstraction and docs
-                                        reversedPostData[p[i]] = data.entries[p[i]];
-                                        var promises = [];
-                                        var defer = $q.defer();
-
-                                     ((j) => {
-                                        var commentData = friendlyFire.getComments(j).then((c) => {
-                                                    reversedPostData[j]['comments'] = c.entries;
-                                                });
-                                        promises.push(commentData);
-
-                                     })(p[i]);
-
-                                     $q.all(promises).then(() => {
-                                         defer.resolve(reversedPostData);
-                                     });
-
-                                    }
-                                    return defer.promise;
+                                    // for (let i = p.length - 1; i >= 0; i--) {
+                                    //
+                                    //     // TODO: abstraction and docs
+                                    //     reversedPostData[p[i]] = data.entries[p[i]];
+                                    //
+                                    // }
+                                    // return reversedPostData;
                                 });
-                                //
-                                // .then((data) => {
-                                //     var reversedPostData
-                                //     // var commentData = {};
-                                //     let p = Object.keys(data.entries);
-                                //     // Used for the comments set up
-                                //     // const pReversed = p.reverse();
-                                //
-                                //     for (let i =  0; i <  0; 1) {
-                                //
-                                //  })
-                            }
+                        },
+                        rComments: (friendlyFire) => {
+
+                            return friendlyFire.getCommentsNew().then((data) => {
+                                // console.log('comment data in the r', data);
+                                return data;
+                            });
                         }
+
                     }
                 }
+            }
             });
     }
 }

@@ -6,7 +6,7 @@ namespace friendlyPix {
         .module('app.spaPages')
         .controller('GeneralController', GeneralController);
 
-    function GeneralController(firebase, $q, generalDataDescending, AuthService) {
+    function GeneralController(firebase, $q, generalDataDescending, AuthService, rComments, $firebaseArray) {
         console.log('General Controller instantiated.');
         var POSTS_PAGE_SIZE = 5;
         var vm = this;
@@ -16,6 +16,7 @@ namespace friendlyPix {
         vm.currentUser = AuthService.Auth().$getAuth();
         // vm.generalDataEntries = generalData.entries;
         vm.generalDataDescending = generalDataDescending;
+        vm.rComments = rComments;
 
 
 
@@ -23,14 +24,16 @@ namespace friendlyPix {
         // vm.picComment = '';
         // vm.commentsList = [];
 
-        vm.submitComment = (postId, commentObject) => {
+        vm.submitComment = (postId, commentVal) => {
+            console.log('key', postId);
+            console.log('key', postId);
             if (!vm.picComment || vm.picComment.length === 0) {
                 return;
             }
-            const commentText = commentObject[postId];
-            console.log(commentText, 'commentText');
+            const commentText = commentVal;
+            // console.log(commentText, 'commentText');
             addComment(postId, commentText);
-            vm.picComment = {};
+            vm.picComment = '';
 
             function addComment(postId, commentText) {
                 console.log(postId, 'Message');
@@ -44,11 +47,46 @@ namespace friendlyPix {
                         profile_picture: vm.currentUser.photoURL
                     }
                 };
-                return vm.database.ref(`comments/${postId}`).push(commentObj);
+
+                // console.log('commentObj', commentObj);
+                let ref = vm.database.ref(`comments/${postId}`);
+                let list = $firebaseArray(ref);
+                list.$add(commentObj).then(function(ref) {
+                    var id = ref.key;
+                    console.log('added record with id ' + id);
+                    list.$indexFor(id); // returns location in the array
+                });
+
 
             }
 
         };
+        // vm.submitComment = (postId, commentObject) => {
+        //     if (!vm.picComment || vm.picComment.length === 0) {
+        //         return;
+        //     }
+        //     const commentText = commentObject[postId];
+        //     console.log(commentText, 'commentText');
+        //     addComment(postId, commentText);
+        //     vm.picComment = {};
+        //
+        //     function addComment(postId, commentText) {
+        //         console.log(postId, 'Message');
+        //         console.log(commentText, 'commentText');
+        //         const commentObj = {
+        //             text: commentText,
+        //             timestamp: Date.now(),
+        //             author: {
+        //                 uid: vm.currentUser.uid,
+        //                 full_name: vm.currentUser.displayName,
+        //                 profile_picture: vm.currentUser.photoURL
+        //             }
+        //         };
+        //         return vm.database.ref(`comments/${postId}`).push(commentObj);
+        //
+        //     }
+        //
+        // };
 
         // vm.commentsList.push(vm.picComment);
         // vm.picComment = '';
