@@ -15,26 +15,21 @@
 
 
         </div>
-
         <hr>
-        <!-- <div class="">
-            {{ gc.generalDataDescending|| json}}
-        </div> -->
 
         <div class="" ng-repeat="g in gc.generalDataDescending | reverse">
 
-             <div class="" ng-style="{'background-image': 'url({{g.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
+            <div class="" ng-style="{'background-image': 'url({{g.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
 
             </div>
             <div>
-                     <div>{{g.$id}}</div>
-                     <div>{{g.timestamp | date : 'medium'}}</div>
-                     <div class="">
-                        <span><b>{{g.author.full_name}}</b></span>: <span>{{g.text}}</span>
-                     </div>
-                     <!-- https://docs.angularjs.org/api/ng/directive/ngSubmit -->
+                <div>{{g.$id}}</div>
+                <div>{{g.timestamp | date : 'medium'}}</div>
+                <div class="">
+                    <span><b>{{g.author.full_name}}</b></span>: <span>{{g.text}}</span>
+                </div>
 
-                     <comment-directive name="g.$id"></comment-directive>
+                <comment-directive name="g.$id"></comment-directive>
 
             </div>
 
