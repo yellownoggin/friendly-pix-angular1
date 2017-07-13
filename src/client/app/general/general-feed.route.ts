@@ -15,7 +15,7 @@ namespace friendlyPix {
                         controller: 'GeneralController',
                         controllerAs: 'gc',
                         resolve: {
-                            generalDataDescending: (friendlyFire, $q) => {
+                            generalFeedData: (friendlyFire, $q) => {
 
                                 // TODO: should this go in the method as property ie. data.reversedEntries
                                 return friendlyFire.getPostsNew().then((data) => {
