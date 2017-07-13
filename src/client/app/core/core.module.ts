@@ -12,7 +12,8 @@ namespace  friendlyPix {
             'app.shell',
             'app.shared',
             'app.addPicture',
-            'app.user'
+            'app.user',
+            'angular.filter'
         ]);
 
 }

@@ -22,6 +22,7 @@
     "angularfire": "^2.0.2",
     "jquery": "^3.1.0",
     "latinize": "^0.3.0",
-    "lodash": "^4.16.4"
+    "lodash": "^4.16.4",
+    "angular-filter": "^0.5.16"
   }
 }
