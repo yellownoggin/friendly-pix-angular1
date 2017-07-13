@@ -51,7 +51,8 @@ namespace friendlyPix {
             subscribeToComments: subscribeToComments,
             getPostDataNew: getPostDataNew,
             getPostsNew: getPostsNew,
-            getCommentsNew: getCommentsNew
+            getCommentsNew: getCommentsNew,
+            addComment: addComment
         };
 
 
@@ -142,7 +143,33 @@ namespace friendlyPix {
         }
 
 
-///////////////////// new stuff end
+        function addComment(postId, commentText) {
+
+            const commentObj = {
+                text: commentText,
+                timestamp: Date.now(),
+                author: {
+                    uid: vm.user.uid,
+                    full_name: vm.user.displayName,
+                    profile_picture: vm.user.photoURL
+                }
+            };
+            console.log('commentObj in friendlyFire', commentObj);
+
+            let ref = vm.database.ref(`comments/${postId}`);
+            let list = $firebaseArray(ref);
+            list.$add(commentObj).then(function(ref) {
+                var id = ref.key;
+                console.log('added record with id ' + id);
+                list.$indexFor(id); // returns location in the array
+            });
+
+
+        }
+
+
+
+///////////////////// new stuff end in staging more stagin below
 
 
 
