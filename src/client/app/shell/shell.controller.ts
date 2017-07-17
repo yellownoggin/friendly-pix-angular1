@@ -33,6 +33,16 @@ namespace friendlyPix {
             const gProvider = FbOarService.gProvider;
 
 
+            // TODO: Issue: on new login (coming from anogher user login state)
+            // - after hide splash. Directive does not get current user info. tried:
+            // keeps the old state
+            // 1. scope.apply
+            // 2. $state.go('home-generalFeed'); to kick start directive controller  actions
+            // both did not work.
+            // note: 
+            // reloading the page (after login makes it work as expecting)
+
+
             AuthService.Auth().$signInWithPopup(gProvider).then((result) => {
                 friendlyFire.saveUserData(result.user.photoURL, result.user.displayName);
                 vm.hideSplash();

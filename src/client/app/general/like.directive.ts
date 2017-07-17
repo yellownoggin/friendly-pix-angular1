@@ -25,12 +25,17 @@ namespace friendlyPix {
                 vm.database = firebase.database();
                 $scope.updateUsersLike = updateUsersLike;
 
-                // TODO: Issue: on new login - after hide splash. Directive does not get current user info.
-                // It is reading or displaying and using the prior user's auth info until refresh
+                // TODO: Issues: (this is trello only revisit)
+                // 1.  on new login - after hide splash.
+                // Directive does not get current user info.
+                // It is reading or displaying and using the
+                // prior user's auth info until refresh
                 // AuthService.Auth().$onAuthStateChanged((fbUser) => {
                 //     console.log('onAuthStateChanged called', fbUser);
                 //     getUserLike(entryId, vm.currentUser.uid);
                 // });
+                // 2. likecount() unless in the click event
+                // will not update the like count
 
                 LikeCount(entryId).$loaded().then((data) => {
                     console.log('data in likeCount', data.length);
