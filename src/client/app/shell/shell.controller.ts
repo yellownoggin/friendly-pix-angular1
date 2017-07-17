@@ -7,7 +7,7 @@ namespace friendlyPix {
         .controller('ShellController', ShellController);
 
     function ShellController(currentAuth, AuthService,
-        friendlyFire, $timeout, $state) {
+        friendlyFire, $timeout, $state, FbOarService, $scope) {
         // TODO: logic out of the constoller
         var vm = this;
 
@@ -30,7 +30,10 @@ namespace friendlyPix {
         //////////  Controller method logic
 
         function signInWithGoogle() {
-            AuthService.Auth().$signInWithPopup('google').then((result) => {
+            const gProvider = FbOarService.gProvider;
+
+
+            AuthService.Auth().$signInWithPopup(gProvider).then((result) => {
                 friendlyFire.saveUserData(result.user.photoURL, result.user.displayName);
                 vm.hideSplash();
             }).catch(function(error) {

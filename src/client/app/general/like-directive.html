@@ -1,0 +1,24 @@
+<div class="">
+<div class="">
+    <span>postid</span><span> {{post}}</span>
+</div>
+    <!-- User has not liked yet -->
+    <div class="" ng-show="!userLikeStatus">
+        <span>
+            <button type="button" name="button" ng-click="updateUsersLike(true)">Like</button>
+         </span>
+
+        <span> {{likeCount}}</span> <span>  likes</span>
+    </div>
+
+<!-- User has already liked yet -->
+    <div class="" ng-show="userLikeStatus">
+
+        <span>
+            <button type="button" name="button" ng-click="updateUsersLike(false)">You Currently Like</button>
+        </span>
+
+        <span> {{likeCount}}</span> <span>  likes</span>
+    </div>
+
+</div>

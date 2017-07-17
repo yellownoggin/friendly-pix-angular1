@@ -22,7 +22,11 @@
             <div class="" ng-style="{'background-image': 'url({{g.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
 
             </div>
+            <div class="">
+                <like-directive post="g.$id"></like-directive>
+            </div>
             <div>
+                <div>{{g.$id}}</div>
                 <div>{{g.$id}}</div>
                 <div>{{g.timestamp | date : 'medium'}}</div>
                 <div class="">
