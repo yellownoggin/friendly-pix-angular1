@@ -16,7 +16,15 @@ namespace friendlyPix {
         // initialize
         function initialize() {
             makePostsDescending();
+            vm.addOne = addOne;
         }
+
+        // Staging/Dev
+
+        function addOne() {
+            console.log('message', 2);
+            return 1 + 1;
+            }
 
         // Controller methods
         function makePostsDescending() {

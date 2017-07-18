@@ -35,7 +35,7 @@ namespace friendlyPix {
 
 
         // private values*?  think that is wrong to think it should be private
-        var POSTS_PAGE_SIZE = 10,
+        var POSTS_PAGE_SIZE = 20,
             USER_PAGE_POSTS_PAGE_SIZE = 6;
 
 
@@ -135,7 +135,7 @@ namespace friendlyPix {
         }
 
         function getPostsNew() {
-            return _getPaginatedFeedNew('/posts/', 5);
+            return _getPaginatedFeedNew('/posts/', 3);
         }
 
         function getCommentsNew(postId) {

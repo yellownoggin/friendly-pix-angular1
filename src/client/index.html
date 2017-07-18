@@ -19,7 +19,7 @@
 
 
     <!-- firebaseui -->
-       <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
 
 
 
@@ -61,7 +61,10 @@
 <body layout="column" ng-cloak>
 
 
-    <div class="" ui-view="shell"></div>
+    <div class="jq" ui-view="shell"></div>
+
+
+
 
 
 
@@ -85,8 +88,11 @@
     <script src="/bower_components/latinize/latinize.js"></script>
     <script src="/bower_components/lodash/lodash.js"></script>
     <script src="/bower_components/angular-filter/dist/angular-filter.js"></script>
+    <script src="/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+    <!-- Scripts manually added -->
+    <!-- <script src="/node_modules/ng-infinite-scroll/build/ng-infinite-scroll.min.js"></script> -->
 
     <!-- build:js js/app.js -->
     <!-- inject:js -->
@@ -109,7 +115,9 @@
     <script src="/src/client/app/compiledJs/shared/auth.service.js"></script>
     <script src="/src/client/app/compiledJs/shared/feeds.service.js"></script>
     <script src="/src/client/app/compiledJs/shared/firebaseRef.service.js"></script>
+    <script src="/src/client/app/compiledJs/shared/fpInfiniteScroll.directive.js"></script>
     <script src="/src/client/app/compiledJs/shared/friendly-firebase.js"></script>
+    <script src="/src/client/app/compiledJs/shared/jquerySb.js"></script>
     <script src="/src/client/app/compiledJs/shared/likes.servive.js"></script>
     <script src="/src/client/app/compiledJs/shared/sharedDev.service.js"></script>
     <script src="/src/client/app/compiledJs/shared/sharedSandbox.js"></script>
@@ -117,9 +125,9 @@
     <script src="/src/client/app/compiledJs/shell/choose-file.directive.js"></script>
     <script src="/src/client/app/compiledJs/shell/shell.controller.js"></script>
     <script src="/src/client/app/compiledJs/shell/shell.route.js"></script>
-    <script src="/src/client/app/compiledJs/test/test.js"></script>
     <script src="/src/client/app/compiledJs/user/user.controller.js"></script>
     <script src="/src/client/app/compiledJs/user/user.route.js"></script>
+    <script src="/src/client/app/compiledJs/test/test.js"></script>
     <!-- endinject -->
 
 

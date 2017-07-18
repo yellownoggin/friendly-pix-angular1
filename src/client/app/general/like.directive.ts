@@ -15,7 +15,7 @@ namespace friendlyPix {
             templateUrl: 'app/general/like-directive.html',
             controller: ($scope, friendlyFire, firebase, $firebaseArray,
                 $firebaseObject, $firebaseAuth, AuthService, Like, LikeCount) => {
-                    console.log('like directive activated');
+                    // console.log('like directive activated');
                 let entryId = $scope.post;
                 $scope.entryId = entryId;
                 const vm = $scope;
@@ -38,7 +38,7 @@ namespace friendlyPix {
                 // will not update the like count
 
                 LikeCount(entryId).$loaded().then((data) => {
-                    console.log('data in likeCount', data.length);
+                    // console.log('data in likeCount', data.length);
                     $scope.likeCount = data.length;
 
                 });

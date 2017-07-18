@@ -17,30 +17,33 @@
         </div>
         <hr>
 
-        <div class="" ng-repeat="g in gc.generalFeedDataDescending">
+        <div class="feed-container fp-layout" style=""  infinite-scroll="gc.addOne()">
+            <div class="" ng-repeat="g in gc.generalFeedDataDescending">
 
-            <div class="" ng-style="{'background-image': 'url({{g.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
+                <div class="" ng-style="{'background-image': 'url({{g.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
 
-            </div>
-            <div class="">
-                <like-directive post="g.$id"></like-directive>
-            </div>
-            <div>
-                <div>{{g.$id}}</div>
-                <div>{{g.$id}}</div>
-                <div>{{g.timestamp | date : 'medium'}}</div>
+                </div>
                 <div class="">
-                    <span><b>{{g.author.full_name}}</b></span>: <span>{{g.text}}</span>
+                    <like-directive post="g.$id"></like-directive>
+                </div>
+                <div>
+                    <div>{{g.$id}}</div>
+                    <div>{{g.$id}}</div>
+                    <div>{{g.timestamp | date : 'medium'}}</div>
+                    <div class="">
+                        <span><b>{{g.author.full_name}}</b></span>: <span>{{g.text}}</span>
+                    </div>
+
+                    <comment-directive name="g.$id"></comment-directive>
+
                 </div>
 
-                <comment-directive name="g.$id"></comment-directive>
-
+                <hr>
             </div>
-
-            <hr>
         </div>
 
-        <div class="">
+        <div id="feed-bottom" class="">
+            hello
             <!-- <md-button class="md-raised" ng-click="gc.next()">content</md-button> -->
         </div>
 
