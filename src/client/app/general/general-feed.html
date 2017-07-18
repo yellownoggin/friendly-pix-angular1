@@ -13,12 +13,39 @@
             <!-- TODO:  fix this or mimix the friendlyPix -->
             <!-- <md-button class="md-raised" ng-click="gc.updateNewPosts()">New Post:  {{gc.pixDataArray1.length}}</md-button> -->
 
-
 <!-- {{gc.generalFeedDataDescending | json }} -->
         </div>
         <hr>
 
         <div class="feed-container fp-layout" style=""  infinite-scroll="gc.addOne()">
+            <div class="" ng-repeat="(key, value) in gc.generalFeedData">
+
+
+                <div class="" ng-style="{'background-image': 'url({{value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
+
+                </div>
+                <div class="">
+                    <like-directive post="key"></like-directive>
+                </div>
+                <div>
+                    <div><span>g id:</span>{{key}}</div>
+
+                    <div>{{value.timestamp | date : 'medium'}}</div>
+                    <div class="">
+                        <span><b>{{value.author.full_name}}</b></span>: <span>{{value.text}}</span>
+                    </div>
+
+                    <comment-directive name="key.$id"></comment-directive>
+
+                </div>
+
+                <hr>
+            </div>
+        </div>
+
+        <!-- TODO: Beleow is angularfire version of the data use it later-->
+
+        <!-- <div class="feed-container fp-layout" style=""  infinite-scroll="gc.addOne()">
             <div class="" ng-repeat="g in gc.generalFeedDataDescending">
 
                 <div class="" ng-style="{'background-image': 'url({{g.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
@@ -29,7 +56,7 @@
                 </div>
                 <div>
                     <div><span>g id:</span>{{g.$id}}</div>
-                    
+
                     <div>{{g.timestamp | date : 'medium'}}</div>
                     <div class="">
                         <span><b>{{g.author.full_name}}</b></span>: <span>{{g.text}}</span>
@@ -41,7 +68,7 @@
 
                 <hr>
             </div>
-        </div>
+        </div> -->
 
         <div id="feed-bottom" class="">
             hello

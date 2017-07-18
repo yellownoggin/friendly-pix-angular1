@@ -54,6 +54,88 @@ namespace friendlyPix {
 
         // Staging
 
+
+        /**
+         * [getPosts description]
+         *  TODO: postSize should not be hardcoded in param
+         *  should be a getter
+         */
+        function getPosts() {
+            return vm._getPaginatedFeed('/posts/', 5);
+        }
+
+
+
+        /**
+        * Fetches a single post data.
+        */
+        function getPostData(postId) {
+            let ref = this.database.ref(`/posts/${postId}`).once('value');
+        }
+
+
+        /**
+         * [_getPaginatedFeed description]
+         */
+        function _getPaginatedFeed(uri, pageSize, earliestEntryId = null, fetchPostDetails = false) {
+            console.log('_getPaginatedFeed is called');
+            let ref = vm.database.ref(uri);
+
+            // ??
+            if (earliestEntryId) {
+                ref = ref.orderByKey().endAt(earliestEntryId);
+            }
+
+            // Were fetching an additional item as a cheap way to test if there is a next page.
+            return ref.limitToLast(pageSize + 1).once('value').then(data => {
+                const entries = data.val() || {};
+
+                // Figure out if there is a next page.
+                let nextPage = null;
+                const entryIds = Object.keys(entries);
+                if (entryIds.length > pageSize) {
+                    delete entries[entryIds[0]];
+                    const nextPageStartingId = entryIds.shift();
+                    nextPage = () => vm._getPaginatedFeed(
+                        uri, pageSize, nextPageStartingId, fetchPostDetails
+                    );
+                }
+
+                if (fetchPostDetails) {
+                    // Fetch details of all posts
+                    // TODO:
+                    // firebase-fp.service.ts#L537
+                    const queries = entryIds.map(postId => vm.getPostData(postId));
+                    // Since all the requests are being done on the same feed it's unlikely that a single 1
+                    // would fail and not the others so using promise.all(q.all)  is not so risky
+                    return vm.$q.all(queries).then(results => {
+                        const deleteOps = [];
+                        results.forEach(result => {
+                            if (result.val()) {
+                                console.log(result.key, 'result.key');
+                                entries[result.key] = result.val();
+                            } else {
+                                //
+                                delete entries[result.key]; // TODO: why is this here?
+                                // needs a method
+                                deleteOps.push(vm.deleteFromFeed(uri, result.key));
+                            }
+                        });
+                        if (deleteOps.length > 0) {
+                            // todo;
+                            return vm._getPaginatedFeed(uri, pageSize, earliestEntryId, fetchPostDetails);
+                        }
+                        return { entries: entries, nextPage: nextPage };
+                    });
+                }
+                return { entries: entries, nextPage: nextPage };
+            });
+        }
+
+
+
+
+
         function addComment(postId, commentText) {
 
             const commentObj = {
@@ -93,9 +175,6 @@ namespace friendlyPix {
 
         }
 
-        function getPosts() {
-            return vm._getPaginatedFeed('/posts/', 5);
-        }
 
         function subscribeToComments(postId, latestCommentId) {
             _subscribeToFeed(`/comments/${postId}`, latestCommentId, false);
@@ -304,60 +383,6 @@ namespace friendlyPix {
 
 
 
-        function _getPaginatedFeed(uri, pageSize, earliestEntryId = null, fetchPostDetails = false) {
-            console.log('_getPaginatedFeed is called');
-            let ref = vm.database.ref(uri);
-
-            // ??
-            if (earliestEntryId) {
-                ref = ref.orderByKey().endAt(earliestEntryId);
-            }
-
-            // Were fetching an additional item as a cheap way to test if there is a next page.
-            return ref.limitToLast(pageSize + 1).once('value').then(data => {
-                const entries = data.val() || {};
-
-                // Figure out if there is a next page.
-                let nextPage = null;
-                const entryIds = Object.keys(entries);
-                if (entryIds.length > pageSize) {
-                    delete entries[entryIds[0]];
-                    const nextPageStartingId = entryIds.shift();
-                    nextPage = () => vm._getPaginatedFeed(
-                        uri, pageSize, nextPageStartingId, fetchPostDetails
-                    );
-                }
-
-                if (fetchPostDetails) {
-                    // Fetch details of all posts
-                    // TODO:
-                    // firebase-fp.service.ts#L537
-                    const queries = entryIds.map(postId => vm.getPostData(postId));
-                    // Since all the requests are being done on the same feed it's unlikely that a single 1
-                    // would fail and not the others so using promise.all(q.all)  is not so risky
-                    return vm.$q.all(queries).then(results => {
-                        const deleteOps = [];
-                        results.forEach(result => {
-                            if (result.val()) {
-                                console.log(result.key, 'result.key');
-                                entries[result.key] = result.val();
-                            } else {
-                                //
-                                delete entries[result.key]; // TODO: why is this here?
-                                // needs a method
-                                deleteOps.push(vm.deleteFromFeed(uri, result.key));
-                            }
-                        });
-                        if (deleteOps.length > 0) {
-                            // todo;
-                            return vm._getPaginatedFeed(uri, pageSize, earliestEntryId, fetchPostDetails);
-                        }
-                        return { entries: entries, nextPage: nextPage };
-                    });
-                }
-                return { entries: entries, nextPage: nextPage };
-            });
-        }
 
         /**
           * Deletes the given postId entry from the user's home feed.
@@ -367,14 +392,6 @@ namespace friendlyPix {
         }
 
 
-        /**
-        * Fetches a single post data.
-        */
-
-
-        function getPostData(postId) {
-            let ref = this.database.ref(`/posts/${postId}`).once('value');
-        }
 
     } // factory
 
