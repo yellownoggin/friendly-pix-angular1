@@ -186,7 +186,7 @@ namespace friendlyPix {
         }
 
         function getPosts() {
-            return vm._getPaginatedFeed('/posts/', 100);
+            return vm._getPaginatedFeed('/posts/', 5);
         }
 
         function subscribeToComments(postId, latestCommentId) {

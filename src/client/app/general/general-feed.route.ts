@@ -16,8 +16,8 @@ namespace friendlyPix {
                         controllerAs: 'gc',
                         resolve: {
                             generalFeedData: (friendlyFire, $q) => {
-                                return friendlyFire.getPostsNew().then((data) => {
-                                    return data;
+                                return friendlyFire.getPosts().then((data) => {
+                                    return data.entries;
 
                                 });
                             }
