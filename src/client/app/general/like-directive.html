@@ -2,34 +2,22 @@
 <div class="">
     <span>postid</span><span> {{post}}</span>
 </div>
-    <!-- User has not liked yet  ng-show="!userLikeStatus" -->
+
     <div class="">
+            <!-- User has not liked yet  -->
         <span>
             <button type="button" name="button" ng-click="updateUsersLike(true)"  ng-show="!userLikeStatus">Like</button>
          </span>
+
+         <!-- User has already liked yet -->
          <span>
              <button type="button" name="button" ng-click="updateUsersLike(false)" ng-show="userLikeStatus">You Currently Like</button>
          </span>
+
          <div class="">
-             <span>likeCount count</span>   {{likeCount.ref.length}}
+             <span>likeCount count</span>   {{likeCount.length}}
          </div>
-        <!-- <span> {{likeCount}}</span> <span>  likes</span> -->
+
     </div>
-
-
-
-<!-- User has already liked yet -->
-    <!-- <div class="" ng-show="userLikeStatus"> -->
-
-        <!-- <span>
-            <button type="button" name="button" ng-click="updateUsersLike(false)">You Currently Like</button>
-        </span> -->
-
-        <!-- <div class="">
-            <span>likeCount count</span>   {{likeCount.count}}
-        </div> -->
-
-        <!-- <span> {{likeCount}}</span> <span>  likes</span> -->
-    <!-- </div> -->
 
 </div>

@@ -1,41 +1,29 @@
 namespace friendlyPix {
     'use strict';
 
-    // TODO: rename file to service
+    // TODO: rename file to service or factory
+    // service makes more sense here since it is returning data??*
 
     angular
         .module('app.shared')
         .factory('Like', likeService)
         .factory('LikeCount', likeCountService);
 
-    // Factories logic
+    // Factories/ logic
+
+    // TODO: technically a service more like a factory
+    // Used this as end inspiration:
+    // https://github.com/gordonmzhu/angular-course-demo-app-v2/
+    // blob/master/src/app/core/party.service.js
 
     function likeCountService($firebaseArray, $rootScope) {
+        return {
+            getPostLikes: getPostLikes
+        };
 
-
-        return likeCount;
-
-
-        function likeCount(postId) {
-            // let self = {};
-            // console.log('self', self);
-            let likeData = {};
-
+        function getPostLikes(postId) {
             let ref = firebase.database().ref(`likes/${postId}`);
-            //
-            likeData['ref'] = $firebaseArray(ref);
-
-            // $firebaseArray(ref).$loaded().then((data) => {
-            //     if (!data.length) {
-            //         likeData['count'] = 0;
-            //     } {
-            //         likeData['count'] = data.length;
-            //     }
-            //
-            // });
-
-            return likeData;
-
+            return $firebaseArray(ref);
         }
 
     }
