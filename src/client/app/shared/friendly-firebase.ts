@@ -48,11 +48,16 @@ namespace friendlyPix {
             getPosts: getPosts,
             getComments: getComments,
             subscribeToComments: subscribeToComments,
-            addComment: addComment
+            addComment: addComment,
+            getCommentsNew: getCommentsNew
         };
 
 
         // Staging
+        function getCommentsNew(postId) {
+            return _getPaginatedFeedNew(`/comments/${postId}`, 5, null, false);
+        }
+
 
 
         /**

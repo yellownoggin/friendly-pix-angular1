@@ -17,13 +17,10 @@ namespace friendlyPix {
                         resolve: {
                             generalFeedData: (friendlyFire, $q) => {
                                 return friendlyFire.getPosts().then((data) => {
+                                    // TODO: how does friendly pix handle?
                                     // Reverse data entries so descending by date
-                                    var fillPostData = {};
                                     var reversedPostData = {};
-                                    var commentData = {};
                                     let p = Object.keys(data.entries);
-                                    // Used for the comments set up
-                                    const pReversed = p.reverse();
 
                                     for (let i = p.length - 1; i >= 0; i--) {
 

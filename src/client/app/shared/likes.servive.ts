@@ -1,6 +1,8 @@
 namespace friendlyPix {
     'use strict';
 
+    // TODO: rename file to service
+
     angular
         .module('app.shared')
         .factory('Like', likeService)
@@ -8,13 +10,31 @@ namespace friendlyPix {
 
     // Factories logic
 
-    function likeCountService($firebaseArray) {
+    function likeCountService($firebaseArray, $rootScope) {
+
+
         return likeCount;
 
-        function likeCount(postId) {
-            let ref = firebase.database().ref(`likes/${postId}`);
 
-            return $firebaseArray(ref);
+        function likeCount(postId) {
+            // let self = {};
+            // console.log('self', self);
+            let likeData = {};
+
+            let ref = firebase.database().ref(`likes/${postId}`);
+            //
+            likeData['ref'] = $firebaseArray(ref);
+
+            // $firebaseArray(ref).$loaded().then((data) => {
+            //     if (!data.length) {
+            //         likeData['count'] = 0;
+            //     } {
+            //         likeData['count'] = data.length;
+            //     }
+            //
+            // });
+
+            return likeData;
 
         }
 

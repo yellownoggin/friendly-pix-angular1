@@ -37,11 +37,22 @@ namespace friendlyPix {
                 // 2. likecount() unless in the click event
                 // will not update the like count
 
-                LikeCount(entryId).$loaded().then((data) => {
-                    // console.log('data in likeCount', data.length);
-                    $scope.likeCount = data.length;
+                // LikeCount(entryId).$loaded().then((data) => {
+                //     // console.log('data in likeCount', data.length);
+                //     $scope.likeCount = data.length;
+                //
+                // });
+                $scope.likeCount = LikeCount(entryId);
 
-                });
+
+                // console.log('likeCount', likeCount);
+                //  console.log('likeCount count', likeCount.count);
+                // $timeout(() => { console.log('likeCount count', likeCount.count); }, 1000);
+
+                // console.log('likeCount ref', likeCount.ref);
+                // $scope.likeCountRef = likeCount.likeData.ref;
+                // $scope.likeCountCount = vm.likeData.count;
+
                 getUserLike(entryId, vm.currentUser.uid);
 
 

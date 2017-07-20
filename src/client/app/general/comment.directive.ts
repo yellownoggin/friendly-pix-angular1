@@ -13,13 +13,13 @@ namespace friendlyPix {
                 name: '='
             },
             templateUrl: 'app/general/comment-directive.html',
-            controller: ($scope, friendlyFire) => {
+            controller: ($scope, friendlyFire, friendlyAngularFire) => {
                 console.log('comment directive activated');
                 let postId = $scope.name;
                 $scope.postId = postId;
                 const vm = $scope;
 
-                friendlyFire.getCommentsNew(postId).then((data) => {
+                friendlyAngularFire.getCommentsNew(postId).then((data) => {
                     $scope.a = data;
                 });
 

@@ -3,10 +3,13 @@
     <div class="fp-content">
         <!-- ng-show="gc.showNoPostsMessage" -->
         <div class="showNoPostsMessageContainer" md-whiteframe="1">
-            <span>You currently have no pix posts.</span>
+            <!-- <span>You currently have no pix posts.</span> -->
             <p>
                 <!-- {{gc.showNoPostsMessageContainer | json }} -->
             </p>
+            <div class="">
+                <span>Current User: </span>{{gc.currentUser.uid}}
+            </div>
         </div>
         <div>
 
@@ -35,7 +38,7 @@
                         <span><b>{{value.author.full_name}}</b></span>: <span>{{value.text}}</span>
                     </div>
 
-                    <comment-directive name="key.$id"></comment-directive>
+                    <comment-directive name="key"></comment-directive>
 
                 </div>
 

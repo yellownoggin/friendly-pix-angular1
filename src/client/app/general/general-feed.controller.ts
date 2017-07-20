@@ -6,9 +6,10 @@ namespace friendlyPix {
         .module('app.spaPages')
         .controller('GeneralController', GeneralController);
 
-    function GeneralController(generalFeedData, $filter, friendlyFire, $scope) {
+    function GeneralController(generalFeedData, $filter, friendlyFire, $scope, AuthService) {
         console.log('General Controller instantiated.');
         var vm = this;
+        vm.currentUser = AuthService.Auth().$getAuth();
 
         // TODO: use initialize? - get clarity -  $onInit as well
         initialize();

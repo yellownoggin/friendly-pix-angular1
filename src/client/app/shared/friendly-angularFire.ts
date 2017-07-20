@@ -1,50 +1,53 @@
-// namespace friendlyPix {
-//     'use strict';
-//
-//     /**
-//      * Handles all Firebase interactions.
-//      * Using as much angularFire features as possible
-//      */
-//     angular
-//         .module('app.shared')
-//         .factory('friendlyAngularFire', friendlyAngularFireFactory);
-//
-//     function friendlyAngularFireFactory($firebaseArray, $firebaseObject) {
-//
-//
-//         return {
-//             getPostDataNew: getPostDataNew,
-//             getPostsNew: getPostsNew,
-//             getCommentsNew: getCommentsNew,
-//         };
-//
-//
-//             // Factory methods
+namespace friendlyPix {
+    'use strict';
 
-    ////////// STAGING
+    /**
+     * Handles all Firebase interactions.
+     * Using as much angularFire features as possible
+     */
+    angular
+        .module('app.shared')
+        .factory('friendlyAngularFire', friendlyAngularFireFactory);
+
+    function friendlyAngularFireFactory($firebaseArray, $firebaseObject) {
+        let vm = this;
+        vm.database = firebase.database();
+
+        return {
+            getPostDataNew: getPostDataNew,
+            getPostsNew: getPostsNew,
+            getCommentsNew: getCommentsNew
 
 
-    // function _getPaginatedFeedNew(uri, pageSize, earliestEntryId = null, fetchPostDetails = false) {
+        };
+
+
+            // Factory methods
+
+    //////// STAGING
+
+
+    function _getPaginatedFeedNew(uri, pageSize, earliestEntryId = null, fetchPostDetails = false) {
         // console.log('_getPaginatedFeed is called');
-        // let ref = vm.database.ref(uri);
+        let ref = vm.database.ref(uri);
 
-        // ??
-        // if (earliestEntryId) {
-        //     ref = ref.orderByKey().endAt(earliestEntryId);
-        // }
+
+        if (earliestEntryId) {
+            ref = ref.orderByKey().endAt(earliestEntryId);
+        }
 
 
 
         // Were fetching an additional item as a cheap way to test if there is a next page.
 
-        // let ps = ref.limitToLast(pageSize + 1);
-        // return $firebaseArray(ps).$loaded().then(data => {
+        let ps = ref.limitToLast(pageSize + 1);
+        return $firebaseArray(ps).$loaded().then(data => {
 
             // console.log('data in new paginate feed', data);
-            // return data;
-
+            return data;
+            //
             // const entries = data.val() || {};
-
+            //
             // Figure out if there is a next page.
             // let nextPage = null;
             // const entryIds = Object.keys(entries);
@@ -55,7 +58,7 @@
             //         uri, pageSize, nextPageStartingId, fetchPostDetails
             //     );
             // }
-
+            //
             // if (fetchPostDetails) {
             //     // Fetch details of all posts
             //     // TODO:
@@ -83,36 +86,30 @@
             //             return vm._getPaginatedFeed(uri, pageSize, earliestEntryId, fetchPostDetails);
             //         }
             //         return { entries: entries, nextPage: nextPage };
-                // });
+                });
             // }
             // return { entries: entries, nextPage: nextPage };
 
-    // }
+    }
 
 
-    //
-    // function getPostDataNew(postId) {
-    //     let ref = this.database.ref(`/posts/${postId}`);
-    //     return $firebaseArray(ref);
-    // }
-    //
-    // function getPostsNew() {
-    //     return _getPaginatedFeedNew('/posts/', 3);
-    // }
-    //
-    // function getCommentsNew(postId) {
-    //     return _getPaginatedFeedNew(`/comments/${postId}`, 5, null, false);
-    // }
 
+    function getPostDataNew(postId) {
+        let ref = this.database.ref(`/posts/${postId}`);
+        return $firebaseArray(ref);
+    }
 
+    function getPostsNew() {
+        return _getPaginatedFeedNew('/posts/', 3);
+    }
+
+    function getCommentsNew(postId) {
+        return _getPaginatedFeedNew(`/comments/${postId}`, 5, null, false);
+    }
 
 
 
 
-///////////////////// new stuff end in staging more stagin below
+    }
 
-//
-//
-//     }
-//
-// }
+}

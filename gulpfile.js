@@ -409,12 +409,14 @@ function startBrowserSync(isDev) {
       proxy: 'localhost:' + port,
       port: 3000,
       files: isDev ? [config.client + '**/**/*.*'] : [], // NOTE: if less see .md file
-      ghostMode: {
-        clicks: true,
-        location: false,
-        forms: true,
-        scroll: true
-      },
+      // TODO: Ghostmode on build vs dev - or just be aware of ghost mode
+      ghostMode: false,
+    //   ghostMode: {
+    //     clicks: true,
+    //     location: false,
+    //     forms: true,
+    //     scroll: true
+    //   },
       injectChanges: true,
       logFileChanges: true,
       logLevel: 'debug',
