@@ -23,7 +23,7 @@ namespace friendlyPix {
                 friendlyAngularFire.getCommentsNew(postId).then((data) => {
                     $scope.c = data.length;
                     $scope.a = data;
-                    console.log('modulus', $scope.c  % $scope.a.length);
+                    // console.log('modulus', $scope.c  % $scope.a.length);
 
                     // console.log('scope a == data ', $scope.a === data);
                 });

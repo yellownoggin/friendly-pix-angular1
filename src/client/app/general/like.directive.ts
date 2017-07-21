@@ -53,11 +53,11 @@ namespace friendlyPix {
                 // TODO: future problem not sure where register comes into play at
                 // firebase.js#L389 registerUserLike
                 function getUserLikeStatus(postId, uid) {
-                    console.log('uid in get User Like status', uid);
+                    // console.log('uid in get User Like status', uid);
                     let ref = vm.database.ref(`likes/${postId}/${vm.currentUser.uid}`);
                     $firebaseObject(ref).$loaded()
                         .then((data) => {
-                            console.log('log', data.$value);
+                            // console.log('log', data.$value);
                             if (data.$value) {
 
                                 vm.userLikeStatus = true;

@@ -109,6 +109,7 @@ namespace friendlyPix {
                 if (entryIds.length > pageSize) {
                     delete entries[entryIds[0]];
                     const nextPageStartingId = entryIds.shift();
+                    console.log('nextPageStartingId', nextPageStartingId);
                     nextPage = () => vm._getPaginatedFeed(
                         uri, pageSize, nextPageStartingId, fetchPostDetails
                     );
