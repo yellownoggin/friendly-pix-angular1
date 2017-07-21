@@ -93,24 +93,27 @@ namespace friendlyPix {
             console.log('_getPaginatedFeedTest is called');
             let ref = vm.database.ref(uri);
 
+            if (earliestEntryId) {
+                ref = ref.orderByKey().endAt(earliestEntryId);
+            }
 
             // Were fetching an additional item as a cheap way to test if there is a next page.
             return ref.limitToLast(pageSize + 1).once('value').then(data => {
                 const entries = data.val() || {};
 
-                return data.val();
+                // return data.val();
 
                 // Figure out if there is a next page.
-                // let nextPage = null;
-                // const entryIds = Object.keys(entries);
-                // if (entryIds.length > pageSize) {
-                //     delete entries[entryIds[0]];
-                //     const nextPageStartingId = entryIds.shift();
-                //     nextPage = () => vm._getPaginatedFeed(
-                //         uri, pageSize, nextPageStartingId, fetchPostDetails
-                //     );
-                // }
-                //
+                let nextPage = null;
+                const entryIds = Object.keys(entries);
+                if (entryIds.length > pageSize) {
+                    delete entries[entryIds[0]];
+                    const nextPageStartingId = entryIds.shift();
+                    nextPage = () => vm._getPaginatedFeed(
+                        uri, pageSize, nextPageStartingId, fetchPostDetails
+                    );
+                }
+
                 // if (fetchPostDetails) {
                 //     // Fetch details of all posts
                 //     // TODO:
@@ -137,8 +140,11 @@ namespace friendlyPix {
                 //         }
                 //         return { entries: entries, nextPage: nextPage };
                 //     });
-                // }
-                // return { entries: entries, nextPage: nextPage };
+                // } // if postDetails
+
+
+
+                return { entries: entries, nextPage: nextPage };
             });
         }
 
