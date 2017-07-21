@@ -61,10 +61,11 @@ namespace friendlyPix {
                             if (data.$value) {
 
                                 vm.userLikeStatus = true;
-                                console.log('userlike value', vm.userLikeStatus);
+                                // TODO: like testing logs 
+                                // console.log('userlike value', vm.userLikeStatus);
                             } else {
                                 vm.userLikeStatus = false;
-                                console.log('userlike value', vm.userLikeStatus);
+                                // console.log('userlike value', vm.userLikeStatus);
                             }
 
                         })

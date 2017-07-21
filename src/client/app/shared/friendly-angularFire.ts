@@ -39,12 +39,12 @@ namespace friendlyPix {
 
 
         // Were fetching an additional item as a cheap way to test if there is a next page.
-
         let ps = ref.limitToLast(pageSize + 1);
         return $firebaseArray(ps).$loaded().then(data => {
-
-            // console.log('data in new paginate feed', data);
+            console.log('get paginated feed for comment called');
             return data;
+            // console.log('data in new paginate feed', data);
+            // return data.val();
             //
             // const entries = data.val() || {};
             //

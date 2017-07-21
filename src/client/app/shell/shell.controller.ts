@@ -39,11 +39,14 @@ namespace friendlyPix {
             // 1. scope.apply
             // 2. $state.go('home-generalFeed'); to kick start directive controller  actions
             // both did not work.
-            // note: 
+            // note:
             // reloading the page (after login makes it work as expecting)
 
 
             AuthService.Auth().$signInWithPopup(gProvider).then((result) => {
+                console.log('result.user.displayName', result.user.displayName);
+                console.log('result.user', result.user);
+
                 friendlyFire.saveUserData(result.user.photoURL, result.user.displayName);
                 vm.hideSplash();
             }).catch(function(error) {

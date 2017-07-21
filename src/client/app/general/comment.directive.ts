@@ -19,8 +19,13 @@ namespace friendlyPix {
                 $scope.postId = postId;
                 const vm = $scope;
 
+
                 friendlyAngularFire.getCommentsNew(postId).then((data) => {
+                    $scope.c = data.length;
                     $scope.a = data;
+                    console.log('modulus', $scope.c  % $scope.a.length);
+
+                    // console.log('scope a == data ', $scope.a === data);
                 });
 
                 // Submit new comments
