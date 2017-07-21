@@ -51,13 +51,13 @@ namespace friendlyPix {
         // TODO: $location provider
     }
 
-
     /**
      * initTheme - sets up theme using angular material provider
      *
      */
     //@ngInject
     function initTheme($mdThemingProvider) {
+        console.log('initialize Theme');
         $mdThemingProvider.theme('default')
             .primaryPalette('grey')
             .accentPalette('orange');

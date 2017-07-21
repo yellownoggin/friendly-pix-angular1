@@ -110,7 +110,7 @@ namespace friendlyPix {
                     delete entries[entryIds[0]];
                     const nextPageStartingId = entryIds.shift();
                     console.log('nextPageStartingId', nextPageStartingId);
-                    nextPage = () => vm._getPaginatedFeed(
+                    nextPage = () => _getPaginatedFeedTest(
                         uri, pageSize, nextPageStartingId, fetchPostDetails
                     );
                 }
