@@ -13,5 +13,6 @@ src/client/app/test
 src/client/app/general/general-feed-comments.html
 src/client/app/shared/sharedSandbox.json
 src/client/app/shared/sharedSandbox.ts
+src/client/app/shared/friendly-direbase.md
 test
 development-old
