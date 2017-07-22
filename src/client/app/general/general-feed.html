@@ -1,84 +1,52 @@
 <!-- ng-show="!gc.showLogin" -->
 <section id="home-feed" class="site-width">
     <div class="fp-content">
-        <!-- ng-show="gc.showNoPostsMessage" -->
-        <div class="showNoPostsMessageContainer" md-whiteframe="1">
-            <!-- <span>You currently have no pix posts.</span> -->
-            <p>
-                <!-- {{gc.showNoPostsMessageContainer | json }} -->
-            </p>
-            <div class="">
-                <span>Current User: </span>{{gc.currentUser.uid}}
-            </div>
-        </div>
-        <div>
 
-            <!-- TODO:  fix this or mimix the friendlyPix -->
-            <!-- <md-button class="md-raised" ng-click="gc.updateNewPosts()">New Post:  {{gc.pixDataArray1.length}}</md-button> -->
-
-<!-- {{gc.generalFeedDataDescending | json }} -->
+        <div class="">
+            <span><strong>Current User: </strong> </span><span>{{gc.currentUser.uid}}</span>
         </div>
         <hr>
-
-        <div class="feed-container fp-layout" style=""  infinite-scroll="gc.addOne()">
-            <div class="" ng-repeat="(key, value) in gc.generalFeedData">
-
-
-                <div class="" ng-style="{'background-image': 'url({{value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
+        <!-- <div class="">
+            {{ gc.data | json}}
+        </div> -->
+        <div class="feed-container fp-layout" infinite-scroll="gc.concatNextPage()">
+            <div class="" ng-repeat="d in gc.entries track by $index">
+                <div style="font-size:20px"><span>key:</span><strong>{{d.key}}</strong></div>
+                <!-- <div><span>Author:</span>{{d.value.author.full_name}}</div> -->
+                <div><span>Text:</span>{{d.value.text}}</div>
+                <div>{{d.value.timestamp | date : 'medium'}}</div>
+                <div>{{d.value.thumb_url}}</div>
+                <div class="" ng-style="{'background-image': 'url({{d.value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
 
                 </div>
                 <div class="">
-                    <like-directive post="key"></like-directive>
+                    <!-- <like-directive post="d.key"></like-directive> -->
                 </div>
-                <div>
-                    <div><span>g id:</span>{{key}}</div>
-
-                    <div>{{value.timestamp | date : 'medium'}}</div>
-                    <div class="">
-                        <span><b>{{value.author.full_name}}</b></span>: <span>{{value.text}}</span>
-                    </div>
-
-                    <comment-directive name="key"></comment-directive>
-
+                <div class="">
+                    <!-- <comment-directive name="d.key"></comment-directive> -->
                 </div>
 
                 <hr>
+
             </div>
         </div>
 
-        <!-- TODO: Beleow is angularfire version of the data use it later-->
 
-        <!-- <div class="feed-container fp-layout" style=""  infinite-scroll="gc.addOne()">
-            <div class="" ng-repeat="g in gc.generalFeedDataDescending">
+        <!-- <div class="">
 
-                <div class="" ng-style="{'background-image': 'url({{g.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
-
-                </div>
-                <div class="">
-                    <like-directive post="g.$id"></like-directive>
-                </div>
-                <div>
-                    <div><span>g id:</span>{{g.$id}}</div>
-
-                    <div>{{g.timestamp | date : 'medium'}}</div>
-                    <div class="">
-                        <span><b>{{g.author.full_name}}</b></span>: <span>{{g.text}}</span>
-                    </div>
-
-                    <comment-directive name="g.$id"></comment-directive>
-
-                </div>
-
-                <hr>
-            </div>
+            <button type="button" ng-click="gc.concatNextPage()">
+                More
+            </button>
         </div> -->
 
-        <div id="feed-bottom" class="">
-            hello
-            <!-- <md-button class="md-raised" ng-click="gc.next()">content</md-button> -->
-        </div>
 
-    </div>
+        <!-- <div class="" ng-repeat="tx in tx.generalDataDescending track by $index">
+
+
+
+
+    </div> -->
+
 
 </section>
 <!-- /home feed -->

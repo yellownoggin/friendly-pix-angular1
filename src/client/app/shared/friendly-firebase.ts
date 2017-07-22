@@ -79,7 +79,6 @@ namespace friendlyPix {
             let ref = this.database.ref(`/posts/${postId}`).once('value');
         }
 
-
         function getPostsTest() {
             return _getPaginatedFeedTest('/posts/', 5);
         }
