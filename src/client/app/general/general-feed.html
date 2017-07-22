@@ -5,6 +5,12 @@
         <div class="">
             <span><strong>Current User: </strong> </span><span>{{gc.currentUser.uid}}</span>
         </div>
+        <div class="" ng-show="gc.newPostsCountArray.length">
+            <span><strong>New Post Count </strong> </span>
+            <!-- TODO: dynamic posts/post  -->
+            <button type="button" name="button" ng-click="gc.displayAllPosts()">There are {{gc.newPostsCountArray.length}} New Posts</button>
+
+        </div>
         <hr>
         <!-- <div class="">
             {{ gc.data | json}}

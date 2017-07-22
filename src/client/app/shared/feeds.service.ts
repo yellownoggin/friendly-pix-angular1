@@ -7,13 +7,65 @@ namespace friendlyPix {
 
     function feedsService($firebaseAuth, friendlyFire, $q, sharedDev) {
         var _self = this;
-        _self.user  = $firebaseAuth().$getAuth();
+        _self.user = $firebaseAuth().$getAuth();
         _self.getHomeFeed = getHomeFeed;
         _self.subscribeToHomeFeed = subscribeToHomeFeed;
-        // vm.newPosts = {};
+        _self.subscribeToGeneralFeed = subscribeToGeneralFeed;
+        _self.newPosts = {};
         // vm.addNewPost = addNewPost;
         // vm.watchHomeFeedNewPosts = watchHomeFeedNewPosts;like
         console.log(_self.user, 'current user');
+
+
+        // Staging
+
+
+        // showGeneralFeed not going to work for angular the way it is
+        // Need to piece it out in the controller
+        // 1. subscribeToGeneralFeed
+        // 2. registerForPostsDeletion
+        // ---
+        // showGeneralFeed as a
+        // function showGeneralFeed() {
+        //     friendlyFire.getPostsTest().then((data) => {
+        //         // Get latest post Id
+        //
+        //     });
+        // }
+
+        function subscribeToGeneralFeed(latestPostId) {
+            // uses subscribeToFeed and
+            // returns the results from that(??) not sure that matter
+            return _subscribeToFeed('/posts/', latestPostId);
+        }
+
+        function _subscribeToFeed(uri, latestEntryId = null, fetchPostDetails = false) {
+            // Load all posts info
+            // posts ref
+            let feedRef = this.database.ref(uri);
+            if (latestEntryId) {
+                feedRef = feedRef.orderByKey().startAt(latestEntryId);
+            }
+
+            feedRef.on('child_added', (feedData) => {
+                // Take out the latestEntryId post (already in feed)
+                if (feedData.key !== latestEntryId) {
+
+                    // No posts details use what's there (? key, value(?postId only))
+                    if (!fetchPostDetails) {
+                        //  Won't need callback - will return as a promise(already built into this)
+                        // addPostCallback(feedData.key, feedData.value)
+                        var feedDataIds = Object.keys(feedData);
+                        return  feedDataIds.length;
+                    }
+
+                }
+            });
+        }
+
+
+
+        // End of Staging
 
 
 
@@ -42,7 +94,7 @@ namespace friendlyPix {
                 return friendlyFire.updateHomeFeeds().then(() => {
                     // TODO: qq what is the angular way to update dom when listener is set
 
-                     friendlyFire.getHomeFeedPosts().then((data) => {
+                    friendlyFire.getHomeFeedPosts().then((data) => {
                         const postIds = Object.keys(data.entries);
                         const latestPostId = postIds[postIds.length - 1];
 
@@ -69,13 +121,13 @@ namespace friendlyPix {
         } // showHomeFeed
 
 
-        function subscribeToHomeFeed (newPostsVar, latestPostId) {
+        function subscribeToHomeFeed(newPostsVar, latestPostId) {
             console.log('sto home feed was this called');
-             sharedDev.subscribeToHomeFeed(
-                 (postId, postValue) => {
+            sharedDev.subscribeToHomeFeed(
+                (postId, postValue) => {
                     //  console.log(newPostsVar, 'newPostsVar');
-                     newPostsVar[postId] = postValue;
-                 }, latestPostId);
+                    newPostsVar[postId] = postValue;
+                }, latestPostId);
         }
 
 
