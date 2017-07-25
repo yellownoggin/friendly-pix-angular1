@@ -6,10 +6,11 @@ namespace friendlyPix {
         .module('app.spaPages')
         .controller('GeneralController', GeneralController);
 
-    function GeneralController(generalFeedData, $filter, friendlyFire, $scope, AuthService, feeds, firebase) {
+    function GeneralController(generalFeedData, $filter, friendlyFire, $scope, AuthService, feeds, firebase, $q) {
         console.log('General Controller instantiated.');
         var vm = this;
         vm.currentUser = AuthService.Auth().$getAuth();
+        vm.$q = $q;
 
         // TODO: use initialize? - get clarity -  $onInit as well
         initialize();
@@ -30,11 +31,24 @@ namespace friendlyPix {
             let latestPostId = vm.entries[0].key;
             vm.database = firebase.database();
             let feedRef = vm.database.ref('posts').orderByKey().startAt(latestPostId);
+            vm.length = null;
             getNewPostsCount(feedRef, latestPostId);
+            // var promise = getNewPostsCount(feedRef, latestPostId);
+            // promise.then((count) => {
+            //     console.log('count is here ', count);
+            //     vm.length = count;
+            // }, (reason) => {
+            //
+            //     console.log('Failed', reason);
+            // }
+        // );
             vm.displayAllPosts = displayAllPosts;
 
 
         }
+
+        // TODO:
+        // clean and test (multiple button clicks/ meaning: click upload click)
 
 
         ///// Staging
@@ -48,7 +62,7 @@ namespace friendlyPix {
 
         function displayAllPosts() {
             vm.entries = null;
-            vm.nextPage = null; 
+            vm.nextPage = null;
 
             console.log('displayAllPosts Called');
             friendlyFire.getPostsTest()
@@ -65,33 +79,82 @@ namespace friendlyPix {
         }
 
         function getNewPostsCount(feedReference, lPostId) {
-            feedReference.on('child_added', (feedData) => {
-                // Take out the latestEntryId post (already in feed)
-                console.log('latestPostId', lPostId);
-                if (feedData.key !== lPostId) {
+                feedReference.on('child_added', (feedData) => {
+                   // Take out the latestEntryId post (already in feed)
+                   console.log('latestPostId', lPostId);
+                   if (feedData.key !== lPostId) {
 
-                    console.log('feedData in feederRef call back', feedData);
-                    console.log('feedData key', feedData.key);
-                    console.log('feedData value', feedData.val());
+                       console.log('feedData in feederRef call back', feedData);
+                       console.log('feedData key', feedData.key);
+                       console.log('feedData value', feedData.val());
 
 
-                    // No posts details use what's there (? key, value(?postId only))
-                    // if (!fetchPostDetails) {
-                    //  Won't need callback - will return as a promise(already built into this)
-                    // addPostCallback(feedData.key, feedData.value)
-                    // var feedDataIds = Object.keys(feedData);
-                    console.log('feedDataIds', feedData.key);
+                       // No posts details use what's there (? key, value(?postId only))
+                       // if (!fetchPostDetails) {
+                       //  Won't need callback - will return as a promise(already built into this)
+                       // addPostCallback(feedData.key, feedData.value)
+                       // var feedDataIds = Object.keys(feedData);
+                       console.log('feedDataIds', feedData.key);
 
-                    vm.newPostsCountArray.push(feedData.key);
+                       vm.newPostsCountArray.push(feedData.key);
+                       console.log('vm.newPostsCount.length', vm.newPostsCountArray.length);
+                       vm.length = vm.newPostsCountArray.length;
+                       console.log('vm.length', vm.length);
 
-                    console.log('vm.newPostsCount', vm.newPostsCountArray);
-                    console.log('vm.newPostsCount.length', vm.newPostsCountArray.length);
-                    $scope.$apply();
 
-                }
+                       // console.log('vm.newPostsCount', vm.newPostsCountArray);
+                       $scope.$apply();
 
-            });
+                   }
+
+               });
+
+
+
+
         }
+        // function getNewPostsCount(feedReference, lPostId) {
+        //
+        //     return $q(function (resolve, reject) {
+        //
+        //         feedReference.on('child_added', (feedData) => {
+        //            // Take out the latestEntryId post (already in feed)
+        //            console.log('latestPostId', lPostId);
+        //            if (feedData.key !== lPostId) {
+        //
+        //                console.log('feedData in feederRef call back', feedData);
+        //                console.log('feedData key', feedData.key);
+        //                console.log('feedData value', feedData.val());
+        //
+        //
+        //                // No posts details use what's there (? key, value(?postId only))
+        //                // if (!fetchPostDetails) {
+        //                //  Won't need callback - will return as a promise(already built into this)
+        //                // addPostCallback(feedData.key, feedData.value)
+        //                // var feedDataIds = Object.keys(feedData);
+        //                console.log('feedDataIds', feedData.key);
+        //
+        //                vm.newPostsCountArray.push(feedData.key);
+        //
+        //                if (vm.newPostsCountArray.length) {
+        //                    resolve(vm.newPostsCountArray.length);
+        //                } else {
+        //                     reject('No new posts count array length');
+        //                }
+        //
+        //
+        //                // console.log('vm.newPostsCount', vm.newPostsCountArray);
+        //                // console.log('vm.newPostsCount.length', vm.newPostsCountArray.length);
+        //                // $scope.$apply();
+        //
+        //            }
+        //
+        //        });
+        //
+        //
+        //    });
+        //
+        // }
 
 
 
