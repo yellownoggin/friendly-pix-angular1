@@ -1,6 +1,12 @@
 namespace friendlyPix {
     'use strict';
 
+/**
+ *  Handles the Home and General Feeds UI
+ *  basic and realtime behaviors.
+ *  Methods used in controllers and routers resolve|
+ */
+
     angular
         .module('app.shared')
         .service('feeds', feedsService);
@@ -13,12 +19,78 @@ namespace friendlyPix {
         _self.subscribeToGeneralFeed = subscribeToGeneralFeed;
         _self.newPosts = {};
         _self.getNewPostsCount = getNewPostsCount;
-        // vm.addNewPost = addNewPost;
-        // vm.watchHomeFeedNewPosts = watchHomeFeedNewPosts;like
-        console.log(_self.user, 'current user');
+        _self.convertToArray = convertToArray;
+        // _self.concatNextPage = concatNextPage;
+
+
 
 
         // Staging
+
+
+        /**
+         * Pagination event listener: used currently in inifinite scroll
+         * TODO: concatNextPage or the behavior as a service
+         * or stuck in controller? Best practice in this case.
+         * JAQ and stack overflow.
+         * This is the ui: gc.concatNextPage(gc.nextPage, gc.entries, gc.busy)
+         * controller: vm.concatNextPage = feeds.concatNextPage;
+         */
+        // function concatNextPage(nextPageFN, currentEntries, busyState) {
+        //     console.log('nextPageFN', nextPageFN);
+        //     console.log('currentEntries', currentEntries);
+        //     console.log(' busyState',  busyState);
+        //     console.log('concatNextPage called');
+        //     // 1. Prevents from multiple calls of same nextPage on scroll
+        //     // 2. Returns at the end of posts
+        //     if (busyState  === true) {
+        //         console.log('busyState true');
+        //         return;
+        //     } else if (typeof nextPageFN !== 'function') {
+        //         console.log('No more posts');
+        //         return;
+        //     }
+        //
+        //     // Sets pagination to busy state preventint multiple calls
+        //     busyState = true;
+        //     nextPageFN().then((data) => {
+        //         console.log('data in nextPageFN', data.entries);
+        //         var newData = [];
+        //         newData = _self.convertToArray(data.entries);
+        //         nextPageFN = data.nextPage;
+        //         currentEntries = currentEntries.concat(newData);
+        //         console.log('currentEntries', currentEntries);
+        //         busyState = false;
+        //         $rootScope.$apply();
+        //     });
+        // }
+
+
+        /**
+         * Converts firebase posts ref data to array and makes descending
+         * @param  {Object} data data from getPostsTest a firebase query
+         * & read method
+         * @return {Array}
+         */
+        function convertToArray(data) {
+            // TODO: save for firebase object to usable angular array
+            var reversedPostData = [];
+            let p = Object.keys(data);
+
+            for (let i = p.length - 1; i >= 0; i--) {
+                // convert to an array and add the key
+                let myObject = {};
+                myObject['value'] = data[p[i]];
+                myObject['key'] = p[i];
+                reversedPostData.push(myObject);
+
+            }
+            console.log('convertToArray returning data');
+            return reversedPostData;
+        }
+
+
+
 
 
         function getNewPostsCount(feedReference, lPostId, lengthBinding, ArrayBinding) {
