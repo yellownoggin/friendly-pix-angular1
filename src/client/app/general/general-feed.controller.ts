@@ -33,18 +33,11 @@ namespace friendlyPix {
             let feedRef = vm.database.ref('posts').orderByKey().startAt(latestPostId);
 
 
-            // New posts notify
+            // New posts notify logic
             vm.length = null;
-            var promise = getNewPostsCount(feedRef, latestPostId);
-            promise.then((count) => {
-                console.log('count is here ', count);
-                vm.length = count;
-            }, (reason) => {
-                console.log('Failed', reason);
-            }
-            );
+            vm.newPostsCountArray = [];
+            getNewPostsCount(feedRef, latestPostId);
             vm.displayAllPosts = displayAllPosts;
-
 
         }
 
@@ -54,36 +47,21 @@ namespace friendlyPix {
 
         ///// Staging Controller Logic
 
-        // New Posts Queue
-        let entriesCopy = vm.entries;
-        // notifyOfNewPosts(entriesCopy);
-
-
-
-        vm.newPostsCountArray = [];
-
         function getNewPostsCount(feedReference, lPostId) {
-            return $q(function(resolve, reject) {
                 feedReference.on('child_added', (feedData) => {
-                    // Take out the latestEntryId post (already in feed)
-                    console.log('latestPostId', lPostId);
-                    if (feedData.key !== lPostId) {
-                        // No posts details use what's there (? key, value(?postId only))
-                        // if (!fetchPostDetails) {
-                        // addPostCallback(feedData.key, feedData.value)
-                        // var feedDataIds = Object.keys(feedData);
-                        vm.newPostsCountArray.push(feedData.key);
-                        if (vm.newPostsCountArray.length) {
-                            resolve(vm.newPostsCountArray.length);
-                        } else {
-                            reject('No new posts count array length');
-                        }
-                    }
-                });
-            });
-        }
 
+                   // Take out the latestEntryId post (already in feed)
+                   if (feedData.key !== lPostId) {
 
+                      // Just need the keys to get a count for button
+                      // displayAllPosts/getpostsTest doing feed update
+                      // on click
+                       vm.newPostsCountArray.push(feedData.key);
+                       vm.length = vm.newPostsCountArray.length;
+                       $scope.$apply();
+                   }
+               });
+}
 
         function displayAllPosts() {
             vm.entries = null;
