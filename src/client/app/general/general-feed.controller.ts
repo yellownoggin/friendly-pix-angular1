@@ -36,9 +36,8 @@ namespace friendlyPix {
             // New posts notify logic
             vm.length = null;
             vm.newPostsCountArray = [];
-            getNewPostsCount(feedRef, latestPostId);
             vm.displayAllPosts = displayAllPosts;
-
+            feeds.getNewPostsCount(feedRef, latestPostId, vm.length, vm.newPostsCountArray);
         }
 
         // TODO:
@@ -47,21 +46,7 @@ namespace friendlyPix {
 
         ///// Staging Controller Logic
 
-        function getNewPostsCount(feedReference, lPostId) {
-                feedReference.on('child_added', (feedData) => {
 
-                   // Take out the latestEntryId post (already in feed)
-                   if (feedData.key !== lPostId) {
-
-                      // Just need the keys to get a count for button
-                      // displayAllPosts/getpostsTest doing feed update
-                      // on click
-                       vm.newPostsCountArray.push(feedData.key);
-                       vm.length = vm.newPostsCountArray.length;
-                       $scope.$apply();
-                   }
-               });
-}
 
         function displayAllPosts() {
             vm.entries = null;

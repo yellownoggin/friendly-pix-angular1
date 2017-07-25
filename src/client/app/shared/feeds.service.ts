@@ -5,19 +5,37 @@ namespace friendlyPix {
         .module('app.shared')
         .service('feeds', feedsService);
 
-    function feedsService($firebaseAuth, friendlyFire, $q, sharedDev) {
+    function feedsService($firebaseAuth, friendlyFire, $q, sharedDev, $rootScope) {
         var _self = this;
         _self.user = $firebaseAuth().$getAuth();
         _self.getHomeFeed = getHomeFeed;
         _self.subscribeToHomeFeed = subscribeToHomeFeed;
         _self.subscribeToGeneralFeed = subscribeToGeneralFeed;
         _self.newPosts = {};
+        _self.getNewPostsCount = getNewPostsCount;
         // vm.addNewPost = addNewPost;
         // vm.watchHomeFeedNewPosts = watchHomeFeedNewPosts;like
         console.log(_self.user, 'current user');
 
 
         // Staging
+
+
+        function getNewPostsCount(feedReference, lPostId, lengthBinding, ArrayBinding) {
+            feedReference.on('child_added', (feedData) => {
+
+                // Take out the latestEntryId post (already in feed)
+                if (feedData.key !== lPostId) {
+
+                    // Just need the keys to get a count for button
+                    // displayAllPosts/getpostsTest doing feed update
+                    // on click
+                    ArrayBinding.push(feedData.key);
+                    lengthBinding = ArrayBinding.length;
+                    $rootScope.$apply();
+                }
+            });
+        }
 
 
         // showGeneralFeed not going to work for angular the way it is
@@ -39,6 +57,12 @@ namespace friendlyPix {
             return _subscribeToFeed('/posts/', latestPostId);
         }
 
+
+        // TODO: Jaq: will this work with super amount of updates
+        // Specifically promise. How does this work for super amount of users
+        //  on the same time (answer?: individual instance).
+        //  Meaning what if one person it's get new posts and changes
+        //  this subscription to a different latestEntryId will paths cross
         function _subscribeToFeed(uri, latestEntryId = null, fetchPostDetails = false) {
             // Load all posts info
             // posts ref
@@ -47,7 +71,7 @@ namespace friendlyPix {
                 feedRef = feedRef.orderByKey().startAt(latestEntryId);
             }
 
-            feedRef.on('child_added', (feedData) => {
+            return feedRef.on('child_added', (feedData) => {
                 // Take out the latestEntryId post (already in feed)
                 if (feedData.key !== latestEntryId) {
 
@@ -56,7 +80,7 @@ namespace friendlyPix {
                         //  Won't need callback - will return as a promise(already built into this)
                         // addPostCallback(feedData.key, feedData.value)
                         var feedDataIds = Object.keys(feedData);
-                        return  feedDataIds.length;
+                        return feedDataIds.length;
                     }
 
                 }
