@@ -1,11 +1,11 @@
 namespace friendlyPix {
     'use strict';
 
-/**
- *  Handles the Home and General Feeds UI
- *  basic and realtime behaviors.
- *  Methods used in controllers and routers resolve|
- */
+    /**
+     *  Handles the Home and General Feeds UI
+     *  basic and realtime behaviors.
+     *  Methods used in controllers and routers resolve|
+     */
 
     angular
         .module('app.shared')
@@ -20,12 +20,17 @@ namespace friendlyPix {
         _self.newPosts = {};
         _self.getNewPostsCount = getNewPostsCount;
         _self.convertToArray = convertToArray;
+        // _self.getTimeText = getTimeText;
         // _self.concatNextPage = concatNextPage;
 
 
 
 
         // Staging
+
+
+
+
 
 
         /**

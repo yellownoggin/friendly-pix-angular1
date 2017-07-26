@@ -24,6 +24,7 @@
                 <!-- <div><span>Author:</span>{{d.value.author.full_name}}</div> -->
                 <div><span>Text:</span>{{d.value.text}}</div>
                 <div>{{d.value.timestamp | date : 'medium'}}</div>
+                <div><span>getTimeText</span>: {{d.value.timestamp | getTimeText}}</div>
                 <div>{{d.value.thumb_url}}</div>
                 <div class="" ng-style="{'background-image': 'url({{d.value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
 

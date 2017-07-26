@@ -6,10 +6,10 @@ namespace friendlyPix {
         .module('app.spaPages')
         .controller('GeneralController', GeneralController);
 
-    function GeneralController(generalFeedData, $filter, friendlyFire, $scope, AuthService, feeds, firebase) {
+    function GeneralController(generalFeedData, $filter, friendlyFire,
+        $scope, AuthService, feeds, firebase) {
         console.log('General Controller instantiated.');
         var vm = this;
-        vm.currentUser = AuthService.Auth().$getAuth();
 
         // TODO: use initialize? - get clarity -  $onInit as well
         initialize();
@@ -17,19 +17,19 @@ namespace friendlyPix {
         // initialize
         function initialize() {
             vm.currentUser = AuthService.Auth().$getAuth();
+
+            // general display
             vm.entries = feeds.convertToArray(generalFeedData.entries);
+
+            // inifinite scroll and pagination
             vm.nextPage = generalFeedData.nextPage;
             vm.busy = false;
             vm.concatNextPage = concatNextPage;
 
-            ///// Staging in init
-
+            // New posts queue notify and display
             let latestPostId = vm.entries[0].key;
             vm.database = firebase.database();
             let feedRef = vm.database.ref('posts').orderByKey().startAt(latestPostId);
-
-
-            // New posts notify logic
             vm.length = null;
             vm.newPostsCountArray = [];
             vm.displayAllPosts = displayAllPosts;
@@ -40,7 +40,6 @@ namespace friendlyPix {
         ///// Staging Controller Logic
 
         ///// End Of Staging
-
 
         // Controller methods
 
@@ -78,7 +77,7 @@ namespace friendlyPix {
 
             friendlyFire.getPostsTest()
                 .then((data) => {
-                    vm.entries = convertToArray(data.entries);
+                    vm.entries = feeds.convertToArray(data.entries);
                     vm.nextPage = data.nextPage;
                     vm.newPostsCountArray = [];
                     $scope.$apply();
