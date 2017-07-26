@@ -10,6 +10,7 @@
 
             <div class="fp-user-username">{{uc.personObj.full_name}}</div>
             <div class="fp-user-username">{{uc.personObj.$id}}</div>
+            <div class="fp-user-username"><span>Posts</span>: {{uc.personObjPostsCount.length}}</div>
 
 
 
@@ -19,7 +20,7 @@
                 personObj
             </div>
             <div class="">
-                {{uc.personObj.profile_picture}}
+                {{uc.personObj.posts | json}}
             </div>
         </div> -->
 

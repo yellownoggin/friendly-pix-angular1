@@ -6,7 +6,7 @@ namespace friendlyPix {
         .controller('UserController', UserController);
 
     function UserController($stateParams, friendlyFire, $firebaseAuth,
-         currentUser, firebase, $firebaseObject, profileData) {
+         currentUser, firebase, $firebaseObject, profileData, feeds) {
             //   _userFeedData
         console.log('User Controller Instantiated');
         var vm = this;
@@ -29,31 +29,16 @@ namespace friendlyPix {
             // console.log(_userFeedData, 'message');
             // nm._userFeedData = _userFeedData;
 
-            // Staging Init
-            vm.userPageName = null;
-            vm.userPagePic = null;
-
-            // let urlUid = $stateParams.uid;
-            // const personRef = firebase.database().ref('people').child(urlUid);
-            // vm.personObj = $firebaseObject(personRef);
+            ///// Staging Init
             vm.personObj = profileData;
-            // console.log('profilePic', profilePic);
-            // let personObj = $firebaseObject(personRef).$loaded((data) => {
-            //     vm.userPageName = data.full_name;
-            //     vm.userPagePic = data.profile_picture;
-            //  });
-            // console.log('personObj', personObj);
+            // get profile users posts length
+            vm.personObjPostsCount = feeds.convertToArray(profileData.posts);
+
         };
         // Controller methods
 
 
         // Staging
-
-
-        function getUserPageUser(pageUid) {
-
-        }
-
 
         // End of Staging
 
