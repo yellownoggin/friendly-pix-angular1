@@ -5,10 +5,12 @@ namespace friendlyPix {
         .module('app.user')
         .controller('UserController', UserController);
 
-    function UserController($stateParams, friendlyFire, $firebaseAuth, currentUser, _userFeedData) {
+    function UserController($stateParams, friendlyFire, $firebaseAuth,
+         currentUser, firebase, $firebaseObject, profileData) {
+            //   _userFeedData
         console.log('User Controller Instantiated');
         var vm = this;
-
+        console.log('$stateParams', $stateParams);
         vm.uid = $stateParams.uid;
         vm.onFollowChange = onFollowChange;
         vm.authedUser = $firebaseAuth().$getAuth();
@@ -24,10 +26,39 @@ namespace friendlyPix {
             const nm = this;
             nm.displayName = currentUser.displayName;
             nm.profilePicture = currentUser.photoURL;
-            console.log(_userFeedData, 'message');
-            nm._userFeedData = _userFeedData;
+            // console.log(_userFeedData, 'message');
+            // nm._userFeedData = _userFeedData;
+
+            // Staging Init
+            vm.userPageName = null;
+            vm.userPagePic = null;
+
+            // let urlUid = $stateParams.uid;
+            // const personRef = firebase.database().ref('people').child(urlUid);
+            // vm.personObj = $firebaseObject(personRef);
+            vm.personObj = profileData;
+            // console.log('profilePic', profilePic);
+            // let personObj = $firebaseObject(personRef).$loaded((data) => {
+            //     vm.userPageName = data.full_name;
+            //     vm.userPagePic = data.profile_picture;
+            //  });
+            // console.log('personObj', personObj);
         };
         // Controller methods
+
+
+        // Staging
+
+
+        function getUserPageUser(pageUid) {
+
+        }
+
+
+        // End of Staging
+
+
+
 
         /*
         * Triggered when the user changes the "Follow" checkbox.

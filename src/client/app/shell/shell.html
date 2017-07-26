@@ -47,6 +47,13 @@
                         <span flex></span>
 
                         <div layout="row">
+                            <div class="">
+                                <span>Current User: </span>{{sc.currentUid}}
+                                <div class="">
+                                    <span>User name: </span>{{sc.currentAuth.displayName}}
+                                </div>
+                            </div>
+
                             <a class="md-button" href="" ui-sref="home.user({uid: sc.currentUid})">User</a>
                             <md-button class="tools-background" ng-click="sc.signOut()">
                                 <span>Sign Out</span>
@@ -55,6 +62,7 @@
                         </div>
 
                     </div>
+
 
                 </div>
 

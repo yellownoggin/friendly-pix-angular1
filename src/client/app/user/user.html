@@ -4,14 +4,24 @@
     <!-- TODO: should this be a md-card? and have a surround div-->
     <div class="fp-user-container md-whiteframe-1dp" layout="row">
 
-        <div class="fp-user-avatar" ng-style="{'background-image': 'url({{uc.profilePicture}})'}">
+        <div class="fp-user-avatar" ng-style="{'background-image': 'url({{uc.personObj.profile_picture}})'}">
         </div>
         <div class="fp-name-follow-container" layout="column">
 
-            <div class="fp-user-username">{{uc.displayName}}</div>
+            <div class="fp-user-username">{{uc.personObj.full_name}}</div>
+            <div class="fp-user-username">{{uc.personObj.$id}}</div>
+
 
 
         </div>
+        <!-- <div class="">
+            <div class="">
+                personObj
+            </div>
+            <div class="">
+                {{uc.personObj.profile_picture}}
+            </div>
+        </div> -->
 
 
 
@@ -26,10 +36,10 @@
         Also: the pics are coming out oldest to newest... 1. reverse it from controller or service - but real solution is the code from - app firebase.js
         -->
 
-        <div class="fp-user-feed" ng-style="{'background-image': 'url({{d.full_url}})'}" ng-repeat="d in uc._userFeedData" layout-margin layout-wrap flex="100" flex-gt-sm="30">
+        <!-- <div class="fp-user-feed" ng-style="{'background-image': 'url({{d.full_url}})'}" ng-repeat="d in uc._userFeedData" layout-margin layout-wrap flex="100" flex-gt-sm="30">
             <div >
 
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
