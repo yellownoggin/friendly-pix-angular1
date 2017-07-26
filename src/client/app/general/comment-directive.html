@@ -1,6 +1,6 @@
 <div class="" ng-repeat="b in a">
     <div class="">
-        <span><b>{{b.author.full_name}}:</b> </span>
+        <span><a ui-sref="home.user({uid: b.author.uid})">{{b.author.full_name}}:</a>  </span>
         <span>{{b.text}}</span>
     </div>
 </div>

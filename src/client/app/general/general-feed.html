@@ -22,18 +22,19 @@
             <div class="" ng-repeat="d in gc.entries track by $index">
                 <div style="font-size:20px"><span>key:</span><strong>{{d.key}}</strong></div>
                 <!-- <div><span>Author:</span>{{d.value.author.full_name}}</div> -->
+                <div><span>post user name:</span><a ui-sref="home.user({uid: d.value.author.uid})">{{d.value.author.full_name}}</a></div>
+                <div><span>post user name:</span>{{d.value.author.uid}}</div>
                 <div><span>Text:</span>{{d.value.text}}</div>
-                <div>{{d.value.timestamp | date : 'medium'}}</div>
                 <div><span>getTimeText</span>: {{d.value.timestamp | getTimeText}}</div>
                 <div>{{d.value.thumb_url}}</div>
                 <div class="" ng-style="{'background-image': 'url({{d.value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
 
                 </div>
                 <div class="">
-                    <!-- <like-directive post="d.key"></like-directive> -->
+                    <like-directive post="d.key"></like-directive>
                 </div>
                 <div class="">
-                    <!-- <comment-directive name="d.key"></comment-directive> -->
+                    <comment-directive name="d.key"></comment-directive>
                 </div>
 
                 <hr>
