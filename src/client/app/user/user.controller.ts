@@ -6,7 +6,7 @@ namespace friendlyPix {
         .controller('UserController', UserController);
 
     function UserController($stateParams, friendlyFire, $firebaseAuth,
-        currentUser, firebase, $firebaseObject, profileData, feeds, $q, $scope) {
+        currentUser, firebase, $firebaseObject, profileData, feeds, $q, $scope, $firebaseArray) {
         //   _userFeedData
         console.log('User Controller Instantiated');
         var vm = this;
@@ -51,12 +51,19 @@ namespace friendlyPix {
             vm.toggleFollowUserTest = toggleFollowUserTest;
             vm.toggleFollowUser = toggleFollowUser;
             trackFollowStatus();
-
+            vm.followersCount = friendlyFire.getFollowers(vm.userPageUsersId);
+            
         };
         // Controller methods
 
 
         // Staging
+
+
+        // getfollowers  count
+
+
+
 
         function getUserPagePostsCount(postsRef) {
             if (postsRef) {
@@ -66,7 +73,6 @@ namespace friendlyPix {
                 return '0';
             }
         }
-
 
 
         /**

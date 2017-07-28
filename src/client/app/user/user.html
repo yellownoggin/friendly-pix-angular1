@@ -16,6 +16,7 @@
                 <label>{{uc.followLabel}}  <input type="checkbox" ng-model="uc.currentFollowedState" ng-change="uc.toggleFollowUserTest(uc.personObj.$id, uc.currentFollowedState)"></label>
             </div>
             <div class="fp-user-username"><span>Posts</span>: {{uc.personObjPostsCount}}</div>
+            <div class="fp-user-username"><span>Followers</span>: {{uc.followersCount.length}}</div>
         </div>
     </div>
 

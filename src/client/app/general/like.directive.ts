@@ -28,7 +28,7 @@ namespace friendlyPix {
 
                 // Gets current and realtime syncs for new ones
                 $scope.likeCount = LikeCount.getPostLikes(entryId);
-
+                
 
                 getUserLikeStatus(entryId, vm.currentUser.uid);
 
@@ -61,7 +61,7 @@ namespace friendlyPix {
                             if (data.$value) {
 
                                 vm.userLikeStatus = true;
-                                // TODO: like testing logs 
+                                // TODO: like testing logs
                                 // console.log('userlike value', vm.userLikeStatus);
                             } else {
                                 vm.userLikeStatus = false;

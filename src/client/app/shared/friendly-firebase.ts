@@ -52,11 +52,21 @@ namespace friendlyPix {
             getCommentsNew: getCommentsNew,
             getPostsTest: getPostsTest,
             registerToFollowStatusUpdate: registerToFollowStatusUpdate,
-            cancelAllSubscriptions: cancelAllSubscriptions
+            cancelAllSubscriptions: cancelAllSubscriptions,
+            getFollowers: getFollowers
         };
 
 
         // Staging
+
+
+        // console.log('getFollowers() ', getFollowers());
+        function getFollowers(userPageUid) {
+            console.log('userPageUsersId', userPageUid);
+            const followersRef = self.database.ref(`/followers/${userPageUid}`);
+            // return $firebaseArray(followersRef);
+            return $firebaseArray(followersRef);
+        }
 
 
 
