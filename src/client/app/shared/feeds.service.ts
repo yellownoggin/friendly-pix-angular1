@@ -73,12 +73,14 @@ namespace friendlyPix {
 
         /**
          * Converts firebase posts ref data to array and makes descending
+         * TODO: needs to say in function name that makes descending
          * @param  {Object} data data from getPostsTest a firebase query
          * & read method
          * @return {Array}
          */
         function convertToArray(data) {
             // TODO: save for firebase object to usable angular array
+            // and array of objects: ie. convertToArrayObjectsDescending
             var reversedPostData = [];
             let p = Object.keys(data);
 
@@ -97,7 +99,8 @@ namespace friendlyPix {
 
 
 
-
+        // TODO: jq: one reason that apply is here is because passing the bindings in
+        //  here.(Aha: should be passing the bindings in here or make a promise)
         function getNewPostsCount(feedReference, lPostId, lengthBinding, ArrayBinding) {
             feedReference.on('child_added', (feedData) => {
 

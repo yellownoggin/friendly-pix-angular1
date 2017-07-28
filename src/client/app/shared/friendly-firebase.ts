@@ -421,18 +421,16 @@ namespace friendlyPix {
             // console.log(vm.user.uid, 'vm.user.uid inside toggle follow');
             // console.log(followedUserId, 'followedUserId');
             return vm.database.ref(`/people/${followedUserId}/posts`).once('value')
-                .then(
-                data => {
+                .then(data => {
 
-                    // TODO: why  constant
                     const updateData = {};
                     // TODO: why let
                     let lastPostId = true;
                     console.log(follow, 'follow');
                     // add followed users post to home feed
                     data.forEach(post => {
-                        updateData[`/feed/${vm.user.uid}/${post.key}`] =
-                            follow ? !!follow : null;
+                        // updateData[`/feed/${vm.user.uid}/${post.key}`] =
+                        //     follow ? !!follow : null;
                         lastPostId = post.key;
                     });
                     // console.log(updateData, 'sport');
@@ -444,6 +442,7 @@ namespace friendlyPix {
                     // And the to the was the followers
                     updateData[`/followers/${followedUserId}/${vm.user.uid}`] =
                         follow ? !!follow : null;
+                        
                     return vm.database.ref().update(updateData);
                 });
 

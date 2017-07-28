@@ -10,7 +10,16 @@
 
             <div class="fp-user-username">{{uc.personObj.full_name}}</div>
             <div class="fp-user-username">{{uc.personObj.$id}}</div>
-            <div class="fp-user-username"><span>Posts</span>: {{uc.personObjPostsCount.length}}</div>
+            <!-- follow user conditional -->
+
+            <div class="" ng-show="!uc.showToggleFollow(uc.authedUser.uid, uc.personObj.$id)">
+                <label>{{uc.followLabel}}  <input type="checkbox" ng-model="uc.currentFollowedState" ng-change="uc.toggleFollowUserTest(uc.personObj.$id, uc.currentFollowedState)"></label>
+                <div class="">
+                    {{uc.currentFollowedState}}
+                </div>
+
+            </div>
+            <div class="fp-user-username"><span>Posts</span>: {{uc.personObjPostsCount}}</div>
 
 
 
