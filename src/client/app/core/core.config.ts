@@ -23,7 +23,11 @@ namespace friendlyPix {
         .config(initTheme)
         .config(initfirebaseRef)
         .constant('latinize', window.latinize)
-        .constant('_', window._);
+        .constant('_', window._)
+        .run(() => {
+
+            console.log('run module method in core');
+        })
     // .run(initDatabase);
     // .constant('firebaseUi', firebaseui.auth.AuthUI)
     // .constant('firebaseMe', firebase)

@@ -12,6 +12,7 @@ namespace friendlyPix {
         var vm = this;
         vm.uid = $stateParams.uid;
         vm.onFollowChange = onFollowChange;
+        vm.authObj = $firebaseAuth();
         vm.authedUser = $firebaseAuth().$getAuth();
         vm.currentUserUid = vm.authedUser.uid;
         vm.database = firebase.database();
@@ -36,8 +37,8 @@ namespace friendlyPix {
             vm.personObj = profileData;
             vm.userPageUsersId = profileData.$id;
             // get profile users posts length
-
             vm.personObjPostsCount = getUserPagePostsCount(profileData.posts);
+
 
 
             // Following behavior
@@ -47,36 +48,76 @@ namespace friendlyPix {
             vm.toggleFollowUserTest = toggleFollowUserTest;
             vm.toggleFollowUser = toggleFollowUser;
 
+            registerToFollowStatusUpdate(vm.userPageUsersId); 
+
+
             // TODO: may have to go into a route resolve (remember state parameters
             // will be needed in a change to the method parameters current user & user page user)
             // Updata: works with out being in route guess because the data is here already and controller
             //  seems like it will update the promise at least once - will not work with watchers (multiple
             //  promise fills after the instantiation)
-            trackFollowStatus().then((data) => {
-                // do somethings this the follow button
-                // enable it as well
-                // change the label from following to follow
-                // refreshswitchstate??
-                // TODO: try the ternary
-                vm.currentFollowedState = data.val() !== null;
-                vm.followLabel = data.val() ? 'Following' : 'Follow';
-                console.log('vm.currentFollowedState', vm.currentFollowedState);
-                console.log('vm.followLabel ', vm.followLabel );
+            // trackFollowStatus().then((data) => {
+            //     // do somethings this the follow button
+            //     // enable it as well
+            //     // change the label from following to follow
+            //     // refreshswitchstate??
+            //     // TODO: try the ternary
+            //     console.log('follow status');
+            //     vm.currentFollowedState = data.val() !== null;
+            //     vm.followLabel = data.val() ? 'Following' : 'Follow';
+            //     console.log('vm.currentFollowedState', vm.currentFollowedState);
+            //     console.log('vm.followLabel ', vm.followLabel);
+            // });
 
-
-            });
-
-
-
+            // TODO: this calls on contoller instantiation
+            // 1. should I not have the first call (dry)
+            // 2. Is this the proper behavior.
+        //     vm.authObj.$onAuthStateChanged((fbUser) => {
+        //         trackFollowStatus().then((data) => {
+        //             console.log('on auth state changed');
+        //             // do somethings this the follow button
+        //             // enable it as well
+        //             // change the label from following to follow
+        //             // refreshswitchstate??
+        //             // TODO: try the ternary
+        //             vm.currentFollowedState = data.val() !== null;
+        //             vm.followLabel = data.val() ? 'Following' : 'Follow';
+        //             console.log('vm.currentFollowedState', vm.currentFollowedState);
+        //             console.log('vm.followLabel ', vm.followLabel);
+        //
+        //
+        //         });
+        //     });
+        //
         };
         // Controller methods
 
 
         // Staging
 
+        function registerToFollowStatusUpdate(userPageUid) {
+
+            if (vm.currentUserUid) {
+
+                let followingStatusRef = vm.database.ref(`/people/${vm.currentUserUid}/following/${userPageUid}`);
+                // TODO: try catch on this type of method (on) since there is no documentation showing a error callback
+                followingStatusRef.on('value', (data) => {
+                    vm.currentFollowedState = data.val() !== null;
+                    vm.followLabel = data.val() ? 'Following' : 'Follow';
+                    console.log('follow status watcher');
+                    console.log('data.val()', data.val());
+                    // TODO: add to firebase refs
+                });
+            }
+
+        }
+
+
+
+
         function getUserPagePostsCount(postsRef) {
             if (postsRef) {
-                let a =  feeds.convertToArray(postsRef);
+                let a = feeds.convertToArray(postsRef);
                 return a.length;
             } else {
                 return '0';
@@ -99,19 +140,21 @@ namespace friendlyPix {
             }
         }
 
-
-        function registerToFollowStatusUpdate(userPageUid) {
-            let defer = $q.defer();
-
-            let followingStatusRef = vm.database.ref(`/people/${vm.currentUserUid}/following/${userPageUid}`);
-            // TODO: try catch on this type of method (on) since there is no documentation showing a error callback
-            followingStatusRef.on('value', (data) => {
-                defer.resolve(data);
-            // TODO: add to firebase refs
-        });
-
-            return defer.promise;
-    }
+        //
+        // function registerToFollowStatusUpdate(userPageUid) {
+        //     let defer = $q.defer();
+        //
+        //     let followingStatusRef = vm.database.ref(`/people/${vm.currentUserUid}/following/${userPageUid}`);
+        //     // TODO: try catch on this type of method (on) since there is no documentation showing a error callback
+        //     followingStatusRef.on('value', (data) => {
+        //         console.log('follow status watcher');
+        //         console.log('data.val()', data.val());
+        //         defer.resolve(data);
+        //         // TODO: add to firebase refs
+        //     });
+        //
+        //     return defer.promise;
+        // }
 
 
 
@@ -173,23 +216,23 @@ namespace friendlyPix {
             // beyond using it in the following ref TODO:
             // return?
             return vm.database.ref(`/people/${followedUserId}/posts`).once('value').then((data) => {
-                    const updateData = {};
-                    let lastPostId = true;
-                    data.forEach((post) => {
-                        updateData[`/feed/${vm.currentUserUid}/${post.key}`] =
-                            followState ? !!followState : null;
-                        lastPostId = post.key;
-                    });
-
-                    // B. add followedUserId to people/currentUserUid/following/ = latestPostId
-                    updateData[`/people/${vm.currentUserUid}/following/${followedUserId}`] = followState
-                        ? lastPostId : null;
-                    // C. add this current logged in user to followers/followingId/currentUserUid
-                    updateData[`/followers/${followedUserId}/${vm.currentUserUid}/`] =
+                const updateData = {};
+                let lastPostId = true;
+                data.forEach((post) => {
+                    updateData[`/feed/${vm.currentUserUid}/${post.key}`] =
                         followState ? !!followState : null;
+                    lastPostId = post.key;
+                });
 
-                    return vm.database.ref().update(updateData);
-                })
+                // B. add followedUserId to people/currentUserUid/following/ = latestPostId
+                updateData[`/people/${vm.currentUserUid}/following/${followedUserId}`] = followState
+                    ? lastPostId : null;
+                // C. add this current logged in user to followers/followingId/currentUserUid
+                updateData[`/followers/${followedUserId}/${vm.currentUserUid}/`] =
+                    followState ? !!followState : null;
+
+                return vm.database.ref().update(updateData);
+            })
                 .catch((e) => { console.log('e', e); });
         }
 
