@@ -22,7 +22,8 @@ namespace friendlyPix {
 
 
         vm.$onInit = () => {
-            console.log('friendlyFire.firebaseRefs', friendlyFire.firebaseRefs);
+            // TODO: add this to
+            // friendlyFire.destroyArrayListeners();
             friendlyFire.cancelAllSubscriptions();
 
             if (vm.authedUser) {
@@ -52,7 +53,8 @@ namespace friendlyPix {
             vm.toggleFollowUser = toggleFollowUser;
             trackFollowStatus();
             vm.followersCount = friendlyFire.getFollowers(vm.userPageUsersId);
-            
+            vm.followingCount = friendlyFire.getFollowing(vm.userPageUsersId);
+
         };
         // Controller methods
 

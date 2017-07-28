@@ -53,19 +53,39 @@ namespace friendlyPix {
             getPostsTest: getPostsTest,
             registerToFollowStatusUpdate: registerToFollowStatusUpdate,
             cancelAllSubscriptions: cancelAllSubscriptions,
-            getFollowers: getFollowers
+            getFollowers: getFollowers,
+            destroyArrayListeners: destroyArrayListeners,
+            getFollowing: getFollowing
         };
 
 
         // Staging
 
+        /**
+         * Stop listening for events and free memory used by this array (empties the local copy)
+         * Free up memory before next listeners set up
+         * Angularfire's' the way of canceling listeners.
+         */
+         // TODO: this does not work seems to need a ref  may be do a similar set up as friendly pix
+         //
+        function destroyArrayListeners(parameter) {
+            /** TODO: Stack overflow: all listners in an array and then lopp through it like the legacy app does */
+                $firebaseArray.$destroy();
+        }
 
-        // console.log('getFollowers() ', getFollowers());
+
         function getFollowers(userPageUid) {
-            console.log('userPageUsersId', userPageUid);
             const followersRef = self.database.ref(`/followers/${userPageUid}`);
             // return $firebaseArray(followersRef);
             return $firebaseArray(followersRef);
+        }
+
+
+        function getFollowing(userPageUid) {
+            console.log('Following called');
+            const followingRef = self.database.ref(`/people/${userPageUid}/following`);
+            // return $firebaseArray(followersRef);
+            return $firebaseArray(followingRef);
         }
 
 
