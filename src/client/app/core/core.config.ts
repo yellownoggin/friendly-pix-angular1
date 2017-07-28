@@ -25,7 +25,6 @@ namespace friendlyPix {
         .constant('latinize', window.latinize)
         .constant('_', window._)
         .run(() => {
-
             console.log('run module method in core');
         })
     // .run(initDatabase);

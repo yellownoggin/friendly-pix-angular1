@@ -90,9 +90,7 @@ namespace friendlyPix {
                 myObject['value'] = data[p[i]];
                 myObject['key'] = p[i];
                 reversedPostData.push(myObject);
-
             }
-            console.log('convertToArray returning data');
             return reversedPostData;
         }
 

@@ -13,22 +13,23 @@ namespace friendlyPix {
     function friendlyFirebaseFactory(latinize, $firebaseAuth, firebase,
         $q, FbOarService, $firebaseArray, $firebaseObject, $rootScope) {
         // setup
-        var vm = this;
-        vm.auth = $firebaseAuth();
-        vm.user = $firebaseAuth().$getAuth();
-        vm.database = firebase.database();
-        vm.storage = firebase.storage();
-        vm.firebaseArray = $firebaseArray;
-        vm.getPosts = getPosts;
-        vm.deleteFromFeed = deleteFromFeed;
-        vm._getPaginatedFeed = _getPaginatedFeed;
-        vm.updateHomeFeeds = updateHomeFeeds;
-        vm.getPostData = getPostData;
-        vm.$q = $q;
-        vm.rootScope = $rootScope;
+        var self = this;
+        self.auth = $firebaseAuth();
+        self.user = $firebaseAuth().$getAuth();
+        self.currentUserUid = self.user.uid;
+        self.database = firebase.database();
+        self.storage = firebase.storage();
+        self.firebaseArray = $firebaseArray;
+        self.getPosts = getPosts;
+        self.deleteFromFeed = deleteFromFeed;
+        self._getPaginatedFeed = _getPaginatedFeed;
+        self.updateHomeFeeds = updateHomeFeeds;
+        self.getPostData = getPostData;
+        self.$q = $q;
+        self.rootScope = $rootScope;
 
         // Firebase references that are listend to
-        vm.firebaseRefs = [];
+        self.firebaseRefs = [];
 
 
 
@@ -36,7 +37,6 @@ namespace friendlyPix {
         // private values*?  think that is wrong to think it should be private
         var POSTS_PAGE_SIZE = 20,
             USER_PAGE_POSTS_PAGE_SIZE = 6;
-
 
         return {
             saveUserData: saveUserData,
@@ -50,11 +50,28 @@ namespace friendlyPix {
             subscribeToComments: subscribeToComments,
             addComment: addComment,
             getCommentsNew: getCommentsNew,
-            getPostsTest: getPostsTest
+            getPostsTest: getPostsTest,
+            registerToFollowStatusUpdate: registerToFollowStatusUpdate,
+            cancelAllSubscriptions: cancelAllSubscriptions
         };
 
 
         // Staging
+
+
+
+        function registerToFollowStatusUpdate(userPageUid, callback) {
+            if (self.currentUserUid) {
+                let followStatusRef = self.database.ref(`/people/${self.currentUserUid}/following/${userPageUid}`);
+                // Get and track follow state
+                followStatusRef.on('value', callback);
+                // TODO: add to firebase refs
+                self.firebaseRefs.push(followStatusRef);
+            }
+
+        }
+
+
         function getCommentsNew(postId) {
             return _getPaginatedFeedNew(`/comments/${postId}`, 5, null, false);
         }
@@ -67,7 +84,7 @@ namespace friendlyPix {
          *  should be a getter
          */
         function getPosts() {
-            return vm._getPaginatedFeed('/posts/', 5);
+            return self._getPaginatedFeed('/posts/', 5);
         }
 
 
@@ -89,8 +106,8 @@ namespace friendlyPix {
          * [_getPaginatedFeed description]
          */
         function _getPaginatedFeedTest(uri, pageSize, earliestEntryId = null, fetchPostDetails = false) {
-            console.log('_getPaginatedFeedTest is called');
-            let ref = vm.database.ref(uri);
+
+            let ref = self.database.ref(uri);
 
             if (earliestEntryId) {
                 ref = ref.orderByKey().endAt(earliestEntryId);
@@ -108,7 +125,7 @@ namespace friendlyPix {
                 if (entryIds.length > pageSize) {
                     delete entries[entryIds[0]];
                     const nextPageStartingId = entryIds.shift();
-                    console.log('nextPageStartingId', nextPageStartingId);
+
                     nextPage = () => _getPaginatedFeedTest(
                         uri, pageSize, nextPageStartingId, fetchPostDetails
                     );
@@ -118,10 +135,10 @@ namespace friendlyPix {
                 //     // Fetch details of all posts
                 //     // TODO:
                 //     // firebase-fp.service.ts#L537
-                //     const queries = entryIds.map(postId => vm.getPostData(postId));
+                //     const queries = entryIds.map(postId => self.getPostData(postId));
                 //     // Since all the requests are being done on the same feed it's unlikely that a single 1
                 //     // would fail and not the others so using promise.all(q.all)  is not so risky
-                //     return vm.$q.all(queries).then(results => {
+                //     return self.$q.all(queries).then(results => {
                 //         const deleteOps = [];
                 //         results.forEach(result => {
                 //             if (result.val()) {
@@ -131,12 +148,12 @@ namespace friendlyPix {
                 //                 //
                 //                 delete entries[result.key]; // TODO: why is this here?
                 //                 // needs a method
-                //                 deleteOps.push(vm.deleteFromFeed(uri, result.key));
+                //                 deleteOps.push(self.deleteFromFeed(uri, result.key));
                 //             }
                 //         });
                 //         if (deleteOps.length > 0) {
                 //             // todo;
-                //             return vm._getPaginatedFeed(uri, pageSize, earliestEntryId, fetchPostDetails);
+                //             return self._getPaginatedFeed(uri, pageSize, earliestEntryId, fetchPostDetails);
                 //         }
                 //         return { entries: entries, nextPage: nextPage };
                 //     });
@@ -152,8 +169,8 @@ namespace friendlyPix {
          * [_getPaginatedFeed description]
          */
         function _getPaginatedFeed(uri, pageSize, earliestEntryId = null, fetchPostDetails = false) {
-            console.log('_getPaginatedFeed is called');
-            let ref = vm.database.ref(uri);
+
+            let ref = self.database.ref(uri);
 
             // ??
             if (earliestEntryId) {
@@ -170,7 +187,7 @@ namespace friendlyPix {
                 if (entryIds.length > pageSize) {
                     delete entries[entryIds[0]];
                     const nextPageStartingId = entryIds.shift();
-                    nextPage = () => vm._getPaginatedFeed(
+                    nextPage = () => self._getPaginatedFeed(
                         uri, pageSize, nextPageStartingId, fetchPostDetails
                     );
                 }
@@ -179,25 +196,25 @@ namespace friendlyPix {
                     // Fetch details of all posts
                     // TODO:
                     // firebase-fp.service.ts#L537
-                    const queries = entryIds.map(postId => vm.getPostData(postId));
+                    const queries = entryIds.map(postId => self.getPostData(postId));
                     // Since all the requests are being done on the same feed it's unlikely that a single 1
                     // would fail and not the others so using promise.all(q.all)  is not so risky
-                    return vm.$q.all(queries).then(results => {
+                    return self.$q.all(queries).then(results => {
                         const deleteOps = [];
                         results.forEach(result => {
                             if (result.val()) {
-                                console.log(result.key, 'result.key');
+
                                 entries[result.key] = result.val();
                             } else {
                                 //
                                 delete entries[result.key]; // TODO: why is this here?
                                 // needs a method
-                                deleteOps.push(vm.deleteFromFeed(uri, result.key));
+                                deleteOps.push(self.deleteFromFeed(uri, result.key));
                             }
                         });
                         if (deleteOps.length > 0) {
                             // todo;
-                            return vm._getPaginatedFeed(uri, pageSize, earliestEntryId, fetchPostDetails);
+                            return self._getPaginatedFeed(uri, pageSize, earliestEntryId, fetchPostDetails);
                         }
                         return { entries: entries, nextPage: nextPage };
                     });
@@ -215,18 +232,18 @@ namespace friendlyPix {
                 text: commentText,
                 timestamp: Date.now(),
                 author: {
-                    uid: vm.user.uid,
-                    full_name: vm.user.displayName,
-                    profile_picture: vm.user.photoURL
+                    uid: self.user.uid,
+                    full_name: self.user.displayName,
+                    profile_picture: self.user.photoURL
                 }
             };
-            console.log('commentObj in friendlyFire', commentObj);
 
-            let ref = vm.database.ref(`comments/${postId}`);
+
+            let ref = self.database.ref(`comments/${postId}`);
             let list = $firebaseArray(ref);
             list.$add(commentObj).then(function(ref) {
                 var id = ref.key;
-                console.log('added record with id ' + id);
+
                 list.$indexFor(id); // returns location in the array
             });
 
@@ -238,12 +255,12 @@ namespace friendlyPix {
 
         // TODO: comment size parameter needs a static value
         function getComments(postId) {
-            return vm._getPaginatedFeed(`/comments/${postId}`, 5, null, false);
+            return self._getPaginatedFeed(`/comments/${postId}`, 5, null, false);
         }
 
         function getProfileFeed() {
 
-            return vm._getPaginatedFeed(`people/${vm.user.uid}/posts`, 100, null, true);
+            return self._getPaginatedFeed(`people/${self.user.uid}/posts`, 100, null, true);
 
 
         }
@@ -255,23 +272,20 @@ namespace friendlyPix {
 
         function _subscribeToFeed(uri, latestEntryId = null, fetchPostDetails = false) {
             // load all posts information.
-            let feedRef = vm.database.ref(uri);
+            let feedRef = self.database.ref(uri);
             if (latestEntryId) {
                 feedRef = feedRef.orderByKey().startAt(latestEntryId);
             }
             feedRef.on('child_added', (feedData) => {
-                console.log('feedData.key', feedData.key);
-                console.log('feedData.val()', feedData.val());
-
                 if (feedData.key !== latestEntryId) {
                     // TODO: add the else for the post(not comment) subscriptions
                     if (!fetchPostDetails) {
-                        // vm.rootScope.$apply();
+                        // self.rootScope.$apply();
                     }
                 }
 
             });
-            vm.firebaseRefs.push(feedRef);
+            self.firebaseRefs.push(feedRef);
         }
 
         // function getGeneralFeed(parameter) {
@@ -281,13 +295,16 @@ namespace friendlyPix {
         ////////// END OF STAGING
 
 
+
+        /********* Auth Methods *********/
+
         /**
          * saveUserData
          * Saves or updates public user data in Firebase (such as image URL,
          * display name...).
          */
         function saveUserData(imageUrl, displayName) {
-            var user = vm.auth.$getAuth();
+            var user = self.auth.$getAuth();
             if (!displayName) {
                 displayName = 'Anonymous';
             }
@@ -307,14 +324,14 @@ namespace friendlyPix {
                     reversed_full_name: searchReversedFullName
                 }
             };
-            return vm.database.ref(`people/${user.uid}`).update(updateData);
+            return self.database.ref(`people/${user.uid}`).update(updateData);
         }
 
 
         function uploadNewPic(pic, thumb, fileName, text) {
             console.log(text, 'text');
             // Start the pic file upload to Firebase Storage
-            var picRef = vm.storage.ref(`${vm.user.uid}/full/${Date.now()}/${fileName}`);
+            var picRef = self.storage.ref(`${self.user.uid}/full/${Date.now()}/${fileName}`);
             var metadata = {
                 contentType: pic.type
             };
@@ -327,7 +344,7 @@ namespace friendlyPix {
                 console.error('Error while uploading new pic', error);
 
             });
-            var thumbRef = vm.storage.ref(`${vm.user.uid}/thumb/${Date.now()}/${fileName}`);
+            var thumbRef = self.storage.ref(`${self.user.uid}/thumb/${Date.now()}/${fileName}`);
             var thumbUploadTask = thumbRef.put(thumb, metadata).then(snapshot => {
                 console.log('New thumbRefthumbRefthumbRefthumbRef uploaded. Size in bytes:', snapshot.totalBytes);
                 var url = snapshot.metadata.downloadURLs[0];
@@ -341,7 +358,7 @@ namespace friendlyPix {
                 // Once both pics and thumbnails has been uploaded add a
                 //  new post in the firebase database and to expand outpost
                 //  lists(users posts & home post).
-                var newPostKey = vm.database.ref('/posts').push().key;
+                var newPostKey = self.database.ref('/posts').push().key;
                 var update = {};
                 update[`/posts/${newPostKey}`] = {
                     full_url: urls[0],
@@ -351,22 +368,39 @@ namespace friendlyPix {
                     full_storage_uri: picRef.toString(),
                     thumb_storage_uri: thumbRef.toString(),
                     author: {
-                        uid: vm.user.uid,
-                        full_name: vm.user.displayName,
-                        profile_picture: vm.user.photoURL
+                        uid: self.user.uid,
+                        full_name: self.user.displayName,
+                        profile_picture: self.user.photoURL
                     }
                 };
-                update[`/people/${vm.user.uid}/posts/${newPostKey}`] = true;
-                update[`/feed/${vm.user.uid}/${newPostKey}`] = true;
-                return vm.database.ref().update(update).then(() => newPostKey);
+                update[`/people/${self.user.uid}/posts/${newPostKey}`] = true;
+                update[`/feed/${self.user.uid}/${newPostKey}`] = true;
+                return self.database.ref().update(update).then(() => newPostKey);
             });
 
         } // uploadNewPic
 
 
+
+        /********* Feeds Methods *********/
+
+
+        function getHomeFeedPosts() {
+            return _getPaginatedFeed(`/feed/${self.user.uid}/`,
+                POSTS_PAGE_SIZE, null, true);
+        }
+
+        /**
+          * Deletes the given postId entry from the user's home feed.
+          */
+        function deleteFromFeed(uri, postId) {
+            return this.database.ref(`${uri}/${postId}`).remove();
+        }
+
+
         function updateHomeFeeds() {
             // Gets current authorized user/following reference*
-            var followingRef = vm.database.ref(`/people/${vm.user.uid}/following`);
+            var followingRef = self.database.ref(`/people/${self.user.uid}/following`);
 
             // return an empty promise
             return followingRef.once('value', followingData => {
@@ -377,7 +411,7 @@ namespace friendlyPix {
                 }
                 var updateOperations = Object.keys(following).map(followedUid => {
                     // Get followed users posts set up
-                    var followedUserPostsRef = vm.database.ref(`/people/${followedUid}/posts`);
+                    var followedUserPostsRef = self.database.ref(`/people/${followedUid}/posts`);
                     // lastSyncedPostId is stored with the following/followedUsersUid  under the current user
                     var lastSyncedPostId = following[followedUid];
                     // Only add posts not previously synced - using startat
@@ -395,17 +429,20 @@ namespace friendlyPix {
                         // store in the updates object
                         Object.keys(postData.val()).forEach(postId => {
                             if (postId !== lastSyncedPostId) {
-                                updates[`/feed/${vm.user.uid}/${postId}`] = true;
-                                updates[`/people/${vm.user.uid}/following/${followedUid}`] = postId;
+                                updates[`/feed/${self.user.uid}/${postId}`] = true;
+                                updates[`/people/${self.user.uid}/following/${followedUid}`] = postId;
                             }
                         });
                         // update database with update object(filled with the information above)
-                        return vm.database.ref().update(updates);
+                        return self.database.ref().update(updates);
                     });
                 });
                 return $q.all(updateOperations);
             });
         }
+
+
+        /********* UserPage Methods *********/
 
 
         /**
@@ -418,9 +455,9 @@ namespace friendlyPix {
             // add or removed posts from users homepage
             // TODO: How do you inject firebase rough with followed uid
             // Can establish it in the controller
-            // console.log(vm.user.uid, 'vm.user.uid inside toggle follow');
+            // console.log(self.user.uid, 'self.user.uid inside toggle follow');
             // console.log(followedUserId, 'followedUserId');
-            return vm.database.ref(`/people/${followedUserId}/posts`).once('value')
+            return self.database.ref(`/people/${followedUserId}/posts`).once('value')
                 .then(data => {
 
                     const updateData = {};
@@ -429,45 +466,38 @@ namespace friendlyPix {
                     console.log(follow, 'follow');
                     // add followed users post to home feed
                     data.forEach(post => {
-                        // updateData[`/feed/${vm.user.uid}/${post.key}`] =
+                        // updateData[`/feed/${self.user.uid}/${post.key}`] =
                         //     follow ? !!follow : null;
                         lastPostId = post.key;
                     });
                     // console.log(updateData, 'sport');
 
                     // Add followed user to the 'following' list.
-                    updateData[`/people/${vm.user.uid}/following/${followedUserId}`] =
+                    updateData[`/people/${self.user.uid}/following/${followedUserId}`] =
                         follow ? lastPostId : null;
 
                     // And the to the was the followers
-                    updateData[`/followers/${followedUserId}/${vm.user.uid}`] =
+                    updateData[`/followers/${followedUserId}/${self.user.uid}`] =
                         follow ? !!follow : null;
-                        
-                    return vm.database.ref().update(updateData);
+
+                    return self.database.ref().update(updateData);
                 });
 
         }
 
-        function getHomeFeedPosts() {
-            return _getPaginatedFeed(`/feed/${vm.user.uid}/`,
-                POSTS_PAGE_SIZE, null, true);
-        }
-
-
-
-
         /**
-          * Deletes the given postId entry from the user's home feed.
-          */
-        function deleteFromFeed(uri, postId) {
-            return this.database.ref(`${uri}/${postId}`).remove();
+         * Turns off and clears Firebase listeners  ( prevents memory leaks)
+         *
+         */
+        function cancelAllSubscriptions() {
+            self.firebaseRefs.forEach((ref) => {
+                ref.off();
+            });
+            self.firebaseRefs = [];
         }
-
 
 
     } // factory
-
-
 
 
 }

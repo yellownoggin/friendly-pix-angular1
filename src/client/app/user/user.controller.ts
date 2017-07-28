@@ -22,6 +22,9 @@ namespace friendlyPix {
 
 
         vm.$onInit = () => {
+            console.log('friendlyFire.firebaseRefs', friendlyFire.firebaseRefs);
+            friendlyFire.cancelAllSubscriptions();
+
             if (vm.authedUser) {
                 vm.authedUserId = vm.authedUser.uid;
             }
@@ -47,73 +50,13 @@ namespace friendlyPix {
             vm.showToggleFollow = showToggleFollow;
             vm.toggleFollowUserTest = toggleFollowUserTest;
             vm.toggleFollowUser = toggleFollowUser;
+            trackFollowStatus();
 
-            registerToFollowStatusUpdate(vm.userPageUsersId); 
-
-
-            // TODO: may have to go into a route resolve (remember state parameters
-            // will be needed in a change to the method parameters current user & user page user)
-            // Updata: works with out being in route guess because the data is here already and controller
-            //  seems like it will update the promise at least once - will not work with watchers (multiple
-            //  promise fills after the instantiation)
-            // trackFollowStatus().then((data) => {
-            //     // do somethings this the follow button
-            //     // enable it as well
-            //     // change the label from following to follow
-            //     // refreshswitchstate??
-            //     // TODO: try the ternary
-            //     console.log('follow status');
-            //     vm.currentFollowedState = data.val() !== null;
-            //     vm.followLabel = data.val() ? 'Following' : 'Follow';
-            //     console.log('vm.currentFollowedState', vm.currentFollowedState);
-            //     console.log('vm.followLabel ', vm.followLabel);
-            // });
-
-            // TODO: this calls on contoller instantiation
-            // 1. should I not have the first call (dry)
-            // 2. Is this the proper behavior.
-        //     vm.authObj.$onAuthStateChanged((fbUser) => {
-        //         trackFollowStatus().then((data) => {
-        //             console.log('on auth state changed');
-        //             // do somethings this the follow button
-        //             // enable it as well
-        //             // change the label from following to follow
-        //             // refreshswitchstate??
-        //             // TODO: try the ternary
-        //             vm.currentFollowedState = data.val() !== null;
-        //             vm.followLabel = data.val() ? 'Following' : 'Follow';
-        //             console.log('vm.currentFollowedState', vm.currentFollowedState);
-        //             console.log('vm.followLabel ', vm.followLabel);
-        //
-        //
-        //         });
-        //     });
-        //
         };
         // Controller methods
 
 
         // Staging
-
-        function registerToFollowStatusUpdate(userPageUid) {
-
-            if (vm.currentUserUid) {
-
-                let followingStatusRef = vm.database.ref(`/people/${vm.currentUserUid}/following/${userPageUid}`);
-                // TODO: try catch on this type of method (on) since there is no documentation showing a error callback
-                followingStatusRef.on('value', (data) => {
-                    vm.currentFollowedState = data.val() !== null;
-                    vm.followLabel = data.val() ? 'Following' : 'Follow';
-                    console.log('follow status watcher');
-                    console.log('data.val()', data.val());
-                    // TODO: add to firebase refs
-                });
-            }
-
-        }
-
-
-
 
         function getUserPagePostsCount(postsRef) {
             if (postsRef) {
@@ -123,38 +66,6 @@ namespace friendlyPix {
                 return '0';
             }
         }
-
-
-
-        // followbutton (knowing the curent follow state)
-        // and then tracking it when changes
-        /**
-         * Starts tracking the "Follow" checkbox status
-         * Requires the current user id and the userpage's user's id
-         */
-        function trackFollowStatus() {
-            if (vm.currentUserUid) {
-                // regitertofollowstatusupdate
-                return registerToFollowStatusUpdate(vm.userPageUsersId);
-
-            }
-        }
-
-        //
-        // function registerToFollowStatusUpdate(userPageUid) {
-        //     let defer = $q.defer();
-        //
-        //     let followingStatusRef = vm.database.ref(`/people/${vm.currentUserUid}/following/${userPageUid}`);
-        //     // TODO: try catch on this type of method (on) since there is no documentation showing a error callback
-        //     followingStatusRef.on('value', (data) => {
-        //         console.log('follow status watcher');
-        //         console.log('data.val()', data.val());
-        //         defer.resolve(data);
-        //         // TODO: add to firebase refs
-        //     });
-        //
-        //     return defer.promise;
-        // }
 
 
 
@@ -204,17 +115,8 @@ namespace friendlyPix {
 
 
         function toggleFollowUserTest(followedUserId, followState) {
-            // https://docs.angularjs.org/api/ng/directive/ngChange
-            // console.log('toggleFollowUserTest', toggleFollowUserTest);
-            console.log('followState', followState);
-            console.log('followedUserId', followedUserId);
-            // A. add followedUserId's posts to feed/currentUserUid/   = true
-            // 1. get the followedUsersPosts
-            // 2. store individual followedUserId posts refs = followState(null if false)
-            //      - stored in an update Object
-            // 3. collect the latestPostId of followedUserId (why?)
-            // beyond using it in the following ref TODO:
-            // return?
+
+            // A. add followedUserId's posts to feed/currentUserUid/ = boolean
             return vm.database.ref(`/people/${followedUserId}/posts`).once('value').then((data) => {
                 const updateData = {};
                 let lastPostId = true;
@@ -230,22 +132,35 @@ namespace friendlyPix {
                 // C. add this current logged in user to followers/followingId/currentUserUid
                 updateData[`/followers/${followedUserId}/${vm.currentUserUid}/`] =
                     followState ? !!followState : null;
-
                 return vm.database.ref().update(updateData);
             })
                 .catch((e) => { console.log('e', e); });
         }
 
         function showToggleFollow(currentUserUid, userProfileId) {
-            // console.log('currentUserUid', currentUserUid);
-            // console.log('userProfileId', userProfileId);
-            // console.log('currentUserUid === userProfileI', currentUserUid === userProfileId);
             let a = currentUserUid === userProfileId ? true : false;
             return a;
         }
 
         // End of Staging
 
+
+        ///// Control Methods
+
+        /**
+         * Starts tracking the "Follow" checkbox status
+         * Requires the current user id and the userpage's user's id
+         */
+        function trackFollowStatus() {
+            if (vm.currentUserUid) {
+                // regitertofollowstatusupdate
+                friendlyFire.registerToFollowStatusUpdate(vm.userPageUsersId, (data) => {
+                    vm.currentFollowedState = data.val() !== null;
+                    vm.followLabel = data.val() ? 'Following' : 'Follow';
+                });
+
+            }
+        }
 
 
 

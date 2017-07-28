@@ -7,7 +7,7 @@ namespace friendlyPix {
         .service('FbOarService', FbOarService);
 
     function FbOarService($firebaseArray, $firebaseRef, $firebaseAuth, firebase) {
-        console.log('hello from array service');
+        
         // set up
         var vm = this;
         vm.currentUser = $firebaseAuth().$getAuth();

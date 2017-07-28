@@ -14,33 +14,16 @@
 
             <div class="" ng-show="!uc.showToggleFollow(uc.authedUser.uid, uc.personObj.$id)">
                 <label>{{uc.followLabel}}  <input type="checkbox" ng-model="uc.currentFollowedState" ng-change="uc.toggleFollowUserTest(uc.personObj.$id, uc.currentFollowedState)"></label>
-                <div class="">
-                    {{uc.currentFollowedState}}
-                </div>
-                authData authData  authData
             </div>
             <div class="fp-user-username"><span>Posts</span>: {{uc.personObjPostsCount}}</div>
-
-
-
         </div>
-        <!-- <div class="">
-            <div class="">
-                personObj
-            </div>
-            <div class="">
-                {{uc.personObj.posts | json}}
-            </div>
-        </div> -->
-
-
-
     </div>
+
+    <!-- Feed -->
     <div layout="row" layout-wrap="">
         <!-- <div class="">
             {{uc._userFeedData | json}}
         </div> -->
-
         <!-- TODO:  flex 50 not working to what I expect
         flex-gt-xs="50"
         Also: the pics are coming out oldest to newest... 1. reverse it from controller or service - but real solution is the code from - app firebase.js
