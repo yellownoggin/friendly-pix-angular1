@@ -21,9 +21,9 @@ namespace friendlyPix {
                                 return AuthService.Auth().$getAuth();
                             },
                             profileData: ($stateParams, firebase, $firebaseObject) => {
-                                return getCurrentProfileData();
+                                return getCurrentProfileMetaData();
 
-                                function getCurrentProfileData() {
+                                function getCurrentProfileMetaData() {
                                     let urlUid = $stateParams.uid;
                                     let pic;
                                     const personRef = firebase.database().ref('people').child(urlUid);
@@ -32,6 +32,12 @@ namespace friendlyPix {
                                     });
                                 }
 
+                            },
+                            profileFeedData: (friendlyFire, $stateParams, feeds) => {
+                                return friendlyFire.getUsersPageFeedPosts($stateParams.uid).then((data) => {
+                                    console.log('profile data in the resolve', data);
+                                    return data;
+                                 });
                             }
                         }
 

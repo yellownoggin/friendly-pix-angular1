@@ -6,7 +6,7 @@ namespace friendlyPix {
         .controller('UserController', UserController);
 
     function UserController($stateParams, friendlyFire, $firebaseAuth,
-        currentUser, firebase, $firebaseObject, profileData, feeds, $q, $scope, $firebaseArray, followingUsers) {
+        currentUser, firebase, $firebaseObject, profileData, feeds, $q, $scope, $firebaseArray, profileFeedData) {
         //   _userFeedData
         console.log('User Controller Instantiated');
         var vm = this;
@@ -19,7 +19,6 @@ namespace friendlyPix {
 
         // TODO: nm refers to object for new code controller needs re-factor
         // (currentUser info may come from resolve versus state parameters)
-
 
         vm.$onInit = () => {
             // TODO: add this to
@@ -45,6 +44,8 @@ namespace friendlyPix {
 
 
 
+
+
             // Following behavior
             // toggleFollowUser
             // let currentUsersProfile =
@@ -58,20 +59,73 @@ namespace friendlyPix {
             vm.showFollowingProfiles = false;
             vm.displayFollowing = displayFollowing;
 
+            /*  User Page Posts Feed */
+            // TODO: probably best in the route resolce like general
+            vm.posts = null;
+            vm.nextPage = null;
+            vm.posts = feeds.convertToArray(profileFeedData.entries);
+            vm.nextPage = profileFeedData.nextPage;
+
+            // friendlyFire.getUsersPageFeedPosts(vm.userPageUsersId).then((data) => {
+            //     vm.posts = feeds.convertToArray(data.entries);
+            //     vm.nextPage = data.nextPage;
+            //     console.log('nextPage', vm.nextPage);
+            //  });
+            // Pagination
+            vm.concatNextPageUserPage = concatNextPageUserPage;
+            vm.busy = false;
+
         };
         // onInit
 
-        // Controller methods
+
 
 
         // Staging
 
+        // TODO: can make this more generic to be used in multiple controllers(feeds)
+        // Slightly different then the general feed concatNextPage method
+        // 1. uses a button (versus infinite scroll)
+        // 2. uses posts insted of entries (easy change)
+        // 3. to be more universal, need to pass controller values as parameters
+        function concatNextPageUserPage() {
+            console.log('next page called');
+            // 1. Prevents from multiple calls of same nextPage on scroll()
+            // 2. Returns at the end of posts
+            if (vm.busy === true) {
+                return;
+            } else if (typeof vm.nextPage !== 'function') {
+                console.log('No more posts');
+                return;
+            }
+
+            // Sets pagination to busy state preventint multiple calls
+            vm.busy = true;
+            vm.nextPage().then((data) => {
+
+                var newData = [];
+                // TODO: convertToArray should be shared friendlyHelper methods
+                newData = feeds.convertToArray(data.entries);
+                vm.nextPage = data.nextPage;
+                vm.posts = vm.posts.concat(newData);
+                console.log('vm.posts', vm.posts);
+                vm.busy = false;
+                $scope.$apply(vm.posts);
+            });
+        }
+
+
+        // End of Staging
+
+
+
+        ////////// Controller methods
 
         // getFollowingProfiles
 
         function displayFollowing() {
             if (vm.showFollowingProfiles === false) {
-                 friendlyFire.getFollowingProfiles(vm.userPageUsersId)
+                friendlyFire.getFollowingProfiles(vm.userPageUsersId)
                     .then((profiles) => {
                         vm.followingProfiles = feeds.convertToArray(profiles);
                         vm.showFollowingProfiles = true;
@@ -171,7 +225,7 @@ namespace friendlyPix {
             return a;
         }
 
-        // End of Staging
+
 
 
         ///// Control Methods

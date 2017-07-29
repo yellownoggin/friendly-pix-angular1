@@ -24,7 +24,9 @@
         testing show: {{uc.showFollowingProfiles}}
     </div>
     <div class="" layout="row" ng-show="uc.showFollowingProfiles">
-
+        <div class="">
+            testing show
+        </div>
         <div class="fp-name-follow-container" layout="column" ng-repeat="user in uc.followingProfiles">
             <div class="">
                 <div class="">
@@ -39,6 +41,22 @@
         </div>
     </div>
 
+    <!-- TODO: no poss -->
+    <div class="" layout="row" layout-wrap>
+
+        <!-- {{uc.posts | json }} -->
+        <div class="fp-name-follow-container" layout="column" ng-repeat="post in uc.posts track by $index">
+            <div class="">
+                <div class="">
+                    {{post.value.text}}
+                </div>
+            </div>
+            <div class="">
+                <div class="fp-user-avatar" ng-style="{'background-image': 'url(' +    post.value.thumb_url + ')'}"></div>
+            </div>
+        </div>
+    </div>
+    <button type="button" ng-click="uc.concatNextPageUserPage()">More</button>
     <!-- Feed -->
     <div layout="row" layout-wrap="">
         <!-- <div class="">

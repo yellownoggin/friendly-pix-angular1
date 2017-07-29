@@ -56,12 +56,57 @@ namespace friendlyPix {
             getFollowers: getFollowers,
             destroyArrayListeners: destroyArrayListeners,
             getFollowing: getFollowing,
-            getFollowingProfiles: getFollowingProfiles
+            getFollowingProfiles: getFollowingProfiles,
+            getUsersPageFeedPosts: getUsersPageFeedPosts
 
         };
 
 
         // Staging
+
+        // GetUsersPageFeed
+
+        function getUsersPageFeedPosts(userPageUid) {
+            return self._getPaginatedFeed(`/people/${userPageUid}/posts`, 5, null, true);
+        }
+
+        // function getUsersPageFeedPosts(userPageUsersId, postNumber, earliestEntryId, postDetails) {
+        //     console.log('getUsersPageFeedPosts called');
+        //     let ref = self.database.ref(`/people/${userPageUsersId}/posts`);
+        //
+        //     if (earliestEntryId) {
+        //         ref = ref.orderByKey.endAt(earliestEntryId);
+        //     }
+        //
+        //
+        //     return ref.orderByKey().limitToLast(postNumber + 1).once('value').then((data) => {
+        //         // console.log('data', value);
+        //         // Get the first key(for the nextPage);
+        //         let entries = data.val() || {};
+        //
+        //             if (data.val()) {
+        //                 let entryIds = Object.keys(entries);
+        //                 const b = postIds.map((postId) => {
+        //                     console.log('posId', postId);
+        //                     return self.database.ref(`/posts/${postId}`).once('value');
+        //
+        //                 });
+        //
+        //                 return $q.all(b).then((results) => {
+        //                     const posts = {};
+        //                     results.forEach((result) => {
+        //                         posts[result.key] = result.val();
+        //                     });
+        //                     return posts;
+        //                 });
+        //
+        //             } else {
+        //                 return;
+        //
+        //             }
+        //
+        //     });
+        // }
 
 
 
@@ -156,7 +201,7 @@ namespace friendlyPix {
         * Fetches a single post data.
         */
         function getPostData(postId) {
-            let ref = this.database.ref(`/posts/${postId}`).once('value');
+            return self.database.ref(`/posts/${postId}`).once('value');
         }
 
         function getPostsTest() {
@@ -259,12 +304,17 @@ namespace friendlyPix {
                     // Fetch details of all posts
                     // TODO:
                     // firebase-fp.service.ts#L537
-                    const queries = entryIds.map(postId => self.getPostData(postId));
+                    // console.log('postId', entryIds);
+                    const queries = entryIds.map(postId => {
+                        console.log('postId', postId);
+                        return self.getPostData(postId);
+                    });
                     // Since all the requests are being done on the same feed it's unlikely that a single 1
                     // would fail and not the others so using promise.all(q.all)  is not so risky
                     return self.$q.all(queries).then(results => {
                         const deleteOps = [];
                         results.forEach(result => {
+                            console.log('result', result);
                             if (result.val()) {
 
                                 entries[result.key] = result.val();
