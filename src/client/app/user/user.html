@@ -17,10 +17,14 @@
             </div>
             <div class="fp-user-username"><span>Posts</span>: {{uc.personObjPostsCount}}</div>
             <div class="fp-user-username"><span>Followers</span>: {{uc.followersCount.length}}</div>
-            <div class="fp-user-username"><span>Following</span>: {{uc.following.length}}</div>
+            <div class="fp-user-username"><span><a href ng-click="uc.displayFollowing()">Following</a></span>: {{uc.following.length}}</div>
         </div>
     </div>
-    <div class="" layout="row">
+    <div class="">
+        testing show: {{uc.showFollowingProfiles}}
+    </div>
+    <div class="" layout="row" ng-show="uc.showFollowingProfiles">
+
         <div class="fp-name-follow-container" layout="column" ng-repeat="user in uc.followingProfiles">
             <div class="">
                 <div class="">

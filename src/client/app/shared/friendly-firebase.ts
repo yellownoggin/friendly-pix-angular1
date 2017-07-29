@@ -75,6 +75,7 @@ namespace friendlyPix {
                             return self.database.ref(`/people/${followingUid}`).once('value');
                         });
                         return $q.all(fetchProfileDetailOperations).then((results) => {
+                            console.log('results', results);
                             const profiles = {};
                             results.forEach((result) => {
 

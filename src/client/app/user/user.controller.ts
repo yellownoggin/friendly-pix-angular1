@@ -48,24 +48,15 @@ namespace friendlyPix {
             // Following behavior
             // toggleFollowUser
             // let currentUsersProfile =
+            vm.showFollowingProfiles = false;
             vm.showToggleFollow = showToggleFollow;
             vm.toggleFollowUserTest = toggleFollowUserTest;
             vm.toggleFollowUser = toggleFollowUser;
             trackFollowStatus();
             vm.followersCount = friendlyFire.getFollowers(vm.userPageUsersId);
             vm.following = friendlyFire.getFollowing(vm.userPageUsersId);
-            vm.followingProfiles = followingUsers;
-
-
-            // This works as well going with resolve for now it is is cleaner;
-        //     friendlyFire.getFollowingProfiles(vm.userPageUsersId)
-        //         .then((profiles) => {
-        //             let a = feeds.convertToArray(profiles);
-        //             vm.followingProfiles = a;
-        //         });
-        //
-        //         console.log('vm.followingProfiles', vm.followingProfiles);
-
+            vm.showFollowingProfiles = false;
+            vm.displayFollowing = displayFollowing;
 
         };
         // onInit
@@ -76,7 +67,23 @@ namespace friendlyPix {
         // Staging
 
 
-        // getfollowers  count
+        // getFollowingProfiles
+
+        function displayFollowing() {
+            if (vm.showFollowingProfiles === false) {
+                 friendlyFire.getFollowingProfiles(vm.userPageUsersId)
+                    .then((profiles) => {
+                        vm.followingProfiles = feeds.convertToArray(profiles);
+                        vm.showFollowingProfiles = true;
+                        $scope.$apply();
+                    });
+            } else {
+                vm.showFollowingProfiles = false;
+                vm.followingProfiles = [];
+            }
+
+
+        }
 
 
 
