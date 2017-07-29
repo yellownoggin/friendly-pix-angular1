@@ -46,14 +46,16 @@
 
         <!-- {{uc.posts | json }} -->
         <div class="fp-name-follow-container" layout="column" ng-repeat="post in uc.posts track by $index">
-            <div class="">
+            <a href ui-sref="home.post({postId:post.key})">
                 <div class="">
-                    {{post.value.text}}
+                    <div class="">
+                        {{post.value.text}}
+                    </div>
                 </div>
-            </div>
-            <div class="">
-                <div class="fp-user-avatar" ng-style="{'background-image': 'url(' +    post.value.thumb_url + ')'}"></div>
-            </div>
+                <div class="">
+                    <div class="fp-user-avatar" ng-style="{'background-image': 'url(' +    post.value.thumb_url + ')'}"></div>
+                </div>
+            </a>
         </div>
     </div>
     <button type="button" ng-click="uc.concatNextPageUserPage()">More</button>

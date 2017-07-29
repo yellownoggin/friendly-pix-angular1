@@ -13,6 +13,7 @@ namespace  friendlyPix {
             'app.shared',
             'app.addPicture',
             'app.user',
+            'app.post',
             'angular.filter',
             'infinite-scroll'
         ]);

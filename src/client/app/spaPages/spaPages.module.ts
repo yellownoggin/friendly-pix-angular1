@@ -2,8 +2,8 @@ namespace friendlyPix {
     'use strict';
 
     angular
-        .module('app.spaPages', ['ui.router', 'firebase'])
-        .config(initRouter);
+        .module('app.spaPages', ['ui.router', 'firebase']);
+        // .config(initRouter);
 
     /**
      * initRouter - configure routes for spa pages
@@ -14,26 +14,19 @@ namespace friendlyPix {
 
       // TODO: clean up home.post route
     // @ngInject
-    function initRouter($stateProvider) {
-        $stateProvider
-            .state('home.post', {
-                url: 'post/:postId',
-                views: {
-                    content: {
-                        controller: 'PostController',
-                        controllerAs: 'pc',
-                        templateUrl: 'app/spaPages/post.html'
-                    }
-                }
-            });
-    }
-
-
-    function PostController(uploadHelper) {
-        console.log('Post Controller Instantiated');
-        var vm = this;
-
-    }
+    // function initRouter($stateProvider) {
+    //     $stateProvider
+    //         .state('home.post', {
+    //             url: 'post/:postId',
+    //             views: {
+    //                 content: {
+    //                     controller: 'PostController',
+    //                     controllerAs: 'pc',
+    //                     templateUrl: 'app/spaPages/post.html'
+    //                 }
+    //             }
+    //         });
+    // }
 
 
 
