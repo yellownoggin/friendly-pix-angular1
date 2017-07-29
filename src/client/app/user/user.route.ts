@@ -32,19 +32,22 @@ namespace friendlyPix {
                                     });
                                 }
 
+                            },
+                            followingUsers: ($stateParams, friendlyFire, feeds) => {
+                                return friendlyFire.getFollowingProfiles($stateParams.uid)
+                                    .then((profiles) => {
+                                        let a = feeds.convertToArray(profiles);
+                                        return a;
+                                    });
+
                             }
 
-
-
                         }
-                        // _userFeedData: (friendlyFire) => {
-                        //      return friendlyFire.getProfileFeed().then((data) => {
-                        //          return data.entries;
-                        //      });
-                        // }
-                    }
-                }
-            }
-        });
 
+                    }
+
+                }
+            });
+
+    }
 }

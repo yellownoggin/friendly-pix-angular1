@@ -17,7 +17,21 @@
             </div>
             <div class="fp-user-username"><span>Posts</span>: {{uc.personObjPostsCount}}</div>
             <div class="fp-user-username"><span>Followers</span>: {{uc.followersCount.length}}</div>
-            <div class="fp-user-username"><span>Following</span>: {{uc.followingCount.length}}</div>
+            <div class="fp-user-username"><span>Following</span>: {{uc.following.length}}</div>
+        </div>
+    </div>
+    <div class="" layout="row">
+        <div class="fp-name-follow-container" layout="column" ng-repeat="user in uc.followingProfiles">
+            <div class="">
+                <div class="">
+                    {{user.value.full_name}}
+                </div>
+            </div>
+            <div class="">
+                <div class="fp-user-avatar" ng-style="{'background-image': 'url({{user.value.profile_picture}})'}">
+
+                </div>
+            </div>
         </div>
     </div>
 

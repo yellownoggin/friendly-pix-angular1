@@ -6,7 +6,7 @@ namespace friendlyPix {
         .controller('UserController', UserController);
 
     function UserController($stateParams, friendlyFire, $firebaseAuth,
-        currentUser, firebase, $firebaseObject, profileData, feeds, $q, $scope, $firebaseArray) {
+        currentUser, firebase, $firebaseObject, profileData, feeds, $q, $scope, $firebaseArray, followingUsers) {
         //   _userFeedData
         console.log('User Controller Instantiated');
         var vm = this;
@@ -53,9 +53,23 @@ namespace friendlyPix {
             vm.toggleFollowUser = toggleFollowUser;
             trackFollowStatus();
             vm.followersCount = friendlyFire.getFollowers(vm.userPageUsersId);
-            vm.followingCount = friendlyFire.getFollowing(vm.userPageUsersId);
+            vm.following = friendlyFire.getFollowing(vm.userPageUsersId);
+            vm.followingProfiles = followingUsers;
+
+
+            // This works as well going with resolve for now it is is cleaner;
+        //     friendlyFire.getFollowingProfiles(vm.userPageUsersId)
+        //         .then((profiles) => {
+        //             let a = feeds.convertToArray(profiles);
+        //             vm.followingProfiles = a;
+        //         });
+        //
+        //         console.log('vm.followingProfiles', vm.followingProfiles);
+
 
         };
+        // onInit
+
         // Controller methods
 
 

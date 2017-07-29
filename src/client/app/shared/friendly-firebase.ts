@@ -55,12 +55,44 @@ namespace friendlyPix {
             cancelAllSubscriptions: cancelAllSubscriptions,
             getFollowers: getFollowers,
             destroyArrayListeners: destroyArrayListeners,
-            getFollowing: getFollowing
+            getFollowing: getFollowing,
+            getFollowingProfiles: getFollowingProfiles
+
         };
 
 
         // Staging
 
+
+
+        function getFollowingProfiles(userPageUsersId) {
+            // get the ref of following
+            return self.database.ref(`/people/${userPageUsersId}/following`)
+                .once('value').then((data) => {
+                    if (data.val()) {
+                        const followingUids = Object.keys(data.val());
+                        const fetchProfileDetailOperations = followingUids.map((followingUid) => {
+                            return self.database.ref(`/people/${followingUid}`).once('value');
+                        });
+                        return $q.all(fetchProfileDetailOperations).then((results) => {
+                            const profiles = {};
+                            results.forEach((result) => {
+
+                                if (result.val()) {
+                                    profiles[result.key] = result.val();
+                                }
+                            });
+                            return profiles;
+                        })
+                        .catch((e) => { console.log('e in defferred all', e); });
+
+                    }
+
+                    return {};
+                })
+                .catch((e) => { console.log('e in main read', e); });
+
+        }
         /**
          * Stop listening for events and free memory used by this array (empties the local copy)
          * Free up memory before next listeners set up
