@@ -30,7 +30,8 @@ namespace friendlyPix {
 
         // Firebase references that are listend to
         self.firebaseRefs = [];
-
+        self.database = firebase.database();
+        self.storage = firebase.storage();
 
 
 
@@ -57,12 +58,16 @@ namespace friendlyPix {
             destroyArrayListeners: destroyArrayListeners,
             getFollowing: getFollowing,
             getFollowingProfiles: getFollowingProfiles,
-            getUsersPageFeedPosts: getUsersPageFeedPosts
+            getUsersPageFeedPosts: getUsersPageFeedPosts,
+            database: self.database,
+            storage: self.storage
 
         };
 
 
         // Staging
+
+
 
         // GetUsersPageFeed
 
