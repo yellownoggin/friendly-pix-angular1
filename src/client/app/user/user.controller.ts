@@ -42,10 +42,6 @@ namespace friendlyPix {
             // get profile users posts length
             vm.personObjPostsCount = getUserPagePostsCount(profileData.posts);
 
-
-
-
-
             // Following behavior
             // toggleFollowUser
             // let currentUsersProfile =
@@ -74,16 +70,18 @@ namespace friendlyPix {
             // Pagination
             vm.concatNextPageUserPage = concatNextPageUserPage;
             vm.busy = false;
-
         };
         // onInit
 
 
 
 
-        // Staging
+        //////// Staging
 
-        // TODO: can make this more generic to be used in multiple controllers(feeds)
+
+
+
+        // TODake this more generic to be used in multiple controllers(feeds)
         // Slightly different then the general feed concatNextPage method
         // 1. uses a button (versus infinite scroll)
         // 2. uses posts insted of entries (easy change)
