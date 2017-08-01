@@ -11,7 +11,7 @@ namespace friendlyPix {
         .module('app.shared')
         .service('feeds', feedsService);
 
-    function feedsService($firebaseAuth, friendlyFire, $q, sharedDev, $rootScope) {
+    function feedsService($firebaseAuth, friendlyFire, $q, sharedDev, $rootScope, $timeout) {
         var _self = this;
         _self.user = $firebaseAuth().$getAuth();
         _self.getHomeFeed = getHomeFeed;
@@ -19,7 +19,10 @@ namespace friendlyPix {
         _self.subscribeToGeneralFeed = subscribeToGeneralFeed;
         _self.newPosts = {};
         _self.getNewPostsCount = getNewPostsCount;
+        // TODO: refactor or delete convertToAscendingArray
         _self.convertToArray = convertToArray;
+        _self.convertToDescendingArray = convertToDescendingArray;
+        _self.getNewPostsCountHome = getNewPostsCountHome;
         // _self.getTimeText = getTimeText;
         // _self.concatNextPage = concatNextPage;
 
@@ -96,14 +99,31 @@ namespace friendlyPix {
             return reversedPostData;
         }
 
+        function convertToDescendingArray(data) {
+            // TODO: save for firebase object to usable angular array
+            // and array of objects: ie. convertToArrayObjectsDescending
+            var reversedPostData = [];
+            let p = Object.keys(data);
+
+            for (let i = p.length - 1; i >= 0; i--) {
+                // convert to an array and add the key
+                let myObject = {};
+                myObject['value'] = data[p[i]];
+                myObject['key'] = p[i];
+                reversedPostData.push(myObject);
+            }
+            return reversedPostData;
+        }
+
 
 
 
         // TODO: jq: one reason that apply is here is because passing the bindings in
         //  here.(Aha: should be passing the bindings in here or make a promise)
         function getNewPostsCount(feedReference, lPostId, lengthBinding, ArrayBinding) {
+            console.log('called get newPostsCoun');
             feedReference.on('child_added', (feedData) => {
-
+                console.log('called get newPostsCoun');
                 // Take out the latestEntryId post (already in feed)
                 if (feedData.key !== lPostId) {
 
@@ -112,7 +132,28 @@ namespace friendlyPix {
                     // on click
                     ArrayBinding.push(feedData.key);
                     lengthBinding = ArrayBinding.length;
+                    console.log('lengthBinding', lengthBinding);
                     $rootScope.$apply();
+                }
+            });
+        }
+
+        // TODO: jq: one reason that apply is here is because passing the bindings in
+        //  here.(Aha: should be passing the bindings in here or make a promise)
+        function getNewPostsCountHome(feedReference, lPostId, cb) {
+            console.log('called get newPostsCoun');
+            feedReference.on('child_added', (feedData) => {
+                console.log('called get newPostsCoun');
+                // Take out the latestEntryId post (already in feed)
+                if (feedData.key !== lPostId) {
+
+                    // Just need the keys to get a count for button
+                    // displayAllPosts/getpostsTest doing feed update
+                    // on click
+                    cb(feedData.key);
+
+
+                    // $rootScope.$apply();
                 }
             });
         }
@@ -226,12 +267,7 @@ namespace friendlyPix {
 
 
         function subscribeToHomeFeed(newPostsVar, latestPostId) {
-            console.log('sto home feed was this called');
-            sharedDev.subscribeToHomeFeed(
-                (postId, postValue) => {
-                    //  console.log(newPostsVar, 'newPostsVar');
-                    newPostsVar[postId] = postValue;
-                }, latestPostId);
+            self.database.ref()
         }
 
 

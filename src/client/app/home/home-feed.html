@@ -1,41 +1,73 @@
-<!-- home feed(feet of the user & people user is following) -->
-<section id="home-feed" class="site-width" ng-show="!hc.showLogin">
+<!-- ng-show="!hc.showLogin" -->
+<section id="home-feed" class="site-width">
     <div class="fp-content">
-        <div class="showNoPostsMessageContainer" md-whiteframe="1" ng-show="hc.showNoPostsMessage">
-            <span>You currently have no pix posts.</span>
-            <p>
-                {{hc.showNoPostsMessageContainer}}
-            </p>
-        </div>
-        <div>
-
-            <!-- TODO:  fix this or mimix the friendlyPix -->
-            <md-button class="md-raised" ng-click="hc.updateNewPosts()">New Post:  {{hc.pixData.length}}</md-button>
-
-
-        </div>
-
-        <hr>
-        <div class="" ng-repeat="p in hc.pixData track by $index">
-
-            <div class="" ng-style="{'background-image': 'url({{p.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
-
-            </div>
-            <div>
-
-                    <span>{{p.author.full_name}}</span>: <span>{{p.text}}</span>
-
-
-            </div>
-
-            <hr>
-        </div>
 
         <div class="">
-            <md-button class="md-raised" ng-click="hc.next()">content</md-button>
+            <span><strong>Current User: </strong> </span><span>{{hc.currentUser.uid}}</span>
+        </div>
+        <div ng-show="hc.noPostsMessage">
+            <div class="">
+                Currently no posts in your feed.
+            </div>
+        </div>
+        <div>
+            <div class="">
+                <span>New Posts Queue: </span> {{hc.length}}
+            </div>
+        </div>
+        <!-- <div class="" ng-show="hc..newPostsCountArray.length">
+            <span><strong>New Post Count </strong> </span>
+            TODO: dynamic posts/post
+            <button type="button" name="button" ng-click="hc.displayAllPosts()">There are {{hc.newPostsCountArray.length}} New Posts</button>
+
+        </div> -->
+        <hr>
+        <!-- <div class="">
+            {{ hc.data | json}}
+        </div> -->
+
+        <div class="feed-container fp-layout" infinite-scroll="hc.concatNextPage(hc.homeFeedPostsArray, hc.homeFeedNexPage, hc.busy)">
+            <div class="" ng-repeat="post in hc.homeFeedPostsArray track by $index">
+                <div style="font-size:20px"><span>key:</span><strong>{{post.key}}</strong></div>
+                <!-- <div><span>Author:</span>{{post.value.author.full_name}}</div> -->
+                <div class="fp-avatar" ng-style="{'background-image': 'url({{post.value.author.profile_picture}})'}"></div>
+                <div class="">
+                <div><span>post user name:</span><a ui-sref="home.user({uid: post.value.author.uid})">{{post.value.author.full_name}}</a></div>
+                <div><span>post user name:</span>{{post.value.author.uid}}</div>
+                <div><span>Text:</span>{{post.value.text}}</div>
+                <div><span>getTimeText</span>: {{post.value.timestamp | getTimeText}}</div>
+                <div>{{post.value.thumb_url}}</div>
+                <div class="" ng-style="{'background-image': 'url({{post.value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
+
+                </div>
+                <div class="">
+                    <like-directive post="post.key"></like-directive>
+                </div>
+                <div class="">
+                    <comment-directive name="post.key"></comment-directive>
+                </div>
+
+                <hr>
+
+            </div>
         </div>
 
-    </div>
+
+        <!-- <div class="">
+
+            <button type="button" ng-click="hc.concatNextPage()">
+                More
+            </button>
+        </div> -->
+
+
+        <!-- <div class="" ng-repeat="tx in tx.generalDataDescending track by $index">
+
+
+
+
+    </div> -->
+
 
 </section>
 <!-- /home feed -->

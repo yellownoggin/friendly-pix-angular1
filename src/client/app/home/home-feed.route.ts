@@ -13,32 +13,32 @@ namespace friendlyPix {
                 url: '',
                 views: {
                     content: {
-                        template: 'app/home/home-feed.html',
-                        // template: 'app/home/home-feed.html',
-                        // controller: 'HomeController',
-                        // controllerAs: 'hc',
-                        // resolve: {
-                        //     'currentAuth': ['$firebaseAuth', ($firebaseAuth) => {
-                        //         return $firebaseAuth().$waitForSignIn();
-                        //     }],
-                        //     '_pixData': ['feeds', (feeds, sharedDev) => {
-                        //         // TODO: this holds up the app on initialization.
-                        //         // without the try catch
-                        //         try  {
-                        //             return feeds.getHomeFeed().then((results) => {
-                        //                 if (results) {
-                        //                     console.log(results, 'called from router resolve');
-                        //                     return results;
-                        //                 } else {
-                        //                     console.log('Error showHomeFeed');
-                        //                 }
-                        //             });
-                        //         } catch (e) {
-                        //             console.error(e, 'error');
-                        //         }
-                        //
-                        //     }]
-                        // }
+                        templateUrl: 'app/home/home-feed.html',
+                        controller: 'HomeController',
+                        controllerAs: 'hc',
+                        resolve: {
+                            currentUser: (AuthService) => {
+                                return AuthService.currentUser;
+                            },
+                            homeFeedData: (friendlyFire, AuthService) => {
+                                // TODO: currentUserUid is rendered in the firebase.js
+                                // const currentUserUid = AuthService.currentUserUid;
+
+                                return getUpdatedHomeFeeds();
+
+                                // TODO: put in feed.js
+                                function getUpdatedHomeFeeds() {
+                                    return friendlyFire.updateHomeFeeds().then(() => {
+                                        return friendlyFire.getHomeFeedPosts().then((data) => {
+                                            console.log('data', data);
+                                            return data;
+                                        });
+
+                                    });
+                                }
+                            }
+
+                        }
                     }
                 }
             });

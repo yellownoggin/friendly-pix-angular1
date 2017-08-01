@@ -27,6 +27,7 @@ namespace friendlyPix {
         self.getPostData = getPostData;
         self.$q = $q;
         self.rootScope = $rootScope;
+        self._subscribeToFeed = _subscribeToFeed;
 
         // Firebase references that are listend to
         self.firebaseRefs = [];
@@ -36,6 +37,7 @@ namespace friendlyPix {
 
 
         // private values*?  think that is wrong to think it should be private
+        // todo getter setter (look at friendlyPix)
         var POSTS_PAGE_SIZE = 20,
             USER_PAGE_POSTS_PAGE_SIZE = 6;
 
@@ -60,7 +62,8 @@ namespace friendlyPix {
             getFollowingProfiles: getFollowingProfiles,
             getUsersPageFeedPosts: getUsersPageFeedPosts,
             database: self.database,
-            storage: self.storage
+            storage: self.storage,
+            subscribeToHomeFeed: subscribeToHomeFeed
 
         };
 
@@ -311,7 +314,7 @@ namespace friendlyPix {
                     // firebase-fp.service.ts#L537
                     // console.log('postId', entryIds);
                     const queries = entryIds.map(postId => {
-                        console.log('postId', postId);
+                        //  console.log('postId', postId);
                         return self.getPostData(postId);
                     });
                     // Since all the requests are being done on the same feed it's unlikely that a single 1
@@ -319,7 +322,7 @@ namespace friendlyPix {
                     return self.$q.all(queries).then(results => {
                         const deleteOps = [];
                         results.forEach(result => {
-                            console.log('result', result);
+                            // console.log('result', result);
                             if (result.val()) {
 
                                 entries[result.key] = result.val();
@@ -388,22 +391,39 @@ namespace friendlyPix {
             _subscribeToFeed(`/comments/${postId}`, latestCommentId, false);
         }
 
+        function subscribeToHomeFeed(latestEntryId) {
+            console.log(' subscribeToHomeFeed called');
+            return self._subscribeToFeed(`/feed/${self.currentUserUid}`, latestEntryId, false);
+
+        }
+
         function _subscribeToFeed(uri, latestEntryId = null, fetchPostDetails = false) {
             // load all posts information.
+            console.log(' subscribeToFeed called');
+            const deferred = $q.defer();
+            let newPostsBinding = [];
             let feedRef = self.database.ref(uri);
             if (latestEntryId) {
                 feedRef = feedRef.orderByKey().startAt(latestEntryId);
             }
-            feedRef.on('child_added', (feedData) => {
+             feedRef.on('child_added', (feedData) => {
+                console.log('child_added', feedData.key);
                 if (feedData.key !== latestEntryId) {
                     // TODO: add the else for the post(not comment) subscriptions
                     if (!fetchPostDetails) {
-                        // self.rootScope.$apply();
+                        newPostsBinding = feedData.key;
+                        console.log('newPostsBinding', newPostsBinding);
+                         deferred.resolve(newPostsBinding);
+                    } else {
+                        console.log('Fetch Post Details not relevant for' +
+                         'this app in subscribeToFeed bc button event will' +
+                         'call getPaginatedFeed');
                     }
                 }
 
             });
             self.firebaseRefs.push(feedRef);
+            return deferred.promise;
         }
 
         // function getGeneralFeed(parameter) {

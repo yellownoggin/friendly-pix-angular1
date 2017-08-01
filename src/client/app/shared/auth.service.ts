@@ -12,6 +12,8 @@ namespace friendlyPix {
 
             this.Auth = Auth;
             this.currentUser = $firebaseAuth().$getAuth();
+            // TODO: gets error a % of the time
+            // this.currentUserUid = $firebaseAuth().$getAuth().uid;
 
             // Service methods
             function Auth() {
