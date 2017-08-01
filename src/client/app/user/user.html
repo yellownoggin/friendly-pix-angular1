@@ -47,6 +47,7 @@
         <!-- {{uc.posts | json }} -->
         <div class="fp-name-follow-container" layout="column" ng-repeat="post in uc.posts track by $index">
             <a href ui-sref="home.post({postId:post.key})">
+                <like-count post="post.key"></like-count>
                 <comment-count post="post.key"></comment-count>
                 <div class="">
                     <div class="">
