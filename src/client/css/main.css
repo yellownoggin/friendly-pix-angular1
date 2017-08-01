@@ -100,3 +100,15 @@ user
     white-space: nowrap;
     width: 100%;
 }
+
+/* shared */
+
+.fp-avatar {
+    height: 32px;
+    width: 32px;
+    display: inline-block;
+    background-size: 32px 32px;
+    border-radius: 32px;
+    border: 2px white solid;
+    margin-right: 10px;
+}
