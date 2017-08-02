@@ -11,12 +11,14 @@ namespace friendlyPix {
         var vm = this;
         vm.database = firebase.database();
         vm.firebaseRefs = [];
+        vm.currentUser = currentUser;
+
         // John Papa init pattern & reveal-like technique
         init();
 
         function init() {
             console.log('Home Feed Controller Instantiated');
-            vm.currentUser = currentUser;
+
             // Prevents duplicates on nextPage
             vm.busy = false;
             vm.concatNextPage = concatNextPage;
@@ -28,29 +30,77 @@ namespace friendlyPix {
 
 
 
-                let latestPostId = vm.homeFeedPostsArray[0].key;
-                console.log('latestPostId ', latestPostId);
-                console.log('vm.currentUser.uid', vm.currentUser.uid);
-                let feedRef = vm.database.ref(`/feed/${vm.currentUser.uid}`).orderByKey().startAt(latestPostId);
-                console.log('feedRef', feedRef);
-                vm.length = null;
-                vm.newPostsCountArray = [];
-                // feeds.getNewPostsCount(feedRef, latestPostId, vm.length, vm.newPostsCountArray);
-                feeds.getNewPostsCountHome(feedRef, latestPostId, (key) => {
-                    vm.newPostsCountArray.push(key);
-                    vm.length = vm.newPostsCountArray.length;
-                    console.log('vm.length', vm.length);
-                    $scope.$apply();
-                 });
+            let latestPostId = vm.homeFeedPostsArray[0].key;
+            console.log('latestPostId ', latestPostId);
+            console.log('vm.currentUser.uid', vm.currentUser.uid);
+            let feedRef = vm.database.ref(`/feed/${vm.currentUser.uid}`).orderByKey().startAt(latestPostId);
+            console.log('feedRef', feedRef);
+            vm.length = null;
+            vm.newPostsCountArray = [];
+            // feeds.getNewPostsCount(feedRef, latestPostId, vm.length, vm.newPostsCountArray);
+            feeds.getNewPostsCountHome(feedRef, latestPostId, (key) => {
+                vm.newPostsCountArray.push(key);
+                vm.length = vm.newPostsCountArray.length;
+                console.log('vm.length', vm.length);
+                $scope.$apply();
+            });
+
+            registerForPostsDeletion(onPostDeleted);
 
         }
 
         // Staging
 
+        /**
+         * registerForPostsDeletion
+         */
+
+         function  onPostDeleted(postId) {
+             // take out of newPosts queue if in there
+             console.log('postId', (postId instanceof String));
+             console.log('vm.newPostsCountArray', vm.newPostsCountArray);
+             console.log('vm.homeFeedPostsArray.indexOf(postId)', vm.homeFeedPostsArray.indexOf(postId));
+             console.log('vm.newPostsCountArray.indexOf(postId) ', vm.newPostsCountArray.indexOf(postId) );
+             if (vm.newPostsCountArray.indexOf(' + postId + ') || vm.homeFeedPostsArray.indexOf(postId) > -1) {
+                 console.log('went thru the or');
+                 if (vm.newPostsCountArray.indexOf(postId) > -1) {
+                     console.log('went thru the newpostcountarray conditional');
+                     console.log('newPostsCountArray', vm.newPostsCountArray);
+                    vm.newPostsCountArray.splice(vm.newPostsQueue.indexOf(postId), 1);
+                    vm.length = vm.newPostsCountArray.length;
+                    console.log('newPostsCountArray', vm.newPostsCountArray);
+                 }
+                //  delete from the current posts array
+                // Using condition bc of pagination
+                 if (vm.homeFeedPostsArray.indexOf(postId)) {
+                     vm.homeFeedPostsArray.splice(vm.homeFeedPostsArray.indexOf(postId), 1);
+
+                 }
+                 $scope.$apply();
+             }
+
+
+         }
+
+         function registerForPostsDeletion(deletionCallback) {
+            // create a  ref for posts location
+            // listen to child removed event
+            // use a call back to delete from feed
+            // deletion callback (postId (key of the data value ))
+            // - gets the currentusers feed ref
+            // - remove(postId) from the current posts array and the fee
+
+             let postsRef = vm.database.ref(`/posts/`);
+             postsRef.on('child_removed', (data) => {
+                 console.log('data in child removed');
+                 deletionCallback(data.key);
+             });
+
+         }
 
         /**
- * Keeps the home feed populated with latest followed users' posts live.
- */
+        * Keeps the home feed populated with latest followed users' posts live.
+        */
         function startHomeFeedLiveUpdaters() {
             // Make sure we listen on each followed people's posts.
             const followingRef =
