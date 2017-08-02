@@ -24,17 +24,14 @@ namespace friendlyPix {
             vm.concatNextPage = concatNextPage;
 
             showHomeFeed();
-            startHomeFeedLiveUpdaters();
+            // TODO: can these go into show home feed? What else in this controller can go into a service
+            friendlyFire.startHomeFeedLiveUpdaters();
+            friendlyFire.registerForPostsDeletion(onPostDeleted);
 
             vm.homeFeedPostsArray = feeds.convertToDescendingArray(homeFeedData.entries);
 
-
-
             let latestPostId = vm.homeFeedPostsArray[0].key;
-            console.log('latestPostId ', latestPostId);
-            console.log('vm.currentUser.uid', vm.currentUser.uid);
             let feedRef = vm.database.ref(`/feed/${vm.currentUser.uid}`).orderByKey().startAt(latestPostId);
-            console.log('feedRef', feedRef);
             vm.length = null;
             vm.newPostsCountArray = [];
             // feeds.getNewPostsCount(feedRef, latestPostId, vm.length, vm.newPostsCountArray);
@@ -45,7 +42,7 @@ namespace friendlyPix {
                 $scope.$apply();
             });
 
-            registerForPostsDeletion(onPostDeleted);
+
 
         }
 
@@ -57,76 +54,25 @@ namespace friendlyPix {
 
          function  onPostDeleted(postId) {
              // take out of newPosts queue if in there
-             console.log('postId', (postId instanceof String));
-             console.log('vm.newPostsCountArray', vm.newPostsCountArray);
-             console.log('vm.homeFeedPostsArray.indexOf(postId)', vm.homeFeedPostsArray.indexOf(postId));
-             console.log('vm.newPostsCountArray.indexOf(postId) ', vm.newPostsCountArray.indexOf(postId) );
              if (vm.newPostsCountArray.indexOf(' + postId + ') || vm.homeFeedPostsArray.indexOf(postId) > -1) {
-                 console.log('went thru the or');
+
                  if (vm.newPostsCountArray.indexOf(postId) > -1) {
-                     console.log('went thru the newpostcountarray conditional');
-                     console.log('newPostsCountArray', vm.newPostsCountArray);
                     vm.newPostsCountArray.splice(vm.newPostsQueue.indexOf(postId), 1);
                     vm.length = vm.newPostsCountArray.length;
                     console.log('newPostsCountArray', vm.newPostsCountArray);
                  }
-                //  delete from the current posts array
+                // Delete from the current posts array
                 // Using condition bc of pagination
                  if (vm.homeFeedPostsArray.indexOf(postId)) {
                      vm.homeFeedPostsArray.splice(vm.homeFeedPostsArray.indexOf(postId), 1);
-
                  }
                  $scope.$apply();
              }
-
-
          }
 
-         function registerForPostsDeletion(deletionCallback) {
-            // create a  ref for posts location
-            // listen to child removed event
-            // use a call back to delete from feed
-            // deletion callback (postId (key of the data value ))
-            // - gets the currentusers feed ref
-            // - remove(postId) from the current posts array and the fee
 
-             let postsRef = vm.database.ref(`/posts/`);
-             postsRef.on('child_removed', (data) => {
-                 console.log('data in child removed');
-                 deletionCallback(data.key);
-             });
 
-         }
 
-        /**
-        * Keeps the home feed populated with latest followed users' posts live.
-        */
-        function startHomeFeedLiveUpdaters() {
-            // Make sure we listen on each followed people's posts.
-            const followingRef =
-
-                vm.database.ref(`/people/${vm.currentUser.uid}/following`);
-
-            vm.firebaseRefs.push(followingRef);
-            followingRef.on('child_added', followingData => {
-                // Start listening the followed user's posts to populate the home feed.
-                const followedUid = followingData.key;
-                let followedUserPostsRef = vm.database.ref(`/people/${followedUid}/posts`);
-                if (followingData.val() instanceof String) {
-                    followedUserPostsRef = followedUserPostsRef.orderByKey().startAt(followingData.val());
-                }
-                vm.firebaseRefs.push(followedUserPostsRef);
-                followedUserPostsRef.on('child_added', postData => {
-                    if (postData.key !== followingData.val()) {
-                        const updates = {};
-                        updates[`/feed/${vm.currentUser.uid}/${postData.key}`] = true;
-                        updates[`/people/${vm.currentUser.uid}/following/${followedUid}`] = postData.key;
-                        vm.database.ref().update(updates);
-                    }
-                });
-            });
-
-        }
         function showHomeFeed() {
             // clear();   see clear
             // raw clear

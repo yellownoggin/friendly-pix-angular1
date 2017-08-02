@@ -29,6 +29,7 @@ namespace friendlyPix {
         self.rootScope = $rootScope;
         self._subscribeToFeed = _subscribeToFeed;
 
+
         // Firebase references that are listend to
         self.firebaseRefs = [];
         self.database = firebase.database();
@@ -63,7 +64,10 @@ namespace friendlyPix {
             getUsersPageFeedPosts: getUsersPageFeedPosts,
             database: self.database,
             storage: self.storage,
-            subscribeToHomeFeed: subscribeToHomeFeed
+            subscribeToHomeFeed: subscribeToHomeFeed,
+            registerForPostsDeletion: registerForPostsDeletion,
+            startHomeFeedLiveUpdaters: startHomeFeedLiveUpdaters
+            
 
         };
 
@@ -579,6 +583,51 @@ namespace friendlyPix {
             });
         }
 
+        /**
+        * Keeps the home feed populated with latest followed users' posts live.
+        */
+        function startHomeFeedLiveUpdaters() {
+            // Make sure we listen on each followed people's posts.
+            const followingRef =
+
+                self.database.ref(`/people/${self.currentUserUid}/following`);
+
+            self.firebaseRefs.push(followingRef);
+            followingRef.on('child_added', followingData => {
+                // Start listening the followed user's posts to populate the home feed.
+                const followedUid = followingData.key;
+                let followedUserPostsRef = self.database.ref(`/people/${followedUid}/posts`);
+                if (followingData.val() instanceof String) {
+                    followedUserPostsRef = followedUserPostsRef.orderByKey().startAt(followingData.val());
+                }
+                self.firebaseRefs.push(followedUserPostsRef);
+                followedUserPostsRef.on('child_added', postData => {
+                    if (postData.key !== followingData.val()) {
+                        const updates = {};
+                        updates[`/feed/${self.currentUserUid}/${postData.key}`] = true;
+                        updates[`/people/${self.currentUserUid}/following/${followedUid}`] = postData.key;
+                        self.database.ref().update(updates);
+                    }
+                });
+            });
+
+        }
+
+        function registerForPostsDeletion(deletionCallback) {
+           // create a  ref for posts location
+           // listen to child removed event
+           // use a call back to delete from feed
+           // deletion callback (postId (key of the data value ))
+           // - gets the currentusers feed ref
+           // - remove(postId) from the current posts array and the fee
+
+            let postsRef = self.database.ref(`/posts/`);
+            postsRef.on('child_removed', (data) => {
+                console.log('data in child removed');
+                deletionCallback(data.key);
+            });
+
+        }
 
         /********* UserPage Methods *********/
 
