@@ -42,11 +42,34 @@ namespace friendlyPix {
                 $scope.$apply();
             });
 
+            vm.displayAllPosts = displayAllPosts;
 
 
         }
 
         // Staging
+
+
+        /**
+         * Displays new posts in new post queue
+         * TODO: change to showGeneralFeed?. And add clear()
+         */
+        function displayAllPosts() {
+            vm.homeFeedPostsArray = null;
+            vm.nextPage = null;
+
+            friendlyFire.getUpdatedHomeFeeds()
+                .then((data) => {
+                    vm.homeFeedPostsArray = feeds.convertToArray(data.entries);
+                    vm.nextPage = data.nextPage;
+                    vm.newPostsCountArray = [];
+                    $scope.$apply();
+                })
+                .catch((e) => {
+                    console.log('e in generalFeedData resolve: ', e);
+                });
+        }
+
 
         /**
          * registerForPostsDeletion

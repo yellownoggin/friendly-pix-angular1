@@ -7,7 +7,7 @@ namespace friendlyPix {
         .controller('GeneralController', GeneralController);
 
     function GeneralController(generalFeedData, $filter, friendlyFire,
-        $scope, AuthService, feeds, firebase) {
+        $scope, Auth, feeds, firebase) {
         console.log('General Controller instantiated.');
         var vm = this;
 
@@ -16,7 +16,7 @@ namespace friendlyPix {
 
         // initialize
         function initialize() {
-            vm.currentUser = AuthService.Auth().$getAuth();
+            vm.currentUser = Auth.$getAuth();
 
             // general display
             vm.entries = feeds.convertToArray(generalFeedData.entries);

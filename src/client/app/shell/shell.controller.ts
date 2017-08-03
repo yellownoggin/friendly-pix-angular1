@@ -6,7 +6,7 @@ namespace friendlyPix {
         .module('app.shell')
         .controller('ShellController', ShellController);
 
-    function ShellController(currentAuth, AuthService,
+    function ShellController(currentAuth, Auth,
         friendlyFire, $timeout, $state, FbOarService, $scope) {
         // TODO: logic out of the constoller
         var vm = this;
@@ -43,7 +43,7 @@ namespace friendlyPix {
             // reloading the page (after login makes it work as expecting)
 
 
-            AuthService.Auth().$signInWithPopup(gProvider).then((result) => {
+            Auth.$signInWithPopup(gProvider).then((result) => {
                 console.log('result.user.displayName', result.user.displayName);
                 console.log('result.user', result.user);
 
@@ -55,8 +55,8 @@ namespace friendlyPix {
         }
 
         function signOut() {
-            AuthService.Auth().$signOut();
-            AuthService.Auth().$onAuthStateChanged(function(firebaseUser) {
+            Auth.$signOut();
+            Auth.$onAuthStateChanged(function(firebaseUser) {
                 if (firebaseUser) {
                     console.log('Signed in as:', firebaseUser.uid);
 

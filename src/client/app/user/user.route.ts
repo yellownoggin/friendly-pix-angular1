@@ -16,9 +16,9 @@ namespace friendlyPix {
                         controllerAs: 'uc',
                         resolve: {
 
-                            currentUser: (AuthService) => {
-                                // TODO: AuthService refactor just return the one method not this.Auth
-                                return AuthService.Auth().$getAuth();
+                            currentUser: (Auth) => {
+                                // TODO: Auth refactor just return the one method not this.Auth
+                                return Auth.$getAuth();
                             },
                             profileData: ($stateParams, firebase, $firebaseObject) => {
                                 return getCurrentProfileMetaData();

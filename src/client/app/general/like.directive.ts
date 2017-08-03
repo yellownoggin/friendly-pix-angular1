@@ -14,7 +14,7 @@ namespace friendlyPix {
             },
             templateUrl: 'app/general/like-directive.html',
             controller: ($scope, friendlyFire, firebase, $firebaseArray,
-                $firebaseObject, $firebaseAuth, AuthService, Like, LikeCount) => {
+                $firebaseObject, $firebaseAuth, Auth, Like, LikeCount) => {
                 // TODO: basic clean up and controller pattern init, reveal, etc
                 // console.log('like directive activated');
                 let entryId = $scope.post;
@@ -28,7 +28,7 @@ namespace friendlyPix {
 
                 // Gets current and realtime syncs for new ones
                 $scope.likeCount = LikeCount.getPostLikes(entryId);
-                
+
 
                 getUserLikeStatus(entryId, vm.currentUser.uid);
 

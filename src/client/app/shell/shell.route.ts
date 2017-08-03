@@ -17,8 +17,8 @@ namespace friendlyPix {
                             controller: 'ShellController',
                             controllerAs: 'sc',
                             resolve: {
-                                'currentAuth': ['AuthService', (AuthService) => {
-                                    return AuthService.Auth().$waitForSignIn();
+                                'currentAuth': ['Auth', (Auth) => {
+                                    return Auth.$waitForSignIn();
                                 }]
                             }
                         }
