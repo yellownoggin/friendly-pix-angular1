@@ -20,17 +20,17 @@ namespace friendlyPix {
                 let entryId = $scope.post;
                 $scope.entryId = entryId;
                 const vm = $scope;
-                // TODO: fix auth service;
-                vm.currentUser = $firebaseAuth().$getAuth();
-                // console.log('current user in linke dire', vm.currentUser.uid);
-                vm.database = firebase.database();
-                $scope.updateUsersLike = updateUsersLike;
-
                 // Gets current and realtime syncs for new ones
                 $scope.likeCount = LikeCount.getPostLikes(entryId);
 
-
-                getUserLikeStatus(entryId, vm.currentUser.uid);
+                if (Auth.$getAuth()) {
+                    // TODO: fix auth service;
+                    vm.currentUser = $firebaseAuth().$getAuth();
+                    // console.log('current user in linke dire', vm.currentUser.uid);
+                    vm.database = firebase.database();
+                    $scope.updateUsersLike = updateUsersLike;
+                    getUserLikeStatus(entryId, vm.currentUser.uid);
+                }
 
 
 

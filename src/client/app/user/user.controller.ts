@@ -14,7 +14,11 @@ namespace friendlyPix {
         vm.onFollowChange = onFollowChange;
         vm.authObj = $firebaseAuth();
         vm.authedUser = $firebaseAuth().$getAuth();
+        if (currentUser) {
         vm.currentUserUid = vm.authedUser.uid;
+        }
+
+
         vm.database = firebase.database();
 
         // TODO: nm refers to object for new code controller needs re-factor
@@ -24,13 +28,14 @@ namespace friendlyPix {
             // TODO: add this to
             // friendlyFire.destroyArrayListeners();
             friendlyFire.cancelAllSubscriptions();
-
+            const nm = this;
             if (vm.authedUser) {
                 vm.authedUserId = vm.authedUser.uid;
+                nm.displayName = currentUser.displayName;
+                nm.profilePicture = currentUser.photoURL;
             }
-            const nm = this;
-            nm.displayName = currentUser.displayName;
-            nm.profilePicture = currentUser.photoURL;
+
+
             // console.log(_userFeedData, 'message');
             // nm._userFeedData = _userFeedData;
 

@@ -18,8 +18,7 @@ namespace friendlyPix {
                         controllerAs: 'hc',
                         resolve: {
                             currentUser: (Auth) => {
-                                return Auth.$getAuth();
-                                
+                                return Auth.$requireSignIn();
                             },
                             homeFeedData: (friendlyFire) => {
                                 return friendlyFire.getUpdatedHomeFeeds();

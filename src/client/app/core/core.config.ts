@@ -24,9 +24,15 @@ namespace friendlyPix {
         .config(initfirebaseRef)
         .constant('latinize', window.latinize)
         .constant('_', window._)
-        .run(() => {
-            console.log('run module method in core');
-        })
+        .run(['$rootScope', '$state', function($rootScope, $state) {
+            $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+                // We can catch the error thrown when the $requireSignIn promise is rejected
+                // and redirect the user back to the home page
+                if (error === 'AUTH_REQUIRED') {
+                    $state.go('home.generalFeed');
+                }
+            });
+        }]);
     // .run(initDatabase);
     // .constant('firebaseUi', firebaseui.auth.AuthUI)
     // .constant('firebaseMe', firebase)

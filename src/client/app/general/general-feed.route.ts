@@ -24,8 +24,8 @@ namespace friendlyPix {
                                         console.log('e in generalFeedData resolve: ', e);
                                     });
                             },
-                            signedIn: ($firebaseAuth) => {
-                                return $firebaseAuth().$waitForSignIn();
+                            currentAuth: (Auth) => {
+                                return Auth.$waitForSignIn();
 
                             }
                         }

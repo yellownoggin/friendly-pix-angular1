@@ -16,7 +16,11 @@ namespace friendlyPix {
         // setup
         var self = this;
         self.user = Auth.$getAuth();
-        self.currentUserUid = self.user.uid;
+        if (self.user) {
+            self.currentUserUid = self.user.uid;
+        }
+
+
         self.database = firebase.database();
         self.storage = firebase.storage();
         self.firebaseArray = $firebaseArray;
@@ -37,10 +41,12 @@ namespace friendlyPix {
 
 
 
+
         // private values*?  think that is wrong to think it should be private
         // todo getter setter (look at friendlyPix)
         var POSTS_PAGE_SIZE = 20,
             USER_PAGE_POSTS_PAGE_SIZE = 6;
+        const RESULTS_LIMIT = 10;
 
         return {
             saveUserData: saveUserData,
@@ -67,11 +73,13 @@ namespace friendlyPix {
             subscribeToHomeFeed: subscribeToHomeFeed,
             registerForPostsDeletion: registerForPostsDeletion,
             startHomeFeedLiveUpdaters: startHomeFeedLiveUpdaters,
-            getUpdatedHomeFeeds: getUpdatedHomeFeeds
+            getUpdatedHomeFeeds: getUpdatedHomeFeeds,
+            searchUsers: searchUsers
         };
 
         /**
          * Code organized by application parts:
+         * 0. Shell
          * 1. User Creation
          * 2. Post Creation
          * 3. General Feed
@@ -81,6 +89,39 @@ namespace friendlyPix {
          */
 
         // Staging
+
+
+        function searchUsers(searchString, maxResults) {
+            searchString = latinize(searchString).toLowerCase();
+            const query = self.database.ref('/people')
+                .orderByChild('_search_index/full_name').startAt(searchString)
+                .limitToFirst(maxResults).once('value');
+            const reversedQuery = self.database.ref('/people')
+                .orderByChild('_search_index/reversed_full_name').startAt(searchString)
+                .limitToFirst(maxResults).once('value');
+
+            return $q.all([query, reversedQuery]).then((results) => {
+
+                const people = {};
+                results.forEach((result) => result.forEach((data) => {
+
+                    people[data.key] = data.val();
+                }));
+
+                // Remove results that do not start with a search query
+                const userIds = Object.keys(people);
+
+                userIds.forEach((userId) => {
+
+                    const name = people[userId]._search_index.full_name;
+                    const reversedName = people[userId]._search_index.reversed_full_name;
+                    if (!name.startsWith(searchString) && !reversedName.startsWith(searchString)) {
+                        delete people[userId];
+                    }
+                });
+                return people;
+            });
+        }
 
         // End of Staging
 
@@ -152,7 +193,7 @@ namespace friendlyPix {
          * display name...).
          */
         function saveUserData(imageUrl, displayName) {
-            var user = self.auth.$getAuth();
+            var user = self.user;
             if (!displayName) {
                 displayName = 'Anonymous';
             }
@@ -258,17 +299,20 @@ namespace friendlyPix {
         } // uploadNewPic
 
 
-        /********* User(Home) Feed *********/
+        /********* Home Feed *********/
 
 
         function getUpdatedHomeFeeds() {
-            return updateHomeFeeds().then(() => {
-                return getHomeFeedPosts().then((data) => {
-                    console.log('data', data);
-                    return data;
-                });
+            if (self.user) {
+                return updateHomeFeeds().then(() => {
+                    return getHomeFeedPosts().then((data) => {
+                        console.log('data', data);
+                        return data;
+                    });
 
-            });
+                });
+            }
+
         }
 
 

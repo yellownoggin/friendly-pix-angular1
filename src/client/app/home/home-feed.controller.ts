@@ -5,7 +5,7 @@ namespace friendlyPix {
         .module('app.spaPages')
         .controller('HomeController', HomeController);
 
-    function HomeController(currentUser, homeFeedData, feeds, $firebaseAuth,
+    function HomeController(currentUser, homeFeedData, feeds,
         firebase, $scope, $q, sharedDev, friendlyFire, $timeout) {
         console.log('Home Controller initialized');
         var vm = this;
@@ -18,7 +18,7 @@ namespace friendlyPix {
 
         function init() {
             console.log('Home Feed Controller Instantiated');
-
+            showHomeFeed();
             // Prevents duplicates on nextPage
             vm.busy = false;
             vm.concatNextPage = concatNextPage;
@@ -43,8 +43,6 @@ namespace friendlyPix {
             });
 
             vm.displayAllPosts = displayAllPosts;
-
-
         }
 
         // Staging
@@ -75,23 +73,23 @@ namespace friendlyPix {
          * registerForPostsDeletion
          */
 
-         function  onPostDeleted(postId) {
-             // take out of newPosts queue if in there
-             if (vm.newPostsCountArray.indexOf(' + postId + ') || vm.homeFeedPostsArray.indexOf(postId) > -1) {
+        function onPostDeleted(postId) {
+            // take out of newPosts queue if in there
+            if (vm.newPostsCountArray.indexOf(' + postId + ') || vm.homeFeedPostsArray.indexOf(postId) > -1) {
 
-                 if (vm.newPostsCountArray.indexOf(postId) > -1) {
+                if (vm.newPostsCountArray.indexOf(postId) > -1) {
                     vm.newPostsCountArray.splice(vm.newPostsQueue.indexOf(postId), 1);
                     vm.length = vm.newPostsCountArray.length;
                     console.log('newPostsCountArray', vm.newPostsCountArray);
-                 }
+                }
                 // Delete from the current posts array
                 // Using condition bc of pagination
-                 if (vm.homeFeedPostsArray.indexOf(postId)) {
-                     vm.homeFeedPostsArray.splice(vm.homeFeedPostsArray.indexOf(postId), 1);
-                 }
-                 $scope.$apply();
-             }
-         }
+                if (vm.homeFeedPostsArray.indexOf(postId)) {
+                    vm.homeFeedPostsArray.splice(vm.homeFeedPostsArray.indexOf(postId), 1);
+                }
+                $scope.$apply();
+            }
+        }
 
 
 

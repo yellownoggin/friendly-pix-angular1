@@ -15,17 +15,13 @@ namespace friendlyPix {
                         controller: 'UserController',
                         controllerAs: 'uc',
                         resolve: {
-
                             currentUser: (Auth) => {
-                                // TODO: Auth refactor just return the one method not this.Auth
-                                return Auth.$getAuth();
+                                return Auth.$waitForSignIn();
                             },
                             profileData: ($stateParams, firebase, $firebaseObject) => {
-                                return getCurrentProfileMetaData();
-
-                                function getCurrentProfileMetaData() {
-                                    let urlUid = $stateParams.uid;
-                                    let pic;
+                                return getCurrentProfileMetaData($stateParams.uid);
+                                function getCurrentProfileMetaData(userPageUid) {
+                                    let urlUid = userPageUid;
                                     const personRef = firebase.database().ref('people').child(urlUid);
                                     return $firebaseObject(personRef).$loaded((data) => {
                                         return data;

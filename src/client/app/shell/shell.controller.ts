@@ -7,7 +7,7 @@ namespace friendlyPix {
         .controller('ShellController', ShellController);
 
     function ShellController(currentAuth, Auth,
-        friendlyFire, $timeout, $state, FbOarService, $scope) {
+        friendlyFire, $timeout, $state, FbOarService, $scope, $window) {
         // TODO: logic out of the constoller
         var vm = this;
 
@@ -17,6 +17,7 @@ namespace friendlyPix {
             vm.showLogin = true;
             vm.currentAuth = currentAuth;
             vm.hideSplash = hideSplash;
+            vm.showUserInfoForDevelopment = showUserInfoForDevelopment;
             showHideSplash(currentAuth);
             showLogin(currentAuth);
         };
@@ -25,9 +26,19 @@ namespace friendlyPix {
         // Contoller methods (Used in view)
         vm.signInWithGoogle = signInWithGoogle;
         vm.signOut = signOut;
+        vm.skipSignIn = skipSignIn;
 
+
+        function showUserInfoForDevelopment() {
+            $window.alert(`User id: ${vm.currentAuth.uid} & Name: ${vm.currentAuth.displayName}`);
+        }
 
         //////////  Controller method logic
+
+        function skipSignIn() {
+            vm.showSplash = false;
+            $state.go('home.generalFeed');
+        }
 
         function signInWithGoogle() {
             const gProvider = FbOarService.gProvider;

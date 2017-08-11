@@ -1,18 +1,37 @@
+/**
+ * Main(common) site layout
+ */
+
+/**
+ * Staging
+ */
+
+    /* people search html */
+    /* allowed for the parts of the toolbar to be centered vertically */
+
+    .toolbar-height-fix {
+        height: 100%;
+    }
 
 
-html, body {min-height: 100% !important;}
 
-body {
-    color: rgba(0,0,0,0.7);
-    -webkit-font-smoothing: antialiased;
-    font: 300 16px / 1.5 "Roboto", arial, sans-serif;
-    font-family: Roboto, sans-serif;
-    background: #fafafa;
-    margin: 0;
-    padding: 0;
-}
+     .mfp-search-query {
+         height: 20px;
+         font-size: 16px;
+         margin: 0px 0 10px;
+     }
+    /*shell-search-container
+    sign-in-and-tools-icon*/
 
-.site-width {
+    /* people search html */
+
+ /**
+  * End of staging
+  */
+
+
+
+.site-width-1024 {
     max-width: 1024px;
     margin-left: auto;
     margin-right: auto;
@@ -21,6 +40,7 @@ body {
     width: 100%;
     /*border: solid 1px #333 development alignment border*/
 }
+
 .site-width-960 {
     max-width: 960px;
     margin-left: auto;

@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <p>
-                        <a class="fp-skip" ui-sref="feed">skip sign in</a>
+                        <a class="fp-skip" href ng-click="sc.skipSignIn()">skip sign in</a>
                     </p>
                 </div>
 
@@ -30,72 +30,110 @@
 <div layout="column" layout-fill>
 
     <header>
-        <md-toolbar class="md-primary" md-whiteframe="3">
-            <div class="site-width">
-                <div layout="row" class="md-toolbar-tools">
-                    <md-button class="md-icon-button" href="" ng-disabled="false" aria-label="Menu" md-ripple-size="auto" hide-gt-sm>
-                        <md-icon>menu</md-icon>
-                    </md-button>
-                    <div layout="row" flex>
-                        <!-- TODO:  change this to h1 -->
-                        <md-button href=""  ui-sref="home.feed" class="tools-background" aria-label="Page Title">
-                            <span class="md-title-light color-106CC8">
-                            FriendlyPix
-                    </span>
-                        </md-button>
-
-                        <span flex></span>
-
-                        <div layout="row">
-                            <div class="">
-                                <span>Current User: </span>{{sc.currentUid}}
-                                <div class="">
-                                    <span>User name: </span>{{sc.currentAuth.displayName}}
-                                </div>
+        <md-toolbar class="mfp-main-toolbar md-medium-tall">
+            <div class="site-width-1024 toolbar-height-fix">
+                <div class="toolbar-height-fix" layout="row" layout-align="none end">
+                    <div class="" layout="row" style="height: 48px" flex>
+                        <div layout="row" flex>
+                            <div id="" layout="column">
+                                <!-- TODO:  change this to h1 -->
+                                <md-button href="" ui-sref="home.feed" class="tools-background" aria-label="Page Title">
+                                    <h1 class="mfp-logo">
+                                            <span>
+                                                <md-icon>
+                                                    <i class="material-icons">insert_photo</i>
+                                                </md-icon>
+                                            </span>
+                                            FriendlyPix
+                                        </h1>
+                                </md-button>
                             </div>
 
-                            <a class="md-button" href="" ui-sref="home.user({uid: sc.currentUid})">User</a>
-                            <md-button class="tools-background" ng-click="sc.signOut()">
-                                <span>Sign Out</span>
+                            <span flex></span>
+                            <div class="shell-search-container" layout="column">
+                                <people-search></people-search>
+                            </div>
+                            <div layout="row" class="sign-in-and-tools-icon" hide-xs>
+                                <!-- <div class="">
+                                    {{sc.currentAuth | json}}
+                                </div> -->
+                                <a class="md-button mfp-toolbar-user-info" href="" ui-sref="home.user({uid: sc.currentUid})">
+                                    <div class="mfp-avatar" ng-style="{'background-image': 'url({{sc.currentAuth.photoURL}})'}">
+                                    </div>
+                                    <div class="mfp-toolbar-displayName">
+                                        {{sc.currentAuth.displayName}}
+                                    </div>
 
-                            </md-button>
+                                </a>
+                                <md-menu class="mfp-toolbar-more" md-offset="0 0">
+                                    <md-button class="tools-background" ng-click="$mdOpenMenu()">
+                                        <md-icon>
+                                            <i class="material-icons">more_vert</i>
+                                        </md-icon>
+                                    </md-button>
+                                    <md-menu-content>
+                                        <md-menu-item>
+                                            <md-button ng-click="sc.signOut()">
+                                                Sign Out
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="sc.showUserInfoForDevelopment()">UserId
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+
+                            </div>
+
                         </div>
+
+                        <!-- mobile button -->
+                        <md-button class="md-icon-button" href="" ng-disabled="false" aria-label="Menu" md-ripple-size="auto" hide-gt-xs>
+                            <md-icon>menu</md-icon>
+                        </md-button>
 
                     </div>
 
-
                 </div>
 
+
             </div>
+
         </md-toolbar>
         <div class="header-bottom">
-            <div class="site-width">
+            <div class="site-width-1024">
                 <div layout="row">
                     <nav flex>
                         <!-- TODO: tabs ?  or display in-line-->
                         <div layout="row">
-                            <a ui-sref="home.feed" class="md-button">Home</a>
-                            <a ui-sref="home.generalFeed" class="md-button">Feed</a>
-                            <a ui-sref="home.testFeed" class="md-button">Test</a>
+                            <a ui-sref="home.feed" class="md-button mfp-main-nav-item">
+                                <span>
+                                <md-icon><i class="material-icons">home</i></md-icon>
+                            </span> Home
+                            </a>
+                            <a ui-sref="home.generalFeed" class="md-button mfp-main-nav-item">
+                                <md-icon>
+                                    <i class="material-icons">trending_up</i>
+                                </md-icon>
+                                Feed
+                            </a>
                         </div>
                     </nav>
-                    <span flex>
+                    <span flex></span>
                     <choose-file>
                         <input id="fileInput" type="file" class="ng-hide">
                         <md-button id="uploadButton" class="md-fab md-mini md-accent">
-                            <md-icon class="material-icons">attach_file</md-icon>
+                            <md-icon class="material-icons">file_upload</md-icon>
                         </md-button>
                     </choose-file>
-                </span>
-                    <div class="upload-pics-container">
-
-                    </div>
+                    <div class="upload-pics-container"></div>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="main" layout-padding layout-wrap>
+    <main class="main" layout="column" layout-padding layout-wrap>
         <div class="" ui-view="content"></div>
-    </div>
+    </main>
 </div>
