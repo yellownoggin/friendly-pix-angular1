@@ -1,18 +1,33 @@
 <div class="">
     <div class="">
-            <!-- User has not liked yet  -->
-        <span>
-            <button type="button" name="button" ng-click="updateUsersLike(true)"  ng-show="!userLikeStatus">Like</button>
-         </span>
+        <!-- User has not liked yet  -->
+        <div layout="row">
 
-         <!-- User has already liked yet -->
-         <span>
-             <button type="button" name="button" ng-click="updateUsersLike(false)" ng-show="userLikeStatus">You Currently Like</button>
-         </span>
+            <div class="">
+                <md-icon ng-click="updateUsersLike(true)" ng-show="!userLikeStatus">
+                    <i class="material-icons mfp-like-icon">favorite_border</i>
+                </md-icon>
 
-         <span class="">
-             {{likeCount.length}}
-         </span>
+
+            <!-- User has already liked yet -->
+
+            <md-icon ng-click="updateUsersLike(false)" ng-show="userLikeStatus">
+                <i class="material-icons mfp-like-icon">favorite</i>
+            </md-icon>
+
+            </div>
+            
+            <span flex></span>
+
+            <div>
+                <div class="mfp-like-count">
+                {{likeCount.length}} <span> likes</span>
+                </div>
+            </div>
+
+        </div>
+
+
 
     </div>
 

@@ -1,64 +1,70 @@
 <!-- ng-show="!gc.showLogin" -->
-<section id="general-feed" class="site-width-1024">
-    <div class="fp-content" layout="column" layout-margin>
-        <div class="">
-            {{gc.length}}
-        </div>
+<section id="general-feed" class="mfp-content" layout="row" layout-align="center start" flex layout-margin>
+    <div class="mfp-section-content-container" flex-xs="100" flex-gt-xs="60">
+
+        <!-- new posts q -->
+        <!-- TODO: make this a row  -->
         <div class="" ng-show="gc.newPostsCountArray.length">
             <span><strong>New Post Count </strong> </span>
             <!-- TODO: dynamic posts/post  -->
             <button type="button" name="button" ng-click="gc.displayAllPosts()">There are {{gc.newPostsCountArray.length}} New Posts</button>
-
         </div>
-        <hr>
-        <div class="feed-container fp-layout" infinite-scroll="gc.concatNextPage()">
-            <div class="" ng-repeat="d in gc.entries track by $index">
 
-                <!-- Picture post header -->
-                <div class="fp-avatar" ng-style="{'background-image': 'url({{d.value.author.profile_picture}})'}"></div>
-                <div><a ui-sref="home.user({uid: d.value.author.uid})">{{d.value.author.full_name}}</a></div>
-                <div> {{d.value.timestamp | getTimeText}}</div>
+        <!-- feed posts   -->
 
-                <!-- Picture post image -->
-                <div class="" ng-style="{'background-image': 'url({{d.value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
-                </div>
+        <div class="mfp-posts-container" infinite-scroll="gc.concatNextPage()">
+            <div class="mfp-post" ng-repeat="post in gc.entries track by $index">
+                <md-card syle="">
+                    <md-card-content class="mfp-post-header">
+                        <!-- Picture post header -->
 
-                <!-- Users real-time likes -->
-                <div class="">
-                    <like-directive post="d.key"></like-directive>
-                </div>
+                        <md-button class="mfp-usernamelink" ui-sref="home.user({uid: post.value.author.uid})" ng-disabled="false">
 
-                <!--  Poster's description/original comment -->
-                <div>
-                    <span><a ui-sref="home.user({uid: d.value.author.uid})">{{d.value.author.full_name}}</a></span>
-                    {{d.value.text}}
-                </div>
+                            <div class="mfp-avatar" ng-style="{'background-image': 'url({{post.value.author.profile_picture}})'}"></div>
 
-                <!-- Users real-time comments -->
-                <div class="">
-                    <comment-directive name="d.key"></comment-directive>
-                </div>
+                            <div class="mfp-username">{{post.value.author.full_name}}</div>
 
-                <hr>
+                        </md-button>
+                        <!-- TODO: delete button -->
+
+                        <a ui-sref="home.user({uid: post.value.author.uid})" class="mfp-time"> {{post.value.timestamp | getTimeText}}</a>
+                    </md-card-content>
+                    <!-- <img class="md-card-image" ng-src="{{post.value.thumb_url}}" alt="image caption"> -->
+
+                    <!-- Picture post image -->
+                    <div class="mfp-post-image" ng-style="{'background-image': 'url({{post.value.thumb_url}})'}">
+                    </div>
+                    <md-card-footer>
+                        <!-- Users real-time likes -->
+                        <like-directive post="post.key"></like-directive>
+
+                        <!--  Poster's description/original comment -->
+                        <div class="mfp-first-comment">
+                            <span><a ui-sref="home.user({uid: post.value.author.uid})">{{post.value.author.full_name}}</a></span> {{post.value.text}}
+                        </div>
+
+                        <!-- Users real-time comments -->
+                        <comment-directive name="post.key"></comment-directive>
+                    </md-card-footer>
+
+                </md-card>
+
+
+
 
             </div>
+            <!-- /mfp-post -->
+
+            <!-- More post button
+                when not infinite scroll. Not used at the moment
+                    <div class=""><button type="button" ng-click="gc.concatNextPage()">More</button></div> -->
         </div>
+        <!-- /post container -->
 
-
-        <!-- <div class="">
-
-            <button type="button" ng-click="gc.concatNextPage()">
-                More
-            </button>
-        </div> -->
-
-
-        <!-- <div class="" ng-repeat="tx in tx.generalDataDescending track by $index">
+    </div>
 
 
 
-
-    </div> -->
 
 
 </section>

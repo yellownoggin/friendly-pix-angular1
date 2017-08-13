@@ -31,8 +31,10 @@ namespace friendlyPix {
             let feedRef = vm.database.ref('posts').orderByKey().startAt(latestPostId);
             vm.length = null;
             vm.newPostsCountArray = [];
+
             vm.displayAllPosts = displayAllPosts;
             feeds.getNewPostsCount(feedRef, latestPostId, vm.length, vm.newPostsCountArray);
+
         }
 
 

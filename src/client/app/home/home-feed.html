@@ -1,59 +1,64 @@
 <!-- ng-show="!hc.showLogin" -->
-<section id="home-feed" class="site-width">
-    <div class="fp-content">
+<section id="home-feed" class="mfp-content" layout="row" layout-align="center start" flex layout-margin>
+    <div class="mfp-section-content-container" flex-xs="100" flex-gt-xs="60">
 
-        <div class="">
-            <span><strong>Current User: </strong> </span><span>{{hc.currentUser.uid}}</span>
-        </div>
         <div ng-show="hc.noPostsMessage">
             <div class="">
                 Currently no posts in your feed.
             </div>
         </div>
+
         <div>
             <div class="" ng-show="hc.length">
                 <button type="button" ng-click="hc.displayAllPosts()">New Posts </button> <span>{{hc.length}}</span>
             </div>
         </div>
-        <!-- <div class="" ng-show="hc..newPostsCountArray.length">
-            <span><strong>New Post Count </strong> </span>
-            TODO: dynamic posts/post
-            <button type="button" name="button" ng-click="hc.displayAllPosts()">There are {{hc.newPostsCountArray.length}} New Posts</button>
 
-        </div> -->
-        <hr>
-        <!-- <div class="">
-            {{ hc.data | json}}
-        </div> -->
 
-        <div class="feed-container fp-layout" infinite-scroll="hc.concatNextPage(hc.homeFeedPostsArray, hc.homeFeedNexPage, hc.busy)">
-            <div class="" ng-repeat="post in hc.homeFeedPostsArray track by $index">
-                <div style="font-size:20px"><span>key:</span><strong>{{post.key}}</strong></div>
-                <!-- <div><span>Author:</span>{{post.value.author.full_name}}</div> -->
-                <div class="fp-avatar" ng-style="{'background-image': 'url({{post.value.author.profile_picture}})'}"></div>
-                <div class="">
-                <div><span>post user name:</span><a ui-sref="home.user({uid: post.value.author.uid})">{{post.value.author.full_name}}</a></div>
-                <div><span>post user name:</span>{{post.value.author.uid}}</div>
-                <div><span>Text:</span>{{post.value.text}}</div>
-                <div><span>getTimeText</span>: {{post.value.timestamp | getTimeText}}</div>
-                <div>{{post.value.thumb_url}}</div>
-                <div class="" ng-style="{'background-image': 'url({{post.value.thumb_url}})', 'background-size': 'cover', 'height': '100px', 'width': '100px'}">
+        <div class="mfp-posts-container" infinite-scroll="hc.concatNextPage(hc.homeFeedPostsArray, hc.homeFeedNexPage, hc.busy)">
+            <div class="mfp-post" ng-repeat="post in hc.homeFeedPostsArray track by $index">
+                <md-card syle="">
+                    <md-card-content class="mfp-post-header">
+                        <!-- Picture post header -->
 
-                </div>
-                <div class="">
-                    <like-directive post="post.key"></like-directive>
-                </div>
-                <div class="">
-                    <comment-directive name="post.key"></comment-directive>
-                </div>
+                        <md-button class="mfp-usernamelink" ui-sref="home.user({uid: post.value.author.uid})" ng-disabled="false">
 
-                <hr>
+                            <div class="mfp-avatar" ng-style="{'background-image': 'url({{post.value.author.profile_picture}})'}"></div>
 
+                            <div class="mfp-username">{{post.value.author.full_name}}</div>
+
+                        </md-button>
+                        <!-- TODO: delete button -->
+
+                        <a ui-sref="home.user({uid: post.value.author.uid})" class="mfp-time"> {{post.value.timestamp | getTimeText}}</a>
+                    </md-card-content>
+                    <!-- <img class="md-card-image" ng-src="{{post.value.thumb_url}}" alt="image caption"> -->
+
+                    <!-- Picture post image -->
+                    <div class="mfp-post-image" ng-style="{'background-image': 'url({{post.value.thumb_url}})'}">
+                    </div>
+                    <md-card-footer>
+                        <!-- Users real-time likes -->
+                        <div class="">
+                            <like-directive post="post.key"></like-directive>
+                        </div>
+
+                        <!--  Poster's description/original comment -->
+                        <div class="mfp-first-comment">
+                            <span><a ui-sref="home.user({uid: post.value.author.uid})">{{post.value.author.full_name}}</a></span> {{post.value.text}}
+                        </div>
+
+                        <!-- Users real-time comments -->
+                        <div class="">
+                            <comment-directive name="post.key"></comment-directive>
+                        </div>
+                    </md-card-footer>
+
+                </md-card>
             </div>
-        </div>
 
 
-        <!-- <div class="">
+            <!-- <div class="">
 
             <button type="button" ng-click="hc.concatNextPage()">
                 More
@@ -61,7 +66,7 @@
         </div> -->
 
 
-        <!-- <div class="" ng-repeat="tx in tx.generalDataDescending track by $index">
+            <!-- <div class="" ng-repeat="tx in tx.generalDataDescending track by $index">
 
 
 

@@ -1,3 +1,4 @@
+<!-- TODO: change the  variable to something more identifiable -->
 <div class="" ng-repeat="b in a">
     <div class="">
         <span><a ui-sref="home.user({uid: b.author.uid})">{{b.author.full_name}}:</a>  </span>
@@ -6,11 +7,11 @@
 </div>
 <!-- /ng repeat  -->
 
-<div class="comments-section-submit">
-
-    <form class="" ng-submit="submitComment(postId, picComment)">
-        <input type="text" ng-model="picComment" name="picComment" placeholder="Comment...">
-        <input type="submit" id="submit" value="Submit">
+<div class="mfp-comments-section-submit">
+    <form class="" autocomplete="off" ng-submit="submitComment(postId, picComment)">
+        <md-input-container>
+            <label>Comment...</label>
+            <input ng-model="picComment" name="picComment" >
+        </md-input-container>
     </form>
-
 </div>

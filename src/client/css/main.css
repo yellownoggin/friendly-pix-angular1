@@ -1,6 +1,57 @@
 /* Staging */
+.mfp-post .mfp-first-comment {
+    padding: 10px 10px 0 5px;
+}
 
+.mfp-post .mfp-like-count {
+    font-weight: 600;
+}
+.mfp-post md-card md-card-footer {
+    margin-top: auto;
+    padding: 10px;
+}
+.mfp-like-icon {
+    font-size: 35px;
+    color: #ff5252;
+    margin-right: 10px;
+    /*padding-top: 18px;*/
+    cursor: pointer;
+}
 
+a {
+    font-weight: 500;
+}
+/*no card content wrapper in friendly pics application*/
+
+.mfp-post .mfp-time:HOVER {
+    color: black,
+}
+
+.mfp-post .mfp-time {
+    color: #999;
+    margin-top: 15px;
+    font-size: 14px;
+    margin-right: 10px;
+    text-decoration: none;
+}
+.mfp-post .mfp-time {
+    float: right;
+}
+
+md-card md-card-content {
+    padding: 0px;
+}
+
+.mfp-username {
+    display: inline-block;
+    line-height: 38px;
+    vertical-align: top;
+    width: calc(100% - 46px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
 /*title*/
 
 /*peoplesearch css */

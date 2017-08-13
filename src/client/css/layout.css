@@ -2,57 +2,107 @@
  * Main(common) site layout
  */
 
+
 /**
  * Staging
  */
 
-    /* people search html */
-    /* allowed for the parts of the toolbar to be centered vertically */
 
-    .toolbar-height-fix {
-        height: 100%;
-    }
-
-
-
-     .mfp-search-query {
-         height: 20px;
-         font-size: 16px;
-         margin: 0px 0 10px;
-     }
-    /*shell-search-container
-    sign-in-and-tools-icon*/
-
-    /* people search html */
-
- /**
-  * End of staging
-  */
-
-
-
-.site-width-1024 {
-    max-width: 1024px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    display: block;
-    width: 100%;
-    /*border: solid 1px #333 development alignment border*/
+/*card feeds*/
+.mfp-comments-section-submit {
+    width: 95%;
 }
 
-.site-width-960 {
-    max-width: 960px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    display: block;
+.mfp-comments-section-submit md-input-container {
     width: 100%;
-    /*border: solid 1px #333 development alignment border*/
+    margin-bottom: 0px
+}
+
+/*card feed headers*/
+
+.mfp-usernamelink {
+    padding: 0 10px 0 0;
+    border-radius: 19px 5px 5px 19px;
+    text-transform: none;
+    white-space: nowrap;
+}
+.mfp-usernamelink.md-button {
+    margin: 0;
+}
+.mfp-post-header {
+    padding: 10px 10px 5px;
+}
+.mfp-post-image {
+    background-size: cover;
+    background-position: 50% 50%;
+    box-sizing: border-box;
+    padding-top: 25px;
+    position: relative;
+    padding-bottom: 25px;
+    min-height: 250px;
+    cursor: pointer;
+}
+@media screen and (max-width: 840px) {
+    .mfp-post-image {
+        padding-top: 35%;
+        padding-bottom: 35px;
+    }
+}
+
+/*used in feeds anywhere else */
+
+.mfp-content {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+.full-width-parent {}
+
+/*feeds*/
+
+@media screen and (min-width: 600px) {
+    .mfp-section-content-container {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+@media screen and (max-width: 599px) {
+    .mfp-post md-card {
+        font-size: 14px;
+    }
 }
 
 /* desktop min 840px */
+
+
+/*
 .fp-content {
-    width: calc(66.6666666667% - 16px);
-    margin: 0 auto;
+   width: calc(66.6666666667% - 16px);
+   margin: 0 auto;
+}*/
+
+
+/* people search html */
+
+
+/* allowed for the parts of the toolbar to be centered vertically */
+
+.toolbar-height-fix {
+    height: 100%;
 }
+.mfp-search-query {
+    height: 20px;
+    font-size: 16px;
+    margin: 0px 0 10px;
+}
+
+/*shell-search-container
+    sign-in-and-tools-icon*/
+
+
+/* people search html */
+
+
+/**
+  * End of staging
+  */
