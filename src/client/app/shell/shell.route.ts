@@ -2,7 +2,7 @@ namespace friendlyPix {
     'use strict';
 
     angular
-        .module('app.spaPages')
+        .module('app.shell')
         .config(initRouter);
 
         // @ngInject

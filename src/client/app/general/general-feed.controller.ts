@@ -3,7 +3,7 @@ namespace friendlyPix {
 
 
     angular
-        .module('app.spaPages')
+        .module('app.general')
         .controller('GeneralController', GeneralController);
 
     function GeneralController(generalFeedData, $filter, friendlyFire,

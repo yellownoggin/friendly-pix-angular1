@@ -2,7 +2,7 @@ namespace friendlyPix {
     'use strict';
 
     angular
-        .module('app.spaPages')
+        .module('app.general')
         .config(initRouter);
 
     function initRouter($stateProvider) {

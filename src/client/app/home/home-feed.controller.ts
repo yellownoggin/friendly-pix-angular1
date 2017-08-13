@@ -2,7 +2,7 @@ namespace friendlyPix {
     'use strict';
 
     angular
-        .module('app.spaPages')
+        .module('app.home')
         .controller('HomeController', HomeController);
 
     function HomeController(currentUser, homeFeedData, feeds,
