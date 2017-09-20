@@ -1,0 +1,53 @@
+/*storing & playing with css to see what is needed*/
+
+/*
+
+
+html, body {min-height: 100% !important;}
+
+
+layout	Sets default layout direction unless overridden by another breakpoint.
+layout-xs	width < 600px
+layout-gt-xs	width >= 600px
+layout-sm	600px <= width < 960px
+layout-gt-sm	width >= 960px
+layout-md	960px <= width < 1280px
+layout-gt-md	width >= 1280px
+layout-lg	1280px <= width < 1920px
+layout-gt-lg	width >= 1920px
+layout-xl	width >= 1920px
+
+
+hide-xs	show-xs	width < 600px
+hide-gt-xs	show-gt-xs	width >= 600px
+hide-sm	show-sm	600px <= width < 960px
+hide-gt-sm	show-gt-sm	width >= 960px
+hide-md	show-md	960px <= width < 1280px
+hide-gt-md	show-gt-md	width >= 1280px
+hide-lg	show-lg	1280px <= width < 1920px
+hide-gt-lg	show-gt-lg	width >= 1920px
+hide-xl	show-xl	width >= 1920px
+*/
+
+
+/* old */
+
+.site-width-1024 {
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    display: block;
+    width: 100%;
+    /*border: solid 1px #333 development alignment border*/
+}
+
+.site-width-960 {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    display: block;
+    width: 100%;
+    /*border: solid 1px #333 development alignment border*/
+}

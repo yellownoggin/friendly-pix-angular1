@@ -1,0 +1,58 @@
+
+
+/* Staging */
+
+.header-bottom {
+    color: #fff;
+    background: #667db6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.mfp-main-nav-item .material-icons {
+    color: rgb(255,171,64);
+}
+
+/* End of Staging */
+
+
+/**
+ * Main toolbar
+ * Notes: height and other layout are done with AM attibutes
+ */
+
+
+.mfp-main-toolbar {
+    color: #fff !important;
+    background: #667db6;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+h1.mfp-logo {
+    font-family: 'Baloo Bhaina', cursive;
+    font-size: 35px;
+    line-height: 40px;
+    margin: 0;
+}
+
+h1.mfp-logo .material-icons {
+    color: #fff;
+    top: 0px;
+    vertical-align: top;
+    font-size: 32px;
+    margin-right: 2px;
+    position: relative;
+}
+
+.mfp-search-query label {
+    color: #fff !important;
+    opacity: .7;
+}
+.mfp-search-query md-icon {
+    color: #fff !important;
+}

@@ -1,0 +1,27 @@
+<div class="">
+    <!-- post html page router working -->
+    <!-- {{pc.postInfo  | json }} -->
+    <div class="" ng-show="pc.showDeletePostLink">
+        <button type="button" ng-click="pc.deletePostWrapper(pc.postInfo.$id, pc.postInfo.full_storage_uri, pc.postInfo.thumb_storage_uri)">delete</button>
+    </div>
+    <div class="fp-avatar" ng-style="{'background-image': 'url({{pc.postInfo.author.profile_picture}})'}"></div>
+    <div class="">
+        <span>post author</span> {{pc.postInfo.author.full_name}}
+        <div class="">
+            <span>post timestamp: </span> {{pc.postInfo.timestamp | getTimeText}}
+        </div>
+        <div class="">
+            <div>post image</div>
+            <img ng-src="{{pc.postInfo.full_url}}" alt="">
+        </div>
+        <div class="">
+            <like-directive post="pc.postInfo.$id"></like-directive>
+        </div>
+        <div class="">
+            <comment-directive name="pc.postInfo.$id"></comment-directive>
+        </div>
+
+        <div class="">
+            <span>post text</span> {{pc.postInfo.text}}
+        </div>
+    </div>

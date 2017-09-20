@@ -1,0 +1,18 @@
+<div class="mfp-search-people-container" layout="column">
+    <!-- TODO: md-content? for the search results -->
+    <md-input-container class="mfp-search-query">
+        <label>search users</label>
+        <md-icon>
+            <i class="material-icons">search</i>
+        </md-icon>
+        <input id="mfp-searchField" type="text" ng-model="ct.searchQuery">
+    </md-input-container>
+    <md-card id="" class="mfp-search-results" ng-show="ct.showSearchResults">
+        <div class="" ng-repeat="result in ct.searchResults track by $index">
+            <a href ui-sref="home.user({uid: result.key})">
+                <div class="mfp-avatar-search-results" ng-style="{'background-image': 'url({{result.value.profile_picture}})'}"></div>
+                <div class="mfp-results-name">{{result.value.full_name}}</div>
+            </a>
+        </div>
+    </md-card>
+</div>
